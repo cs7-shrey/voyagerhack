@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, MetaData, Table, inspect
+from sqlalchemy import create_engine, MetaData, Table, inspect, ForeignKey
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, BigInteger, ARRAY, UniqueConstraint
 from typing import List, Optional
@@ -18,3 +18,13 @@ class Hotel(Base):
     images = Column(ARRAY(String))
     uuids = Column(ARRAY(String))
     
+class HotelAmenity(Base):
+    __tablename__ = "hotel_amenity"
+    amen_id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    code = Column(String, nullable=False, unique=True)
+    
+class HotelAmenityMapping(Base):
+    __tablename__ = "hotel_amenity_mapping"
+    hotel_id = Column(BigInteger, ForeignKey("hotel.id") , primary_key=True) 
+    amen_id = Column(Integer, ForeignKey("hotel_amenity.amen_id"), primary_key=True)
