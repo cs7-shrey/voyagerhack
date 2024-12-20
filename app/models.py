@@ -16,3 +16,5 @@ class Hotel(Base):
     user_rating_count = Column(Integer, default=0)
     property_type = Column(String)
     images = Column(ARRAY(String))
+    uuids = Column(ARRAY(String))
+    

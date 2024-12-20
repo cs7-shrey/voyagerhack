@@ -4,3 +4,4 @@ node_modules
 scrape
 misc
 __pycache__
+exp.*
