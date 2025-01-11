@@ -17,6 +17,7 @@ class Hotel(Base):
     property_type = Column(String)
     images = Column(ARRAY(String))
     uuids = Column(ARRAY(String))
+    city_id = Column(Integer, ForeignKey("city.city_id"))
     
 class HotelAmenity(Base):
     __tablename__ = "hotel_amenity"
