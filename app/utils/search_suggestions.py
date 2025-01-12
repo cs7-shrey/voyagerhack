@@ -3,10 +3,8 @@ from dotenv import load_dotenv
 import os
 from psycopg.rows import dict_row
 from thefuzz import fuzz
-import json
+
 load_dotenv()
-# print(os.getenv('DATABASE_URL'))
-conn = None
     
 def get_suggestion_space() -> list:
     try:

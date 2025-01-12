@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 ORM_URL = os.getenv('ORM_URL')
-print(ORM_URL)
 
 engine = create_engine(ORM_URL)
 

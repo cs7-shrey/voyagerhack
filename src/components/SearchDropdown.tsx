@@ -1,35 +1,44 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MapPin, Building2, Plane, Hotel, Building } from 'lucide-react';
+import { axiosInstance } from '../lib/axiosConfig';
 
-// Add this component inside your App.tsx
+interface SearchSuggestion {
+    label: string;
+    subLabel: string;
+    type: 'hotel' | 'location' | 'city' | 'country' | 'airport';
+}
+const placeTypeToIcon = {
+    hotel: Hotel,
+    location: Building,
+    city: MapPin,
+    country: Building2,
+    airport: Plane,
+}
 const SearchDropdown = () => {
   const [searchValue, setSearchValue] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
+  const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
+  useEffect(() => {
+    const getSuggestions = async () => {
+        try {
+            const response = await axiosInstance.get('/search/suggestions', {
+            params: {
+                search_term: searchValue,
+            },
+            });
+            if (response.status !== 200) {
+                new Error('Failed to fetch suggestions');
+            }
+            setSuggestions(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    getSuggestions();
+  }, [searchValue]);
 
-  // Sample data - in a real app, this would come from an API
-  const suggestions = [
-    { type: 'region', icon: MapPin, label: 'Delhi', subLabel: 'India' },
-    { type: 'city', icon: Building2, label: 'New Delhi', subLabel: 'Delhi, India' },
-    { type: 'airport', icon: Plane, label: 'Indira Gandhi International (DEL)', subLabel: 'New Delhi, Delhi, India' },
-    { type: 'hotel', icon: Hotel, label: 'Della Resorts', subLabel: 'Lonavala, Pune District, Maharashtra, India' },
-    { type: 'district', icon: Building, label: 'Aerocity', subLabel: 'New Delhi, Delhi, India' },
-    { type: 'district', icon: Building, label: 'Connaught Place', subLabel: 'New Delhi, Delhi, India' },
-    { type: 'country', icon: MapPin, label: 'India', subLabel: 'Country' },
-  ];
 
-//   const filteredSuggestions = suggestions.filter(suggestion =>
-//     suggestion.label.toLowerCase().includes(searchValue.toLowerCase()) 
-//     ||
-//     suggestion.subLabel.toLowerCase().includes(searchValue.toLowerCase())
-//   );
-  const suggestionsInLabel = suggestions.filter(suggestion =>
-    suggestion.label.toLowerCase().includes(searchValue.toLowerCase())
-  );
-    const suggestionsInSubLabel = suggestions.filter(suggestion =>
-        suggestion.subLabel.toLowerCase().includes(searchValue.toLowerCase())
-    );
-    const filteredSuggestions = Array.from(new Map([...suggestionsInLabel, ...suggestionsInSubLabel].map(item => [item.label, item])).values());
-    console.log(filteredSuggestions);
   return (
     <div className="relative w-full">
       <input
@@ -46,8 +55,8 @@ const SearchDropdown = () => {
       
       {showDropdown && searchValue && (
         <div className="absolute w-full mt-1 bg-white rounded-md shadow-lg border border-gray-200 max-h-96 overflow-y-auto z-50">
-          {filteredSuggestions.map((suggestion, index) => {
-            const Icon = suggestion.icon;
+          {suggestions.map((suggestion, index) => {
+            const Icon = placeTypeToIcon[suggestion.type];
             return (
               <div
                 key={index}
