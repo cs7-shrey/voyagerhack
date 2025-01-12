@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-from .routes import hotel 
+from .routes import hotel, search
 from ai import test
 from . import models
 from dotenv import load_dotenv
@@ -12,6 +12,7 @@ load_dotenv()
 
 app = FastAPI()
 app.include_router(hotel.router)
+app.include_router(search.router)
 
 @app.get("/")
 def read_root():
