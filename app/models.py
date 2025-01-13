@@ -29,3 +29,9 @@ class HotelAmenityMapping(Base):
     __tablename__ = "hotel_amenity_mapping"
     hotel_id = Column(BigInteger, ForeignKey("hotel.id") , primary_key=True) 
     amen_id = Column(Integer, ForeignKey("hotel_amenity.amen_id"), primary_key=True)
+    
+class City(Base):
+    __tablename__ = "city"
+    # make city_id auto increment
+    city_id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String, nullable=False)

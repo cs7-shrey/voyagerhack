@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { MapPin, Building2, Plane, Hotel, Building } from 'lucide-react';
 import { axiosInstance } from '../lib/axiosConfig';
+import { useSearchStore } from '@/store/useSearchStore';
 
 interface SearchSuggestion {
     label: string;
@@ -14,8 +15,9 @@ const placeTypeToIcon = {
     country: Building2,
     airport: Plane,
 }
-const SearchDropdown = () => {
-  const [searchValue, setSearchValue] = useState('');
+
+const SearchDropdown= () => {
+  const { searchValue, setSearchValue, setQueryTerm } = useSearchStore();
   const [showDropdown, setShowDropdown] = useState(false);
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   useEffect(() => {
@@ -63,6 +65,7 @@ const SearchDropdown = () => {
                 className="flex items-start p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
                 onClick={() => {
                   setSearchValue(suggestion.label);
+                  setQueryTerm({ query: suggestion.label, type: suggestion.type });
                   setShowDropdown(false);
                 }}
               >

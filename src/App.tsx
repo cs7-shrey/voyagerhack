@@ -1,18 +1,22 @@
-import { Route, Routes } from "react-router";
+import { Route, Routes, useNavigate } from "react-router";
 import { Button } from "./components/ui/button";
 import { useEffect, useState } from "react";
 import SearchDropdown from "./components/SearchDropdown";
 import RecentSearches from "./components/RecentSearches";
+import Hotels from "./routes/hotels/Hotels";
+import { useSearchStore } from "./store/useSearchStore";
 
 // import bg from "./assets/vacation.jpg";
 function formatDate(date: Date): string {
   return date.toISOString().split("T")[0];
 }
 function App() {
+  const { queryTerm, setQueryTerm } = useSearchStore();
   const [checkIn, setCheckIn] = useState<Date>(new Date());
   const [checkOut, setCheckOut] = useState<Date>(
     new Date(new Date().setDate(new Date().getDate() + 1))
   );
+  const navigate = useNavigate();
   useEffect(() => {
     console.log("checkIn", checkIn);
   }, [checkIn]);
@@ -69,7 +73,13 @@ function App() {
                     onChange={(e) => setCheckOut(new Date(e.target.value))}
                   />
                 </div>
-                <button className="px-4 py-2 rounded-md bg-primary text-primary-foreground">
+                <button 
+                className="px-4 py-2 rounded-md bg-primary text-primary-foreground"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate(`/hotels?q=${encodeURIComponent(queryTerm.query)}&type=${queryTerm.type}`);
+                  }}
+                >
                   Search
                 </button>
               </div>
@@ -88,9 +98,11 @@ function App() {
 
 export default function AppRouter() {
   return (
+    // TODO: Add error page
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="/hello" element={<h1>hello</h1>} />
+      <Route path="/hotels" element={<Hotels />} />
     </Routes>
   );
 }
