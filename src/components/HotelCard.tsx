@@ -5,9 +5,9 @@ export interface Hotel {
     id: number;
     name: string;
     location: string;
-    price?: number;
+    base_fare?: number;
     images?: string[];
-    star_rating?: number;
+    hotel_star?: number;
     user_rating?: number;
     user_rating_count?: number;
 }
@@ -15,9 +15,9 @@ export interface Hotel {
 const HotelCard: React.FC<Hotel> = ({
     name,
     location,
-    price = 0,
+    base_fare = 0,
     images = [],
-    star_rating = 0,
+    hotel_star = 0,
     user_rating = 0,
     user_rating_count = 0
 }) => {
@@ -96,7 +96,7 @@ const HotelCard: React.FC<Hotel> = ({
                     
                     {/* Hotel Class (Star Rating) */}
                     <div className="flex items-center mb-2">
-                        {[...Array(star_rating)].map((_, i) => (
+                        {[...Array(hotel_star)].map((_, i) => (
                             <Star 
                                 key={i} 
                                 className="w-4 h-4 fill-[#E55842] text-[#E55842]" 
@@ -122,11 +122,11 @@ const HotelCard: React.FC<Hotel> = ({
                 {/* Vertical Divider */}
                 <div className="w-px bg-gray-200 mx-4"></div>
 
-                {/* Price Section */}
-                {price && (
+                {/* base_fare Section */}
+                {base_fare && (
                     <div className="text-right">
                         <div className="text-2xl font-bold">
-                            ₹{price.toLocaleString()}
+                            ₹{base_fare.toLocaleString()}
                         </div>
                         <div className="text-sm text-gray-600">
                             a night

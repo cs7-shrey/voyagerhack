@@ -1,21 +1,20 @@
 import { Route, Routes, useNavigate } from "react-router";
 import { Button } from "./components/ui/button";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import SearchDropdown from "./components/SearchDropdown";
 import RecentSearches from "./components/RecentSearches";
 import Hotels from "./routes/hotels/Hotels";
 import { useSearchStore } from "./store/useSearchStore";
-
+import { formatDate } from "./lib/utils";
 // import bg from "./assets/vacation.jpg";
-function formatDate(date: Date): string {
-  return date.toISOString().split("T")[0];
+
+function LetterDiv({ letter }: { letter: string }) {
+  return (
+    <div className="font-bold font-mono px-1 bg-primary text-secondary rounded-sm">{letter}</div>
+  );
 }
 function App() {
-  const { queryTerm, setQueryTerm } = useSearchStore();
-  const [checkIn, setCheckIn] = useState<Date>(new Date());
-  const [checkOut, setCheckOut] = useState<Date>(
-    new Date(new Date().setDate(new Date().getDate() + 1))
-  );
+  const { queryTerm, checkIn, checkOut, setCheckIn, setCheckOut } = useSearchStore();
   const navigate = useNavigate();
   useEffect(() => {
     console.log("checkIn", checkIn);
@@ -24,8 +23,12 @@ function App() {
     <div>
       <nav className="bg-accent">
         <div className="bg-accent text-primary p-8 flex justify-between">
-          <div className="text-xl font-bold font-mono flex items-center">
-            H.A.V.E.N
+          <div className="text-xl font-bold font-mono flex gap-1 items-center">
+            <LetterDiv letter="H" />
+            <LetterDiv letter="A" />
+            <LetterDiv letter="V" />
+            <LetterDiv letter="E" />
+            <LetterDiv letter="N" />
           </div>
           <div>
             <Button className="text-secondary">Sign In</Button>
