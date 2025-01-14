@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from .routes import hotel, search
+from .routes import hotel, search, constants
 from ai import test
 from . import models
 from dotenv import load_dotenv
@@ -25,6 +25,7 @@ app.add_middleware(
 
 app.include_router(hotel.router)
 app.include_router(search.router)
+app.include_router(constants.router)
 
 @app.get("/")
 def read_root():
