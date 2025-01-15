@@ -31,9 +31,9 @@ interface SearchStore {
     propertyType: string[];
     setPropertyType: (propertyType: string[]) => void;
     hotelAmenities: Amenity[];
-    setHotelAmenityCodes: (hotelAmenities: Amenity[]) => void;
+    setHotelAmenities: (hotelAmenities: Amenity[]) => void;
     roomAmenities: Amenity[];
-    setRoomAmenityCodes: (roomAmenities: Amenity[]) => void;
+    setRoomAmenities: (roomAmenities: Amenity[]) => void;
 }
 export const useSearchStore = create<SearchStore>()((set) => ({
     searchValue: "",
@@ -55,7 +55,7 @@ export const useSearchStore = create<SearchStore>()((set) => ({
     propertyType: [],
     setPropertyType: (propertyType) => set({ propertyType }),
     hotelAmenities: [],
-    setHotelAmenityCodes: (hotelAmenities) => set({ hotelAmenities }),
+    setHotelAmenities: (hotelAmenities) => set({ hotelAmenities }),
     roomAmenities: [],
-    setRoomAmenityCodes: (roomAmenities) => set({ roomAmenities }),
+    setRoomAmenities: (roomAmenities) => set({ roomAmenities }),
 }))

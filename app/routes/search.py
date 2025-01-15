@@ -15,6 +15,6 @@ def search_suggestions(search_term: str):
 @router.post("/hotels", response_model=list[schemas.HotelSearchResponse])
 def get_hotels(search_term: str, type: str, filters: schemas.SearchFilters, db: Session = Depends(get_db)):
     # so, type can be location or city or hotel
-    print(filters)
+    # print(filters)
     hotels = get_hotels_with_filters(filters, db)
     return hotels

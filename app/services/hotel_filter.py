@@ -10,7 +10,7 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
     }
     # First CTE (temp_var)
     # filtering based on star, rating and location
-    temp_var = (
+    q1 = (
         select(
             Hotel.id,
             Hotel.name.label('hotel_name'),
@@ -29,52 +29,68 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
                 mapping[filters.place.type] == filters.place.name
             )
         )
-        .cte('temp_var')
+        .cte('q1')
     )
 
     # Second CTE (q2)
     # filtering based on hotel amenities
     q2 = (
-        select(temp_var)
-        .join(HotelAmenityMapping, temp_var.c.id == HotelAmenityMapping.hotel_id)
+        select(
+            q1.c.id,
+            q1.c.hotel_name,
+            q1.c.hotel_star,
+            q1.c.location,
+            q1.c.user_rating,
+            q1.c.user_rating_count,
+            q1.c.images
+        )
+        .join(HotelAmenityMapping, q1.c.id == HotelAmenityMapping.hotel_id)
         .join(HotelAmenity, HotelAmenityMapping.amen_id == HotelAmenity.amen_id)
         .where(HotelAmenity.code.in_(filters.hotel_amenity_codes))
+        .group_by(q1.c.id, q1.c.hotel_name, q1.c.hotel_star, q1.c.location, q1.c.user_rating, q1.c.user_rating_count, q1.c.images)
+        .having(func.count(HotelAmenity.code) == len(filters.hotel_amenity_codes))
+        # .limit(10)
         .cte('q2')
-    ) if filters.hotel_amenity_codes else temp_var
+    ) if filters.hotel_amenity_codes else q1
 
     # Third CTE (q3)
     # selecting only distinct hotels based on id from duplicates due to amenties
-    q3 = (
-        select(
-            q2.c.id,
-            q2.c.hotel_name,
-            q2.c.hotel_star,
-            q2.c.location,
-            q2.c.user_rating,
-            q2.c.user_rating_count,
-            q2.c.images
-        )
-        .distinct(q2.c.id)
-        .cte('q3')
-    ) if filters.hotel_amenity_codes else q2
+    # q3 = (
+    #     select(
+    #         q2.c.id,
+    #         q2.c.hotel_name,
+    #         q2.c.hotel_star,
+    #         q2.c.location,
+    #         q2.c.user_rating,
+    #         q2.c.user_rating_count,
+    #         q2.c.images
+    #     )
+    #     .distinct(q2.c.id)
+    #     .cte('q3')
+    # ) if filters.hotel_amenity_codes else q2
 
     # Fourth CTE (q4)
     # filtering based on room amenities
     q4 = (
         select(
-            q3,
+            q2,
             RoomType.room_type_id
         )
-        .join(RoomType, q3.c.id == RoomType.hotel_id)
+        .join(RoomType, q2.c.id == RoomType.hotel_id)
         .join(RoomAmenityMapping, RoomType.room_type_id == RoomAmenityMapping.room_type_id)
         .join(RoomAmenity, RoomAmenity.room_amen_id == RoomAmenityMapping.room_amen_id)
         .where(RoomAmenity.code.in_(filters.room_amenity_codes))
+        .group_by(q2.c.id, q2.c.hotel_name, q2.c.hotel_star, q2.c.location, q2.c.user_rating, q2.c.user_rating_count, q2.c.images, RoomType.room_type_id)
+        .having(func.count(RoomAmenity.code) == len(filters.room_amenity_codes))
         .cte('q4')
     ) if filters.room_amenity_codes else (
         select(
-            q3,
+            q2,
             RoomType.room_type_id
-        ).join(RoomType, q3.c.id == RoomType.hotel_id).cte('q4')
+        )
+        .join(RoomType, q2.c.id == RoomType.hotel_id)
+        .group_by(q2.c.id, q2.c.hotel_name, q2.c.hotel_star, q2.c.location, q2.c.user_rating, q2.c.user_rating_count, q2.c.images, RoomType.room_type_id)
+        .cte('q4')
     )
 
     # Final query with named columns
@@ -93,7 +109,7 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
             RatePlan.total_discount.label('total_discount'),
             RatePlan.taxes.label('taxes')
         )
-        .distinct(q4.c.id)
+        .distinct(q4.c.id)      
         .join(RatePlan, q4.c.room_type_id == RatePlan.room_type_id)
         .order_by(q4.c.id, RatePlan.base_fare.asc())
         .cte('q5')
@@ -110,7 +126,11 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
         )
         .limit(10)
     )
+    results = []
     results = session.execute(final_query)
+    # print(session.execute(q2))
+    # for result in session.execute(final_query):
+    #     print(result)
     return results
 
 

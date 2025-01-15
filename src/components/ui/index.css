@@ -1,0 +1,15 @@
+#slider {
+    height: 0.35rem;
+}
+
+#slider .range-slider__range {
+    background: black;
+    /* height: 0.2rem; */
+}
+
+#slider .range-slider__thumb {
+    /* CSS for thumbs */
+    background: black;
+    width: 1rem;
+    height: 1rem;
+}

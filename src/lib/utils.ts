@@ -24,3 +24,14 @@ export async function getConstants(type: "property_type" | "hotel_amenity" | "ro
 export function formatDate(date: Date): string {
   return date.toISOString().split("T")[0];
 }
+
+export function formatAmount(amount: number) {
+  if (amount >= 1000) {
+    const digits = String(amount).split("");
+    digits.splice(digits.length - 3, 0, ",");
+    return digits.join("");
+  }
+  else {
+    return amount.toString();
+  }
+}

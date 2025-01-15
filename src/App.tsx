@@ -6,6 +6,7 @@ import RecentSearches from "./components/RecentSearches";
 import Hotels from "./routes/hotels/Hotels";
 import { useSearchStore } from "./store/useSearchStore";
 import { formatDate } from "./lib/utils";
+import Filters from "./components/Filters";
 // import bg from "./assets/vacation.jpg";
 
 function LetterDiv({ letter }: { letter: string }) {
@@ -106,6 +107,13 @@ export default function AppRouter() {
       <Route path="/" element={<App />} />
       <Route path="/hello" element={<h1>hello</h1>} />
       <Route path="/hotels" element={<Hotels />} />
+      <Route path="/dummy" element={
+        <div className="sm:flex lg:grid lg:grid-cols-12 md:grid-cols-5">
+          <div className="md:col-span-4 lg:col-span-5 lg:col-start-4 flex justify-center p-4">
+            <Filters />
+          </div>
+        </div>
+        } />
     </Routes>
   );
 }

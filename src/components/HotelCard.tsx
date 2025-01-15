@@ -52,9 +52,9 @@ const HotelCard: React.FC<Hotel> = ({
     };
 
     return (
-        <div className="flex rounded-lg overflow-hidden shadow-lg bg-white">
+        <div className="flex rounded-lg overflow-hidden shadow-lg w-full bg-white">
             {/* Left side - Main Image and Thumbnail Gallery */}
-            <div className="w-72 relative flex flex-col">
+            <div className="w-32 md:size-52 lg:size-52 relative flex flex-col">
                 {/* Main Image */}
                 <div className="h-48">
                     <img 
@@ -79,7 +79,7 @@ const HotelCard: React.FC<Hotel> = ({
                             />
                             {/* Show remaining images count on the last visible thumbnail */}
                             {index === 4 && remainingImages > 0 && (
-                                <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white/85 text-sm text-center">
+                                <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white/85 text-[8px] md:text-[12px] text-center">
                                     {/* +{remainingImages} */} VIEW ALL
                                 </div>
                             )}
@@ -89,32 +89,34 @@ const HotelCard: React.FC<Hotel> = ({
             </div>
 
             {/* Right side - Content */}
-            <div className="flex-1 p-4 flex">
+            <div className="flex-1 p-4 flex flex-col sm:flex-row">
                 {/* Hotel Information Section */}
                 <div className="flex-1">
-                    <h2 className="text-xl font-semibold mb-2">{name}</h2>
+                    <h2 className="text-md sm:text-xl font-semibold mb-2">{name}</h2>
                     
                     {/* Hotel Class (Star Rating) */}
                     <div className="flex items-center mb-2">
                         {[...Array(hotel_star)].map((_, i) => (
                             <Star 
                                 key={i} 
-                                className="w-4 h-4 fill-[#E55842] text-[#E55842]" 
+                                className="size-3 md:size-4 fill-[#E55842] text-[#E55842]" 
                             />
                         ))}
                     </div>
 
                     {/* User Rating Section */}
-                    <div className="flex items-center gap-2 mb-2">
-                        <span className="text-lg font-semibold">{user_rating}</span>
-                        {renderRatingBubbles(user_rating)}
-                        <span className="text-gray-600 text-xs">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-2">
+                        <div className='flex items-center gap-2'>
+                            <div className="text-sm sm:text-md font-semibold">{user_rating}</div>
+                            {renderRatingBubbles(user_rating)}
+                        </div>
+                        <div className="text-gray-600 text-xs">
                             {user_rating_count} reviews
-                        </span>
+                        </div>
                     </div>
 
                     {/* Location */}
-                    <div className="text-gray-600">
+                    <div className="text-gray-600 text-sm sm:text-md">
                         {location}
                     </div>
                 </div>
@@ -124,11 +126,11 @@ const HotelCard: React.FC<Hotel> = ({
 
                 {/* base_fare Section */}
                 {base_fare && (
-                    <div className="text-right">
-                        <div className="text-2xl font-bold">
+                    <div className="">
+                        <div className="text-lg sm:text-xl md:text-2xl w-fit ml-auto font-bold">
                             ₹{base_fare.toLocaleString()}
                         </div>
-                        <div className="text-sm text-gray-600">
+                        <div className="text-sm ml-auto w-fit text-gray-600">
                             a night
                         </div>
                     </div>
