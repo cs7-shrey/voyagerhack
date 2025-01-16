@@ -36,33 +36,42 @@ def seggregate(data):
     global model_name
     if check(data):
         model=genai.GenerativeModel(model_name=model_name)
-        prompt ='''
-        Analyze the following audio transcript of a conversation where a person is trying to book a hotel. Extract the relevant information based on the given categories. If any category cannot be identified from the transcript, assign it a null value.
+        prompt = '''
+            Analyze the following audio transcript of a conversation where a person is trying to book a hotel. Extract the relevant information based on the specified categories. Ensure that the extracted data is accurate and formatted correctly. If any category cannot be identified from the transcript, assign it a null value.
 
-        Categories to Extract:
+            ### Categories to Extract:
+            1. **Check-in Date**: A string in the format `dd/mm/yyyy`.
+            2. **Check-out Date**: A string in the format `dd/mm/yyyy`.
+            3. **Minimum Budget**: An integer representing the user's minimum budget.
+            4. **Maximum Budget**: An integer representing the user's maximum budget.
+            5. **Hotel Star Ratings**: A list of integers ranging from 0 to 5. Default: `[0, 1, 2, 3, 4, 5]`.
+            6. **User Rating**: A float value representing the user rating. Default: `0.0`.
+            7. **Property Type**: A list of strings representing property types (e.g., "Hotel", "Resort", etc.). Default: `[]`.
+            8. **Hotel Amenity Codes**: An optional list of strings for hotel amenity codes. Default: `null`.
+            9. **Room Amenity Codes**: An optional list of strings for room amenity codes. Default: `null`.
+            10. **Places**: An list of strings representing places mentioned in the transcript. Default: []
 
-        Price Range: The price range specified by the user (e.g., budget, mid-range, luxury, or specific amounts).
-        Location: The location or area where the user wants to book the hotel.
-        Star Rating: The desired star rating of the hotel (e.g., 3-star, 5-star).
-        User Review: Any user-provided reviews or feedback about the hotel or preferences.
-        Room View: Any specified preferences for the view from the room (e.g., sea view, garden view).
-        Property Type: The type of property the user is interested in (e.g., resort, villa, boutique hotel).
-        Food and Dining: Any specific requirements or preferences for food and dining options (e.g., vegetarian, buffet breakfast).
-        Output Format:
-        Return the extracted information in JSON format, with each category as a key and its corresponding value (or null if unavailable).
+            ### Example Output:
+            For the transcript: 
+            "I would like to book a hotel for a family trip. The check-in date is 15th January 2025, and the check-out date is 20th January 2025. My budget is around 5000 to 15000 rupees, and I prefer a 4-star hotel. A good user rating is important, preferably above 4.5. It would be great if the hotel has a swimming pool and free Wi-Fi. The rooms should have air conditioning and a mini-fridge."
 
-        Example Output:
-        {
-        "Price Range": "Budget",
-        "Location": "Goa",
-        "Star Rating": "4-star",
-        "User Review": null,
-        "Room View": "Sea view",
-        "Property Type": "Resort",
-        "Food and Dining": "Buffet breakfast"
-        }
-        TRANSCIPT
-    '''
+            The output JSON should look like this:
+            ```
+            {
+                "check-in date": "15/01/2025",
+                "check-out date": "20/01/2025",
+                "min budget": 5000,
+                "max budget": 15000,
+                "hotel star": [4],
+                "User Rating": 4.5,
+                "Property Type": [],
+                "hotel amenity codes": ["swimming pool", "free Wi-Fi"],
+                "room amenity codes": ["air conditioning", "mini-fridge"]
+                "place" : ["Delhi", "Gurgaon"]
+            }
+            dont write anything else in the output
+
+'''
         prompt=prompt+data
         try :
             response = model.generate_content([prompt])
@@ -73,3 +82,5 @@ def seggregate(data):
         return "There is an error with the input"
 
 
+
+print( seggregate("i want to book a hotel for a family trip. The check-in date is 15th January 2025, and the check-out date is 20th January 2025. My budget is around 5000 to 15000 rupees, and I prefer a 4-star hotel. A good user rating is important, preferably above 4.5. It would be great if the hotel has a swimming pool and free Wi-Fi. The rooms should have air conditioning and a mini-fridge."))
