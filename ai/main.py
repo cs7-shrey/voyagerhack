@@ -47,8 +47,8 @@ def seggregate(data):
             5. **Hotel Star Ratings**: A list of integers ranging from 0 to 5. Default: `[0, 1, 2, 3, 4, 5]`.
             6. **User Rating**: A float value representing the user rating. Default: `0.0`.
             7. **Property Type**: A list of strings representing property types (e.g., "Hotel", "Resort", etc.). Default: `[]`.
-            8. **Hotel Amenity Codes**: An optional list of strings for hotel amenity codes. Default: `null`.
-            9. **Room Amenity Codes**: An optional list of strings for room amenity codes. Default: `null`.
+            8. **Hotel Amenity Codes**: A list of 'codes' of all hotel amenities that the user wants, e.g., Wi-Fi (code: INTRNT), airport transfer (code: AIRTRANS), etc. Default: []
+            9. **Room Amenity Codes**: A list of 'codes' of all room amenities that the user wants, e.g., study room (code: STDYRM), smoking room (code: SMKGRM), etc. Default: []
             10. **Places**: An list of strings representing places mentioned in the transcript. Default: []
 
             ### Example Output:
@@ -65,8 +65,8 @@ def seggregate(data):
                 "hotel star": [4],
                 "User Rating": 4.5,
                 "Property Type": [],
-                "hotel amenity codes": ["swimming pool", "free Wi-Fi"],
-                "room amenity codes": ["air conditioning", "mini-fridge"]
+                "hotel amenity codes": ["INTRNT", "SWPOOL"],
+                "room amenity codes": ["AC", "MNFRG"],
                 "place" : ["Delhi", "Gurgaon"]
             }
             dont write anything else in the output
@@ -81,6 +81,3 @@ def seggregate(data):
     else:
         return "There is an error with the input"
 
-
-
-print( seggregate("i want to book a hotel for a family trip. The check-in date is 15th January 2025, and the check-out date is 20th January 2025. My budget is around 5000 to 15000 rupees, and I prefer a 4-star hotel. A good user rating is important, preferably above 4.5. It would be great if the hotel has a swimming pool and free Wi-Fi. The rooms should have air conditioning and a mini-fridge."))
