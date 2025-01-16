@@ -65,7 +65,7 @@ const SearchDropdown= () => {
                 className="flex items-start p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
                 onClick={() => {
                   setSearchValue(suggestion.label);
-                  setQueryTerm({ query: suggestion.label, type: suggestion.type });
+                  setQueryTerm({ place: suggestion.label, type: suggestion.type });
                   setShowDropdown(false);
                 }}
               >

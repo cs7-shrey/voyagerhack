@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import HotelStar from '../ui/HotelStar'
 import { useTempFilterStore } from '@/store/useTempFilterStore';
+import { useSearchStore } from '@/store/useSearchStore';
 
 const HotelStarFilter = () => {
     const [hotelStarState, setHotelStarState] = useState([
@@ -10,42 +11,56 @@ const HotelStarFilter = () => {
         { text: "4", isSelected: false },
         { text: "5", isSelected: false },
     ]);
-    const setSelected = (text: string) => {
-        if (text === "0+" && !hotelStarState[0].isSelected) {
-            setHotelStarState(hotelStarState.map((star) => {
-                return { ...star, isSelected: star.text === "0+" }
-            }))
-        }
-        else if (text !== "0+" && hotelStarState[0].isSelected) {
-            setHotelStarState(hotelStarState.map((star) => {
-                if (star.text === "0+") {
-                    return { ...star, isSelected: false }
-                }
-                return { ...star, isSelected: star.text === text }
-            }
-            ))
-        }
-        else {
-            setHotelStarState(hotelStarState.map((star) => {
-                if (star.text === text) {
-                    return { ...star, isSelected: !star.isSelected }
-                }
-                return star;
-            }))
-        }
-    }
+    // const setSelected = (text: string) => {
+    //     if (text === "0+" && !hotelStarState[0].isSelected) {
+    //         setHotelStarState(hotelStarState.map((star) => {
+    //             return { ...star, isSelected: star.text === "0+" }
+    //         }))
+    //     }
+    //     else if (text !== "0+" && hotelStarState[0].isSelected) {
+    //         setHotelStarState(hotelStarState.map((star) => {
+    //             if (star.text === "0+") {
+    //                 return { ...star, isSelected: false }
+    //             }
+    //             return { ...star, isSelected: star.text === text }
+    //         }
+    //         ))
+    //     }
+    //     else {
+    //         setHotelStarState(hotelStarState.map((star) => {
+    //             if (star.text === text) {
+    //                 return { ...star, isSelected: !star.isSelected }
+    //             }
+    //             return star;
+    //         }))
+    //     }
+    // }
     useEffect(() => {
+        console.log('ye run hua')
         const { setTempHotelStar } = useTempFilterStore.getState();
-        if (hotelStarState[0].isSelected) {
-            setTempHotelStar([0, 1, 2, 3, 4, 5]);
+        const { hotelStar } = useSearchStore.getState();
+        console.log("ye rahe hotel stars asli state wale", hotelStar);
+        setTempHotelStar(hotelStar);
+    }, [])
+    const { tempHotelStar } = useTempFilterStore();
+    useEffect(() => {
+        if (tempHotelStar[0] === 0) {
+            setHotelStarState((prev) => {
+                return prev.map((star) => {
+                    return { ...star, isSelected: star.text === "0+" }
+                })
+            })
         }
         else {
-            setTempHotelStar(hotelStarState.filter((star) => star.isSelected).map((star) => parseInt(star.text)));
+            setHotelStarState((prev) => {
+                return prev.map((star) => {
+                    return { ...star, isSelected: tempHotelStar.includes(parseInt(star.text)) }
+                })
+            })
         }
-        console.log(hotelStarState)
-    }, [hotelStarState])
+
+    }, [tempHotelStar])
     // log
-    const { tempHotelStar } = useTempFilterStore();
     useEffect(() => {
         console.log(tempHotelStar);
     }, [tempHotelStar]);
@@ -58,7 +73,6 @@ const HotelStarFilter = () => {
                         key={star.text}
                         text={star.text}
                         selected={star.isSelected}
-                        setSelected={setSelected}
                     />
                 ))}
             </div>

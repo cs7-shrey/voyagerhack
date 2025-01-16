@@ -10,8 +10,11 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
     }
     # First CTE (temp_var)
     # filtering based on star, rating and location
-    # if not filters.place.type in mapping:
-    #     return []
+    if not filters.place.type in mapping:
+        return []
+    if not filters.property_type:
+        # TODO: get this from db
+        filters.property_type = ['Apartment', 'Homestay', 'Guest House', 'Hostel', 'Resort', 'Villa', 'Camp', 'Hotel']
     q1 = (
         select(
             Hotel.id,

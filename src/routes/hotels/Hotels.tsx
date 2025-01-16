@@ -5,11 +5,15 @@ import type { Hotel } from "../../components/HotelCard";
 import Filters from "@/components/Filters";
 import { useState, useEffect } from "react";
 import { useSearchStore } from "@/store/useSearchStore";
-import { formatDate, getConstants } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { SlidersHorizontal } from "lucide-react";
 import SearchBar from "@/components/SearchBar";
+import { stateInitUsingQueryParams } from "@/lib/utils";
 import Logo from "@/components/ui/Logo";
-import { Mic, MicOff } from "lucide-react";
+import { 
+    // Mic,     
+     MicOff 
+    } from "lucide-react";
 
 export default function Hotels() {
     const [filtersDropdown, setFiltersDropdown] = useState(false);
@@ -19,35 +23,24 @@ export default function Hotels() {
     const filtersClick = () => {
         setFiltersDropdown((prev) => !prev);
     }
-    const {
-        // searchValue,
-        checkIn,
-        checkOut,
-        minBudget,
-        maxBudget,
-        hotelStar,
-        userRating,
-        propertyType,
-        hotelAmenities,
-        roomAmenities,
-        // setPropertyType,
-    } = useSearchStore()
-
+    
     useEffect(() => {
-        const { propertyType, setPropertyType } = useSearchStore.getState();
-        const getPropertyTypes = async () => {
-            if (propertyType.length === 0) {
-                const propertyTypes = await getConstants("property_type");
-                setPropertyType(propertyTypes.map((type) => type.name));
-            }
-        };
-        getPropertyTypes();
-    }, []); // Run once on mount
-
-    useEffect(() => {
-    }, []);
-    useEffect(() => {
-        console.log("propertyType", propertyType);
+        stateInitUsingQueryParams(searchParams);
+        const {
+            // searchValue,
+            checkIn,
+            checkOut,
+            minBudget,
+            maxBudget,
+            hotelStar,
+            userRating,
+            propertyType,    
+            hotelAmenities,
+            roomAmenities,
+            // setPropertyType,
+        } = useSearchStore.getState();
+        const x = searchParams.get("x");
+        console.log(x);
         const q = searchParams.get("q");
         const type = searchParams.get("type");
         const getHotels = async () => {
@@ -66,7 +59,7 @@ export default function Hotels() {
                 hotel_amenity_codes: hotelAmenities.map((amenity) => amenity.code),
                 room_amenity_codes: roomAmenities.map((amenity) => amenity.code),
             }
-            try {
+            try {   
                 const response = await axiosInstance.post("/search/hotels", data, {
                     params: {
                         search_term: q,
@@ -81,28 +74,22 @@ export default function Hotels() {
                     new Error("Failed to fetch hotels");
                 }
                 console.log("ye hai hotels ka api response", response.data);
-                console.log(response)
                 setHotels(response.data);
             } catch (error) {
                 console.error(error);
             }
         }
-        if (propertyType.length > 0) {
-            getHotels();
-        }
-    }, [
-        propertyType, // Add propertyType as dependency
-        checkIn,
-        checkOut,
-        minBudget,
-        maxBudget,
-        hotelStar,
-        userRating,
-        hotelAmenities,
-        roomAmenities,
-        searchParams,
-    ]);
+        // if (propertyType.length > 0) {
+        //     console.log('got here, fetching data')
+        //     getHotels();
+        // }
+        getHotels();
+    }, [searchParams]);
 
+    // test
+    useEffect(() => {
+        console.log('mounted')
+    }, [])
     return (
         <div className="relative">
             <nav className="bg-accent px-4">
@@ -144,25 +131,3 @@ export default function Hotels() {
         </div>
     );
 }
-
-/*
-            <div className="bg-[#212121] p-4 relative z-20">
-                <button 
-                    onClick={filtersClick}
-                    className="relative z-30"
-                >
-                    <SlidersHorizontal size={21} strokeWidth={0.75} color="white" />
-                </button>
-                {filtersDropdown && (
-                    <>
-                        <div 
-                            className="fixed inset-0 bg-black/20 z-30"
-                            onClick={filtersClick}
-                        />
-                        <div className="absolute left-0 right-0 sm:left-4 sm:right-auto top-full z-40">
-                            <Filters />
-                        </div>
-                    </>
-                )}
-            </div>
-*/

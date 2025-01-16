@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router';
 import SearchDropdown from './SearchDropdown';
 import { useSearchStore } from '@/store/useSearchStore';
@@ -53,7 +53,7 @@ const SearchBar = () => {
               className="flex px-4 py-2 rounded-md text-white bg-accentForeground"
               onClick={(e) => {
                 e.preventDefault();
-                navigate(`/hotels?q=${encodeURIComponent(queryTerm.query)}&type=${queryTerm.type}`);
+                navigate(`/hotels?q=${encodeURIComponent(queryTerm.place)}&type=${queryTerm.type}&checkIn=${formatDate(checkIn)}&checkOut=${formatDate(checkOut)}`);
               }}
             >
               Search

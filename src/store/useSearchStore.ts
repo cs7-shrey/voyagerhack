@@ -1,7 +1,7 @@
 import { create } from "zustand"
 
-interface queryTerm {
-    query: string;
+export interface queryTerm {
+    place: string;
     type: string;
 }
 
@@ -11,33 +11,33 @@ export interface Amenity {
 }
 interface SearchStore {
     // queryTerm -> url element
-    queryTerm: queryTerm;
-    setQueryTerm: (queryTerm: queryTerm) => void;
+    queryTerm: queryTerm;       // used to query the database
     // search value -> state element
-    searchValue: string;
-    setSearchValue: (searchValue: string) => void;
+    searchValue: string;        // used to get search suggestions
     checkIn: Date;
-    setCheckIn: (checkIn: Date) => void;
     checkOut: Date;
-    setCheckOut: (checkOut: Date) => void;
     minBudget: number;
-    setMinBudget: (minBudget: number) => void;
     maxBudget: number;
-    setMaxBudget: (maxBudget: number) => void;
     hotelStar: number[];
-    setHotelStar: (hotelStar: number[]) => void;
     userRating: number;
-    setUserRating: (userRating: number) => void;
     propertyType: string[];
-    setPropertyType: (propertyType: string[]) => void;
     hotelAmenities: Amenity[];
-    setHotelAmenities: (hotelAmenities: Amenity[]) => void;
     roomAmenities: Amenity[];
+    setQueryTerm: (queryTerm: queryTerm) => void;
+    setSearchValue: (searchValue: string) => void;
+    setCheckIn: (checkIn: Date) => void;
+    setCheckOut: (checkOut: Date) => void;
+    setMinBudget: (minBudget: number) => void;
+    setMaxBudget: (maxBudget: number) => void;
+    setHotelStar: (hotelStar: number[]) => void;
+    setUserRating: (userRating: number) => void;
+    setPropertyType: (propertyType: string[]) => void;
+    setHotelAmenities: (hotelAmenities: Amenity[]) => void;
     setRoomAmenities: (roomAmenities: Amenity[]) => void;
 }
 export const useSearchStore = create<SearchStore>()((set) => ({
     searchValue: "",
-    queryTerm: { query: "", type: "" },
+    queryTerm: { place: "", type: "" },
     checkIn: new Date(),
     checkOut: new Date(new Date().setDate(new Date().getDate() + 1)),
     minBudget: 0,

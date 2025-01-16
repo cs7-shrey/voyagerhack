@@ -1,25 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import AmenityCard from './ui/AmenityCard';
 import { useTempFilterStore } from '@/store/useTempFilterStore';
 
 interface Props {
     text: string;
     code: string;
+    isChecked: boolean;
 }
-const RoomAmenityCard: React.FC<Props> = ({ text, code }) => {
-    const [isChecked, setIsChecked] = useState(false);
+const RoomAmenityCard: React.FC<Props> = ({ text, code, isChecked }) => {
+    const { tempRoomAmenities, setTempRoomAmenities } = useTempFilterStore();
     const onClick = () => {
-        console.log('clicked');
-        setIsChecked(!isChecked);
-    }
-    useEffect(() => {
-        const { tempRoomAmenities, setTempRoomAmenities } = useTempFilterStore.getState();
-        if (isChecked) {
-            setTempRoomAmenities([...tempRoomAmenities, { name: text, code }]);
-        } else {
-            setTempRoomAmenities(tempRoomAmenities.filter((amenity) => amenity.code !== code));
+        if (!isChecked) {
+            setTempRoomAmenities([...tempRoomAmenities, {name: text, code: code}]);
         }
-    }, [isChecked, code, text]);
+        else {
+            setTempRoomAmenities(tempRoomAmenities.filter((amen) => amen.code !== code))
+        }
+    }
     return (
         <AmenityCard text={text} isChecked={isChecked} handleClick={onClick} />
     );
