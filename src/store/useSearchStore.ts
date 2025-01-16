@@ -24,8 +24,8 @@ interface SearchStore {
     setMinBudget: (minBudget: number) => void;
     maxBudget: number;
     setMaxBudget: (maxBudget: number) => void;
-    hotelStar: number;
-    setHotelStar: (hotelStar: number) => void;
+    hotelStar: number[];
+    setHotelStar: (hotelStar: number[]) => void;
     userRating: number;
     setUserRating: (userRating: number) => void;
     propertyType: string[];
@@ -37,25 +37,25 @@ interface SearchStore {
 }
 export const useSearchStore = create<SearchStore>()((set) => ({
     searchValue: "",
-    setSearchValue: (searchValue) => set({ searchValue }),
     queryTerm: { query: "", type: "" },
-    setQueryTerm: (queryTerm) => set({ queryTerm }),
     checkIn: new Date(),
-    setCheckIn: (checkIn) => set({ checkIn }),
     checkOut: new Date(new Date().setDate(new Date().getDate() + 1)),
-    setCheckOut: (checkOut) => set({ checkOut }),
     minBudget: 0,
-    setMinBudget: (minBudget) => set({ minBudget }),
     maxBudget: 50000,
-    setMaxBudget: (maxBudget) => set({ maxBudget }),
-    hotelStar: 0,
-    setHotelStar: (hotelStar) => set({ hotelStar }),
+    hotelStar: [0, 1, 2, 3, 4, 5],
     userRating: 0,
-    setUserRating: (userRating) => set({ userRating }),
     propertyType: [],
-    setPropertyType: (propertyType) => set({ propertyType }),
     hotelAmenities: [],
-    setHotelAmenities: (hotelAmenities) => set({ hotelAmenities }),
     roomAmenities: [],
+    setSearchValue: (searchValue) => set({ searchValue }),
+    setQueryTerm: (queryTerm) => set({ queryTerm }),
+    setCheckIn: (checkIn) => set({ checkIn }),
+    setCheckOut: (checkOut) => set({ checkOut }),
+    setMinBudget: (minBudget) => set({ minBudget }),
+    setMaxBudget: (maxBudget) => set({ maxBudget }),
+    setHotelStar: (hotelStar) => set({ hotelStar }),
+    setUserRating: (userRating) => set({ userRating }),
+    setPropertyType: (propertyType) => set({ propertyType }),
+    setHotelAmenities: (hotelAmenities) => set({ hotelAmenities }),
     setRoomAmenities: (roomAmenities) => set({ roomAmenities }),
 }))

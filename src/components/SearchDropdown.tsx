@@ -51,8 +51,8 @@ const SearchDropdown= () => {
           setShowDropdown(true);
         }}
         onFocus={() => setShowDropdown(true)}
-        placeholder="Where do you want to stay?"
-        className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500"
+        placeholder="Enter hotel or destination"
+        className="w-full lg:w-[50vw] px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500"
       />
       
       {showDropdown && searchValue && (

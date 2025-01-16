@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchStore } from "@/store/useSearchStore";
+import { useTempFilterStore } from "@/store/useTempFilterStore";
 import Slider from "./ui/Slider";
 import "react-range-slider-input/dist/style.css";
 import { formatAmount } from "@/lib/utils";
@@ -8,57 +9,72 @@ import HotelAmenityCard from "./HotelAmenityCard";
 import RoomAmenityCard from "./RoomAmenityCard";
 import { type Amenity } from "@/store/useSearchStore";
 import { getConstants } from "@/lib/utils";
-import HotelStar from "./ui/HotelStar";
+import HotelStarFilter from "./filterComponents/HotelStarFilter";
 
 
-const Filters = () => {
+
+// TODO: optimize and modularize this fucked up component 
+interface Props {
+    filterIconClick: () => void;
+}
+const Filters: React.FC<Props> = ({ filterIconClick }) => {
     const {
-        minBudget,
-        maxBudget,
         setMinBudget,
         setMaxBudget,
-        userRating,
-        // hotelAmenities,
-        roomAmenities,
-        hotelStar,
+        setUserRating,
+        setHotelStar,
+        setHotelAmenities,
+        setRoomAmenities,
     } = useSearchStore();
-    const value: [number, number] = [minBudget, maxBudget];
+    
+    const {
+        tempMinBudget,
+        tempMaxBudget,
+        tempUserRating,
+        tempHotelStar,
+        tempHotelAmenities,
+        tempRoomAmenities,
+        setTempMinBudget,
+        setTempMaxBudget,
+        // setTempUserRating,
+        // setTempHotelStar,
+        // setTempHotelAmenities,
+        // setTempRoomAmenities,
+    } = useTempFilterStore();
+
+    const value: [number, number] = [tempMinBudget, tempMaxBudget];
     const [amenityList, setAmenityList] = useState<Amenity[]>([]);
     const [roomAmenityList, setRoomAmenityList] = useState<Amenity[]>([]);
-    const [hotelStarState, setHotelStarState] = useState([
-        { text: "0+", isSelected: false },
-        { text: "2", isSelected: false },
-        { text: "3", isSelected: false },
-        { text: "4", isSelected: false },
-        { text: "5", isSelected: false },
-    ]);
-
+    
     const [isZeroSelected, setIsZeroSelected] = useState(true);
     const [isThreeSelected, setIsThreeSelected] = useState(false);
     const [isFourSelected, setIsFourSelected] = useState(false);
     const [isFourPointFiveSelected, setIsFourPointFiveSelected] = useState(false);
-
+    
+    // utility functions used
     const setAllFalse = () => {
         setIsZeroSelected(false);
         setIsThreeSelected(false);
         setIsFourSelected(false);
         setIsFourPointFiveSelected(false);
     };
+    const handleApply = () => {
+        setMinBudget(tempMinBudget);
+        setMaxBudget(tempMaxBudget);
+        setUserRating(tempUserRating);
+        setHotelStar(tempHotelStar);
+        setHotelAmenities(tempHotelAmenities);
+        setRoomAmenities(tempRoomAmenities);
 
-    useEffect(() => {
-        const handleHotelStarState = () => {
-            setHotelStarState((prev) => {
-                return prev.map((star) => ({
-                    ...star,
-                    isSelected:
-                        star.text === "0+"
-                            ? hotelStar === 0
-                            : hotelStar != 0 && hotelStar <= Number(star.text),
-                }));
-            });
-        };
-        handleHotelStarState();
-    }, [hotelStar]);
+        filterIconClick();
+    }
+    const handleReset = () => {}
+    const setValue = (newValues: [number, number]) => {
+        const [newMin, newMax] = newValues;
+        if (newMin >= newMax) return;
+        setTempMinBudget(newMin);
+        setTempMaxBudget(newMax);
+    };
     useEffect(() => {
         const getAmenities = async () => {
             const hotelAmenitiesFromServer = await getConstants("hotel_amenity");
@@ -70,7 +86,7 @@ const Filters = () => {
     }, []);
     useEffect(() => {
         setAllFalse();
-        switch (userRating) {
+        switch (tempUserRating) {
             case 0:
                 setIsZeroSelected(true);
                 break;
@@ -84,20 +100,11 @@ const Filters = () => {
                 setIsFourPointFiveSelected(true);
                 break;
         }
-    }, [userRating]);
-    const setValue = (newValues: [number, number]) => {
-        const [newMin, newMax] = newValues;
-        if (newMin >= newMax) return;
-        setMinBudget(newMin);
-        setMaxBudget(newMax);
-    };
-    useEffect(() => {
-        console.log(roomAmenities);
-    }, [roomAmenities]);
+    }, [tempUserRating]);
     return (
         <div 
-        className={`bg-primary w-full min-w-sm max-h-[80vh] rounded-lg shadow-md p-4 overflow-y-auto scrollbar-webkit scrollbar-thin`}>
-            <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4 lg:hidden" />
+        className={`bg-primary w-full min-w-sm max-h-[70vh] rounded-lg shadow-md p-4 overflow-y-auto scrollbar-webkit scrollbar-thin`}>
+            <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4 lg:hidden" />          {/* drag indicator */}
             <div className="font-bold">All filters</div>
             <div className="font-bold mt-8">Price</div>
             <div className="mt-6">
@@ -112,8 +119,8 @@ const Filters = () => {
                 />
             </div>
             <div className="flex justify-between text-secondary/50 text-sm mt-4">
-                <div>{"₹" + formatAmount(minBudget)}</div>
-                <div>{"₹" + formatAmount(maxBudget)}</div>
+                <div>{"₹" + formatAmount(tempMinBudget)}</div>
+                <div>{"₹" + formatAmount(tempMaxBudget)}</div>
             </div>
             <div className="mt-4">
                 <div className="my-2 font-bold">User Rating</div>
@@ -125,16 +132,7 @@ const Filters = () => {
                 </div>
             </div>
             <div>
-                <div className="mt-4 mb-2 font-bold">Hotel Class</div>
-                <div className="flex gap-2">
-                    {hotelStarState.map((star) => (
-                        <HotelStar
-                            key={star.text}
-                            text={star.text}
-                            selected={star.isSelected}
-                        />
-                    ))}
-                </div>
+                <HotelStarFilter />
             </div>
             <div className="mt-4">
                 <div className="mt-6 mb-1 px-1 font-bold">Amenities</div>
@@ -159,6 +157,44 @@ const Filters = () => {
                         />
                     ))}
                 </div>
+            </div>
+            <div className="
+                absolute bottom-0 left-0 right-0
+                p-4
+                border-t border-gray-200
+                bg-primary
+                rounded-b-lg
+                flex gap-4
+                shadow-[0_-2px_10px_rgba(0,0,0,0.1)]
+            ">
+                <button 
+                    onClick={handleReset}
+                    className="
+                        flex-1 
+                        px-4 py-2 
+                        border border-gray-300 
+                        rounded-md 
+                        text-gray-700 
+                        hover:bg-gray-50
+                        transition-colors
+                    "
+                >
+                    Reset
+                </button>
+                <button 
+                    onClick={handleApply}
+                    className="
+                        flex-1 
+                        px-4 py-2 
+                        bg-blue-600 
+                        text-white 
+                        rounded-md 
+                        hover:bg-blue-700
+                        transition-colors
+                    "
+                >
+                    Apply
+                </button>
             </div>
         </div>
     );

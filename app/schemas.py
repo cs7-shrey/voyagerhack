@@ -27,7 +27,7 @@ class SearchFilters(BaseModel):
     check_out: str
     min_budget: int = 0
     max_budget: int = 50000
-    hotel_star: int = 0
+    hotel_star: list[int] = [0,1,2,3,4,5]
     user_rating: float = 0  
     property_type: list[str] = []
     hotel_amenity_codes: Optional[list[str]] = []

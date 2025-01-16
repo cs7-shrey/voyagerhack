@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchStore } from '@/store/useSearchStore';
 import AmenityCard from './ui/AmenityCard';
+import { useTempFilterStore } from '@/store/useTempFilterStore';
 
 interface Props {
     text: string;
@@ -13,17 +13,11 @@ const RoomAmenityCard: React.FC<Props> = ({ text, code }) => {
         setIsChecked(!isChecked);
     }
     useEffect(() => {
-        // const { hotelAmenities, setHotelAmenities } = useSearchStore.getState();
-        // if (isChecked) {
-        //     setHotelAmenities([...hotelAmenities, { name: text, code }]);
-        // } else {
-        //     setHotelAmenities(hotelAmenities.filter((amenity) => amenity.code !== code));
-        // }
-        const { roomAmenities, setRoomAmenities } = useSearchStore.getState();
+        const { tempRoomAmenities, setTempRoomAmenities } = useTempFilterStore.getState();
         if (isChecked) {
-            setRoomAmenities([...roomAmenities, { name: text, code }]);
+            setTempRoomAmenities([...tempRoomAmenities, { name: text, code }]);
         } else {
-            setRoomAmenities(roomAmenities.filter((amenity) => amenity.code !== code));
+            setTempRoomAmenities(tempRoomAmenities.filter((amenity) => amenity.code !== code));
         }
     }, [isChecked, code, text]);
     return (

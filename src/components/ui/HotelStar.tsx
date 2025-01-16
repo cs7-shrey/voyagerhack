@@ -1,15 +1,14 @@
-import { useSearchStore } from "@/store/useSearchStore";
 import { Star } from "lucide-react";
 import React from 'react'
 
 interface Props {
   text: string;
   selected: boolean;
+  setSelected: (text: string) => void;
 }
-const HotelStar: React.FC<Props> = ({ text, selected }) => {
-  const { setHotelStar } = useSearchStore();
+const HotelStar: React.FC<Props> = ({ text, selected, setSelected }) => {;
   const handleClick = () => {
-    setHotelStar(Number(text.split("+")[0]));
+    setSelected(text);
   }
   return (
     <button onClick={handleClick}>

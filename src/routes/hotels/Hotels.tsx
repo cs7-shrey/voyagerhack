@@ -7,7 +7,9 @@ import { useState, useEffect } from "react";
 import { useSearchStore } from "@/store/useSearchStore";
 import { formatDate, getConstants } from "@/lib/utils";
 import { SlidersHorizontal } from "lucide-react";
-
+import SearchBar from "@/components/SearchBar";
+import Logo from "@/components/ui/Logo";
+import { Mic, MicOff } from "lucide-react";
 
 export default function Hotels() {
     const [filtersDropdown, setFiltersDropdown] = useState(false);
@@ -45,6 +47,7 @@ export default function Hotels() {
     useEffect(() => {
     }, []);
     useEffect(() => {
+        console.log("propertyType", propertyType);
         const q = searchParams.get("q");
         const type = searchParams.get("type");
         const getHotels = async () => {
@@ -77,7 +80,8 @@ export default function Hotels() {
                 if (response.status !== 200) {
                     new Error("Failed to fetch hotels");
                 }
-                console.log(response.data);
+                console.log("ye hai hotels ka api response", response.data);
+                console.log(response)
                 setHotels(response.data);
             } catch (error) {
                 console.error(error);
@@ -101,8 +105,15 @@ export default function Hotels() {
 
     return (
         <div className="relative">
-            <nav className="bg-accent p-4">
-                <h1>Hotels</h1>
+            <nav className="bg-accent px-4">
+                <div className="p-4 flex justify-between">
+                    <Logo />
+                    <div className="text-white flex font-bold gap-1">
+                        Microphone
+                    <MicOff color="#3B5100"/>
+                    </div>
+                </div>
+                <SearchBar />
             </nav>
             <div className="bg-[#212121] p-4 relative z-20">
                 <button
@@ -118,7 +129,7 @@ export default function Hotels() {
                             onClick={filtersClick}
                         />
                         <div className="fixed lg:absolute bottom-0 lg:bottom-auto left-0 right-0 lg:left-4 lg:right-auto lg:top-full z-40 transform transition-transform duration-300 ease-in-out">
-                            <Filters />
+                            <Filters filterIconClick={filtersClick}/>
                         </div>
                     </>
                 )}

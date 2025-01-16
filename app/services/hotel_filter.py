@@ -10,6 +10,8 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
     }
     # First CTE (temp_var)
     # filtering based on star, rating and location
+    # if not filters.place.type in mapping:
+    #     return []
     q1 = (
         select(
             Hotel.id,
@@ -23,7 +25,7 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
         .join(City, Hotel.city_id == City.city_id)
         .where(
             and_(
-                Hotel.hotel_star >= filters.hotel_star,
+                Hotel.hotel_star.in_(filters.hotel_star),
                 Hotel.user_rating >= filters.user_rating,
                 Hotel.property_type.in_(filters.property_type),
                 mapping[filters.place.type] == filters.place.name
