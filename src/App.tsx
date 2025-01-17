@@ -11,11 +11,11 @@ function App() {
   return (
     <div>
       <nav className="bg-accent">
-        <div className="bg-accent text-primary p-8 flex justify-between">
-          <Logo />
-          <div>
+        <div className="bg-accent text-primary p-8 flex justify-between" style={{backgroundColor:"#001843",zIndex:"900",boxShadow:"0px 50px 100px black"}}>
+          {/* <Logo /> */}
+          {/* <div>
             <Button className="text-secondary">Sign In</Button>
-          </div>
+          </div> */}
         </div>
       </nav>
       <div>
@@ -36,9 +36,11 @@ function App() {
           className="flex flex-col justify-center items-center z-auto bg-no-repeat relative"
         >
           {/* hotel search form with location, checkin date and checkout date */}
-          <div className="w-[60%] flex flex-col gap-4 items-start min-w-fit">
-            <div className="text-6xl font-extrabold font-sans text-primary">
-              Find hotels with AI
+          <div className="w-[60%] flex flex-col gap-4 items-start min-w-fit" >
+            <div className="text-6xl font-extrabold font-sans text-primary"
+            style={{textShadow:"0px 0px 1px black"}}
+            >
+              Find hotels with <span style={{textShadow:"0px 0px 20px white"}}>AI</span>
             </div>
             <div className="rounded-md">
               <div className="flex flex-col justify-center items-center">
