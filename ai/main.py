@@ -40,49 +40,68 @@ def segregate(data):
     global model_name
     if check(data):
         model = genai.GenerativeModel(model_name=model_name)
-        schema = {
-            "type": "object",
-            "properties": {
-                "check-in date": {"type": "string", "format": "date", "example": "15/01/2025"},
-                "check-out date": {"type": "string", "format": "date", "example": "20/01/2025"},
-                "min budget": {"type": "integer", "example": 5000},
-                "max budget": {"type": "integer", "example": 15000},
-                "hotel star": {"type": "array", "items": {"type": "integer"}, "example": [3, 4]},
-                "user rating": {"type": "number", "example": 4.5},
-                "property type": {"type": "array", "items": {"type": "string"}, "example": ["Hotel"]},
-                "hotel amenity codes": {"type": "array", "items": {"type": "string"}, "example": ["INTRNT", "SWPOOL"]},
-                "room amenity codes": {"type": "array", "items": {"type": "string"}, "example": ["AC", "MNFRG"]},
-                "places": {"type": "array", "items": {"type": "string"}, "example": ["Delhi", "Gurgaon"]}
-            },
-            "required": ["check-in date", "check-out date"]
-        }
-        prompt = f'''
-            Analyze the following audio transcript of a conversation where a person is trying to book a hotel. Extract the relevant information based on the specified schema.
+        prompt = '''
+    YOU ARE A HOTEL BOOKING AGENT THAT ONLY TALKS IN STRUCTURED OUTPUTS. YOUR JOB IS PROVIDE FILTERS TO A USER SEARCHING FOR HOTELS ON A WEBSITE USING THE SCHEMA GIVEN.
+    YOUR OUTPUT CONTAINS A status FIELD AND A filters FIELD. THE FILTERS FIELD ARE THE ACTUAL FILTERS TO SEARCH HOTELS. 
+    IT CONTAINS THE FOLLOWING SUB FIELDS:
+    1. place : the place which the user wants to visit. ex. 'Delhi', 'Gurgaon', etc.
+    2. check_in : date of check in in yyyy-mm-dd format
+    3. check_out : date of check out in yyyy-mm-dd format
+    4. min_budget : the minimum budget of the user
+    5. max_budget : the maximum budget of the user
+    6. user_rating : THE THRESHOLD RATING ABOVE WHICH THE USER WANTS THE HOTELS TO HAVE. FOR EX. IF A USER MAY WANT HOTEL WITH RATING ABOVE 4. SOME MIGHT WANT RATING ABOVE 4.5 AND SO ON. 
+    7. hotel_star : the classes of hotel which the user wants. Ex. if the user wants 3 and 5 star hotels, hotel_star = ['3', '5']
+    8. property_type : AN ARRAY OF PROPERTY TYPES THE USER WANTS TO STAY IN. THE ARRAY CAN CONTAIN THE FOLLOWING PROPERTY TYPES:
+            "Hotel",
+            "Apartment",
+            "Resort",
+            "Guest House",
+            "Hostel",
+            "Homestay",
+            "Villa",
+            "Camp"
+            Example: ["Hotel", "Resort", "Villa"]
+            THE OUTPUT SHOULD BE IN THE EXACT SAME CASE AS ABOVE.
+    >> CONTEXT FOR AMENITY CODES: TO AVOID DISCREPANCY. THE HOTELS DATABASE STORES A 'code' FOR EACH AMENITY.
+    9. hotel_amenity_codes : ARRAY OF CODES FOR THE HOTEL AMENITY WHICH THE USER WANTS. HERE IS THE 'code' to 'hotel_amenity' MAPPING TO HELP YOU CHOOSE CODES
+        use AIRTRANS for Airport Transfers
+        use BAR for Bar
+        use ELVTR for Elevator/Lift
+        use GYM for Gym
+        use HKPNG for HouseKeeping
+        use INTRNT for Internet
+        use LNDRY for Laundry
+        use PRKG for Parking
+        use RSTRNT for Restaurant
+    
+    10. room_amenity_codes: ARRAY OF CODES FOR ROOM AMENITY WHICH THE USER WANTS.
+        use AC for Air Conditioning
+        use AIRPRF for Air Purifier
+        use HTR for Heater
+        use HKPNG for House Keeping
+        use CNCTD for Inter Connected Rooms
+        use MNRLWTR for Mineral Water
+        use RMSRVC for Room Service
+        use SMKGRM for Smoking Room
+        use STDYRM for Study Room
+        use INTRNT for WiFi/Internet
+    
+    ADDITIONAL NOTES
+    1. all prices (min_budget, max_budget) are by default in Rupees
+    2. IF EITHER THE price OR check in OR check out DETAILS ARE NOT GIVEN BY THE USER, ASK THEM FOR IT.
+    
+    ! THE status FIELD INDICATES THE STATUS OF YOUR RESPONSE WITH TWO SUBFIELDS. THINK OF IT AS HOW A HOTEL BOOKING AGENT WOULD WORK. EITHER HE/SHE WOULD FIND THE HOTEL OR ASK FOR MORE INFO FROM USER OR RETURN AN ERROR IF THE REQUEST CAN'T BE PROCESSES. status SUB FIELD : 
+        1. code : INDICATES THE STATUS OF RESPONSE.
+            IT IS 200 FOR AN OK RESPONSE. EVERYTHING FINE.
+            IT IS 300 WHEN YOU ASK FOR MORE INFORMATION.
+            IT IS 400 WHEN AN ERROR OCCURED
+        2. message : THE MESSAGE CONVEYED BY YOU, THE HOTEL AGENT
+            FOR CODE 200, RETURN OK
+            FOR CODE 300, WRITE THE MESSAGE TO ASK FOR MORE INFO IF place/checkin/checkout ARE MISSING
+            FOR CODE 400, RETURN THE ERROR MESSAGE
+    
+    PLEASE DON'T MISS ON ANY DETAIL PROVIDED BY THE USER. IT WOULD BE A HUGE LOSS FOR THE COMPANY
 
-            ### Schema:
-            {json.dumps(schema, indent=4)}
-
-            If any value cannot be identified from the transcript, assign it a null value. Ensure the output follows the schema strictly.
-
-            ### Example Transcript:
-            "I would like to book a hotel for a family trip. The check-in date is 15th January 2025, and the check-out date is 20th January 2025. My budget is around 5000 to 15000 rupees, and I prefer a 4-star hotel. A good user rating is important, preferably above 4.5. It would be great if the hotel has a swimming pool and free Wi-Fi. The rooms should have air conditioning and a mini-fridge."
-
-            ### Expected Output:
-            {{
-                "check-in date": "15/01/2025",
-                "check-out date": "20/01/2025",
-                "min budget": 5000,
-                "max budget": 15000,
-                "hotel star": [3, 4],
-                "user rating": 4.5,
-                "property type": ["Hotel"],
-                "hotel amenity codes": ["INTRNT", "SWPOOL"],
-                "room amenity codes": ["AC", "MNFRG"],
-                "places": ["Delhi", "Gurgaon"]
-            }}
-
-            ### Transcript:
-            {data}
         '''
         response = model.generate_content([prompt]).text.split("json")[1][:-4]
         
@@ -90,7 +109,7 @@ def segregate(data):
             output = json.loads(response)
             return output
         except json.JSONDecodeError:
-            # print(response)
+            print(response)
             return {"error": "Invalid response format"}
 
 data = "I need a hotel from 5th Feb 2025 to 10th Feb 2025 with a budget between 3000 and 8000 rupees. It should have Wi-Fi and air conditioning."
