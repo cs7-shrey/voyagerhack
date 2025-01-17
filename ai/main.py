@@ -8,10 +8,13 @@ genai.configure(api_key=api)
 def get_audio_transcript(File):
     global model_name
     model=genai.GenerativeModel(model_name=model_name)
-    prompt ='''Please provide the audio transcript for the follwing file.
+    prompt ='''
+    Please provide the audio transcript for the follwing file.
     Dont output anything other than the transcript.
+
+    If the transcript is in any other language, tranlate it into english.
     
-    Only if you feel that the user has not saaid anything realting to hotel shoudl you output unsafe. JUST THE WORD unsafe.'''
+    Only if you feel that the user has not said anything realting to hotel shoudl you output unsafe. JUST THE WORD unsafe.'''
     try:
         with open(File, 'rb') as audio_file:
             audio_data = audio_file.read()
