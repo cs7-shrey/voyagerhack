@@ -90,7 +90,7 @@ export function stateInitUsingQueryParams(searchParams: URLSearchParams) {
     filters.maxBudget || 50000,
     filters.hotelStar || [0, 1, 2, 3, 4, 5],
     filters.userRating || 0,
-    filters.propertyType || ["Hotel"],
+    filters.propertyType || [],
     filters.hotelAmenities || [],
     filters.roomAmenities || []
   )

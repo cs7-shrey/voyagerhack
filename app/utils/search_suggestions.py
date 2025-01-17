@@ -7,6 +7,7 @@ from thefuzz import fuzz
 load_dotenv()
     
 def get_suggestion_space() -> list:
+    print('fn called')
     try:
         conn = psycopg.connect(conninfo=os.getenv('DATABASE_URL'), row_factory=dict_row)
         print('connection successful')
@@ -66,6 +67,5 @@ def custom_sort(choices, query):
     # return at max 10 results
     return results if len(results) < 10 else results[:10]
 
-def get_suggestions(search_term: str) -> list:
-    suggestion_search_space = get_suggestion_space()   
+def get_suggestions(search_term: str, suggestion_search_space: list) -> list:
     return custom_sort(suggestion_search_space, search_term)
