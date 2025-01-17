@@ -62,7 +62,7 @@ def seggregate(data):
                 "check-out date": "20/01/2025",
                 "min budget": 5000,
                 "max budget": 15000,
-                "hotel star": [4],
+                "hotel star": [3,4],
                 "User Rating": 4.5,
                 "Property Type": [],
                 "hotel amenity codes": ["INTRNT", "SWPOOL"],
