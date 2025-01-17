@@ -53,6 +53,7 @@ const SearchBar = () => {
               className="flex px-4 py-2 rounded-md text-white bg-accentForeground"
               onClick={(e) => {
                 e.preventDefault();
+                if (!queryTerm.place || !queryTerm.type) return;
                 navigate(`/hotels?q=${encodeURIComponent(queryTerm.place)}&type=${queryTerm.type}&checkIn=${formatDate(checkIn)}&checkOut=${formatDate(checkOut)}`);
               }}
             >
