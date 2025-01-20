@@ -5,6 +5,8 @@ import Hotels from "./routes/hotels/Hotels";
 import SearchBar from "./components/SearchBar";
 // import bg from "./assets/vacation.jpg";
 import Logo from "./components/ui/Logo";
+import Voice from "./routes/Voice";
+import Login from "./routes/Login";
 
 function App() {
 
@@ -64,13 +66,8 @@ export default function AppRouter() {
       <Route path="/" element={<App />} />
       <Route path="/hello" element={<h1>hello</h1>} />
       <Route path="/hotels" element={<Hotels />} />
-      <Route path="/dummy" element={
-        <div className="sm:flex lg:grid lg:grid-cols-12 md:grid-cols-5">
-          <div className="md:col-span-4 lg:col-span-5 lg:col-start-4 flex justify-center p-4">
-            <SearchBar />
-          </div>
-        </div>
-        } />
+      <Route path="/voice" element={<Voice />} />
+      <Route path="/login" element={<Login />} />
     </Routes>
   );
 }

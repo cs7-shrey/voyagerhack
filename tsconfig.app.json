@@ -29,5 +29,5 @@
       ]
     }
   },
-  "include": ["src"]
+  "include": ["src", "public/audio-processors/linear-pcm-processor.js"]
 }

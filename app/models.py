@@ -5,6 +5,13 @@ from typing import List, Optional
 from .database import Base
 
 
+class PlatformUser(Base):
+    __tablename__ = "platform_user"
+    user_id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String, nullable=False)
+    email = Column(String, unique=True)
+    password = Column(String, nullable=False)
+
 class Hotel(Base):
     __tablename__ = "hotel"
     id = Column(BigInteger, primary_key=True)

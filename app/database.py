@@ -5,9 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 ORM_URL = os.getenv('ORM_URL')
-
 engine = create_engine(ORM_URL)
-
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)                          # session local is also a class
 Base = declarative_base()    
