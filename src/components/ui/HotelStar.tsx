@@ -37,7 +37,7 @@ const HotelStar: React.FC<Props> = ({ text, selected }) => {
           color={`${selected ? "#363f45" : "#e1e5e9"}`}
           fill={`${selected ? "#363f45" : "#ffffff"}`}
         />
-        <div className="absolute top-0 left-0  w-full h-full flex items-center justify-center text-black font-bold text-xs">
+        <div className={`absolute top-0 left-0  w-full h-full flex items-center justify-center ${selected ? "text-primary" : "text-secondary"} font-bold text-xs`}>
           {text}
         </div>
       </div>

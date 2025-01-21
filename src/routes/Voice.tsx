@@ -1,22 +1,43 @@
 import { useState, useRef, useEffect } from "react";
-import LLM from "./LLM";
+// import LLM from "./LLM";
+import { useCallback } from "react";
+// import { LiveAudioVisualizer } from 'react-audio-visualize';
+import AudioMotionAnalyzer from 'audiomotion-analyzer';
+import { useSocketState } from "@/store/useSocketState";
+import { useNavigate } from "react-router";
+import { useHotelStore } from "@/store/useHotelStore";
 
-const AudioStreamer = () => {
+const Voice = () => {
     const [isStreaming, setIsStreaming] = useState(false);
+    const [lang, setLang] = useState<'en' | 'hi'>('en');        // TODO: make this enum
+    // const [sending, setSending] = useState(false);
     const socketRef = useRef<WebSocket>(undefined);
     const audioContextRef = useRef<AudioContext>();
     const mediaStreamRef = useRef<MediaStream>();
     const workletNodeRef = useRef<AudioWorkletNode>();
     const sourceNodeRef = useRef<MediaStreamAudioSourceNode>();
-    
-    const [lang, setLang] = useState('en');
 
-    const cleanup = () => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const navigate = useNavigate()
+    const {
+        // canSpeak,
+        // setCanSpeak,
+        connectAudioSocket,
+        connectLlmSocket,
+        disconnectAudioSocket,
+        // disconnectLlmSocket
+    } = useSocketState();
+    const { setHotels, setFromVoice } = useHotelStore.getState();
+
+
+    const cleanup = useCallback(() => {
         // close the web socket connection
         if (socketRef.current) {
             socketRef.current.close();
             socketRef.current = undefined;
         }
+        disconnectAudioSocket();
+        // disconnectLlmSocket();      // REMOVE THIS
         // stop all tracks in the media stream
         if (mediaStreamRef.current) {
             mediaStreamRef.current.getTracks().forEach((track) => track.stop());
@@ -38,13 +59,12 @@ const AudioStreamer = () => {
             audioContextRef.current.close();
             audioContextRef.current = undefined;
         }
-
-    };
-    useEffect(() =>  {
+    }, [disconnectAudioSocket]);
+    useEffect(() => {
         return () => {
             cleanup();
-        }
-    }, [])
+        };
+    }, [cleanup]);
     const toggleStreaming = async () => {
         if (isStreaming) {
             cleanup();
@@ -52,33 +72,66 @@ const AudioStreamer = () => {
         } else {
             // Start streaming
             try {
-                const socket = new WebSocket(`ws://localhost:8000/hotel/ws/audio/${lang}`); // TODO: put this in .env
-                socketRef.current = socket;
-
-                socket.onopen = () => {
-                    console.log("WebSocket connected!");
-                };
-
-                socket.onclose = () => {
-                    cleanup();
-                    setIsStreaming(false)
-                    console.log("WebSocket disconnected!");
-                };
-
-                socket.onmessage = (message) => {
-                    console.log(message)
+                const llmSocket = await connectLlmSocket();
+                const audioSocket = await connectAudioSocket(lang);
+                console.log(llmSocket?.readyState)
+                if (audioSocket && llmSocket) {
+                    audioSocket.onmessage = (message) => {
+                        console.log(message)
+                    }
+                    llmSocket.onmessage = (message) => {
+                        try {
+                            const jsonResponse = JSON.parse(message.data);
+                            console.log(jsonResponse.status)
+                            if (jsonResponse.status) {
+                                console.log(jsonResponse)
+                                const filters = jsonResponse.filters;
+                                const queryTerm = filters.place.name;
+                                const type = filters.place.type;
+                                const searchFilters = {
+                                    checkIn: filters.check_in,
+                                    checkOut: filters.check_out,
+                                    minBudget: filters.min_budget,
+                                    maxBudget: filters.max_budget,
+                                    userRating: filters.user_rating,
+                                    hotelStar: filters.hotel_star,
+                                    propertyType: filters.property_type,
+                                    hotelAmenities: filters.hotel_amenity_codes,
+                                    roomAmenities: filters.room_amenity_codes
+                                }
+                                const filterString = JSON.stringify(searchFilters);
+                                console.log(filterString);
+                                setHotels(jsonResponse.data);
+                                setFromVoice(true);
+                                navigate(`/hotels?q=${queryTerm}&type=${type}&filters=${filterString}`);
+                            }
+                        } catch (error) {
+                            console.error("Error parsing JSON:", error);
+                        }
+                    }
+                    llmSocket.onclose = () => {
+                        cleanup();
+                        setIsStreaming(false);
+                        console.log("WebSocket disconnected!");
+                    }
+                    audioSocket.onerror = (error) => {
+                        console.log("An error in audio web socket", error);
+                    }
+                    llmSocket.onerror = (error) => {
+                        console.log("An error in llm web socket", error);
+                    }
                 }
-
-                socket.onerror = (error) => {
-                    console.error("WebSocket error:", error);
-                };
-
                 // Capture audio
                 const mediaStream = await navigator.mediaDevices.getUserMedia({
-                    audio: true,
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        autoGainControl: true
+                    }
                 });
+
                 mediaStreamRef.current = mediaStream;
-                
+
                 // audio context
                 const audioCtx = new AudioContext();
                 audioContextRef.current = audioCtx;
@@ -86,6 +139,31 @@ const AudioStreamer = () => {
                 // source node
                 const source = audioCtx.createMediaStreamSource(mediaStream);
                 sourceNodeRef.current = source;
+                if (canvasRef.current) {
+                    const audioMotion = new AudioMotionAnalyzer(canvasRef.current, {
+                        source: sourceNodeRef.current,
+                        canvas: canvasRef.current,
+                        mode: 7,            // key player
+                        reflexAlpha: 1,
+                        reflexRatio: 0.5,
+                        showPeaks: false,
+                        roundBars: true,
+                        showScaleX: false,
+                        gradient: "prism",
+                        showBgColor: false,
+                        overlay: true,
+                        bgAlpha: 0,
+                        colorMode: "bar-level",
+                        connectSpeakers: false
+                    })
+                    audioMotion.registerGradient('white', {
+                        bgColor: "#05203C",
+                        colorStops: [
+                            { color: "white" }
+                        ]
+                    })
+                    audioMotion.gradient = "white"
+                }
 
 
                 // worklet node -> will process audio and send it to main thread
@@ -100,12 +178,14 @@ const AudioStreamer = () => {
 
                 // connections
                 source.connect(audioWorkletNode);
-                audioWorkletNode.connect(audioCtx.destination);
+                // audioWorkletNode.connect(audioCtx.destination);
 
                 audioWorkletNode.port.onmessage = (event) => {
                     const buffer = event.data; // Int16Array
-                    if (socket.readyState === WebSocket.OPEN) {
-                        socket.send(buffer);
+                    if (audioSocket?.OPEN) {
+                        // console.log("Sending audio buffer:", buffer);
+                        console.log(audioSocket.readyState == WebSocket.OPEN)
+                        audioSocket.send(buffer);
                     }
                 };
                 setIsStreaming(true);
@@ -122,17 +202,23 @@ const AudioStreamer = () => {
             <button onClick={toggleStreaming}>
                 {isStreaming ? "Stop Streaming" : "Start Streaming"}
             </button>
-            <div>
-
-            </div>
-            <button onClick={() => lang === 'en' ? setLang('hi') : setLang('en')}>
+            <button
+                className="bg-white text-black rounded-md p-2"
+                onClick={() => (lang === "en" ? setLang("hi") : setLang("en"))}>
                 {lang}
             </button>
             <div>
-                <LLM />
+                {/* <LLM /> */}
+            </div>
+            <div>
+                <button onClick={toggleStreaming}>
+                    <div className="h-20 w-40 rounded-full" id="container">
+                        <canvas ref={canvasRef} className="w-full h-full bg-accent rounded-full p-2" />
+                    </div>
+                </button>
             </div>
         </div>
     );
 };
 
-export default AudioStreamer;
+export default Voice;

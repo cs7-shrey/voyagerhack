@@ -2,7 +2,7 @@ import React from "react";
 import { useSearchStore } from "@/store/useSearchStore";
 import { useTempFilterStore } from "@/store/useTempFilterStore";
 
-import { formatDate } from "@/lib/utils";
+import { formatDate, stateInitUsingQueryParams } from "@/lib/utils";
 import HotelAmenityFilter from "./filterComponents/HotelAmenityFilter";
 import HotelStarFilter from "./filterComponents/HotelStarFilter";
 import { useNavigate } from "react-router";
@@ -68,6 +68,9 @@ const Filters: React.FC<Props> = ({ filterIconClick }) => {
             roomAmenities: tempRoomAmenities,
         })
         navigate(`/hotels?q=${queryTerm.place}&type=${queryTerm.type}&filters=${filterString}`);
+        // const [searchParams] = useSearchParams();
+        const searchParams = new URLSearchParams(window.location.search);
+        stateInitUsingQueryParams(searchParams);
     }
     const handleReset = () => {}
     

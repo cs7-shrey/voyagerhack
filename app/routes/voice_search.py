@@ -12,6 +12,7 @@ import os
 import speechmatics
 from sqlalchemy.orm import Session
 import time
+import wave
 
 
 load_dotenv()
@@ -49,10 +50,16 @@ async def audio_websocket(ws: WebSocket, language: str, current_user: TokenData 
         print('started')
         async for message in ws.iter_bytes():
             audio_data += message
+            # print('got data')
             if time.time() - start_time > 20: 
                 break
             await ws_speech.audio_queue.put(message)
         await ws_speech.audio_queue.put(None)
+        with wave.open("received_audio.wav", "wb") as wf:
+            wf.setnchannels(1)
+            wf.setsampwidth(2)
+            wf.setframerate(44100)
+            wf.writeframes(audio_data)
         t1 = time.time()
         await send_task
         print('itna to hogya')

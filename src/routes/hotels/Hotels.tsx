@@ -1,7 +1,7 @@
 import HotelCard from "../../components/HotelCard";
-import { useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { axiosInstance } from "../../lib/axiosConfig";
-import type { Hotel } from "../../components/HotelCard";
+// import type { Hotel } from "../../components/HotelCard";
 import Filters from "@/components/Filters";
 import { useState, useEffect } from "react";
 import { useSearchStore } from "@/store/useSearchStore";
@@ -14,20 +14,29 @@ import {
     // Mic,     
      MicOff 
     } from "lucide-react";
+import { useHotelStore } from "@/store/useHotelStore";
 
 export default function Hotels() {
     const [filtersDropdown, setFiltersDropdown] = useState(false);
-    const [hotels, setHotels] = useState<Hotel[]>([]);
-    const [searchParams] = useSearchParams();
+    // const [hotels, setHotels] = useState<Hotel[]>([]);
+    const { hotels, setHotels } = useHotelStore();
+    const { fromVoice, setFromVoice } = useHotelStore.getState(); 
+    const navigate = useNavigate()
+    // searchParams.
     // some fetch call to the db to get hotels
     const filtersClick = () => {
         setFiltersDropdown((prev) => !prev);
     }
-    
+    // const { queryTerm } = useSearchStore();
+    const [searchParams] = useSearchParams();
     useEffect(() => {
         stateInitUsingQueryParams(searchParams);
+        if (fromVoice) {
+            setFromVoice(false);
+            return;
+        }
         const {
-            // searchValue,
+            queryTerm,
             checkIn,
             checkOut,
             minBudget,
@@ -46,8 +55,8 @@ export default function Hotels() {
         const getHotels = async () => {
             const data = {
                 place: {
-                    name: q,
-                    type: type
+                    name: queryTerm.place,
+                    type: queryTerm.type
                 },
                 check_in: formatDate(checkIn),
                 check_out: formatDate(checkOut),
@@ -79,12 +88,8 @@ export default function Hotels() {
                 console.error(error);
             }
         }
-        // if (propertyType.length > 0) {
-        //     console.log('got here, fetching data')
-        //     getHotels();
-        // }
         getHotels();
-    }, [searchParams]);
+    }, [searchParams, navigate, setHotels, fromVoice, setFromVoice]);
 
     // test
     useEffect(() => {
