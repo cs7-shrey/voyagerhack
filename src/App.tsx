@@ -3,6 +3,7 @@ import { Button } from "./components/ui/button";
 import RecentSearches from "./components/RecentSearches";
 import Hotels from "./routes/hotels/Hotels";
 import SearchBar from "./components/SearchBar";
+import HotelDescription from "./pages/HotelDescription"
 // import bg from "./assets/vacation.jpg";
 import Logo from "./components/ui/Logo";
 
@@ -73,6 +74,7 @@ export default function AppRouter() {
           </div>
         </div>
         } />
+      <Route path="/hotel-desc" element={<HotelDescription/>}/>
     </Routes>
   );
 }

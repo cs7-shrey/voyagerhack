@@ -1,0 +1,140 @@
+.to-center{
+    display:flex;
+    width:100%;
+    justify-content:center;
+    align-items:center;
+    box-shadow: 0px 0px 10px rgb(181, 180, 180);
+}
+.hotel-view{
+    display:flex;
+    flex-wrap:wrap;
+    width:1175px;
+    height:500px;
+    margin-top:10px;
+}
+.image-box{
+    flex:2.4;
+}
+.image-box .header{
+    width:100%;
+    height:90px;
+    display:flex;
+}
+.image-box .header .hotel-name{
+    flex:2;
+    height:100%;
+}
+.image-box .header .hotel-name h2{
+    font-size:1.7rem;
+    font-weight:700;
+    margin-left:2.5%;
+    margin-top:2.5%;
+}
+.image-box .header .hotel-name p{
+    margin-left:2.5%;
+    font-size: 0.8rem;
+    color:rgb(158, 157, 157);
+}
+.image-box .header .hotel-location{
+    flex:1;
+    justify-content: right;
+}
+.image-box .main-box{
+    width:100%;
+    height:400px;
+    display:flex;
+}
+.image-box .main-box .center-image{
+    flex:2.3;
+    border:1px solid white;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+.image-box .main-box .center-image img{
+    height:95%;
+    width:98%;
+    border-radius:8px;
+    box-shadow: 0px 0px 15px grey;
+}
+.image-box .main-box .side-image{
+    flex:1;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-around;
+}
+.image-box .main-box .side-image img{
+    width:90%;
+    height:45%;
+    border-radius:8px;
+    box-shadow: 0px 0px 10px grey;
+}
+.pricing-details{
+    flex:1;
+    display:flex;
+    flex-direction: column;
+}
+.price-option{
+    margin-left:2%;
+    border:1px solid black;
+    height:190px;
+    margin-top:10px;
+    width:95%;
+    border-radius:8px;
+    border:1px solid rgb(202, 208, 215);
+}
+.price-option .room-type{
+    margin-top:4%;
+    margin-left:5%;
+    font-size: 0.9rem;
+    font-weight:600;
+}
+.price-option .room-details{
+    margin-left:5%;
+    margin-top:3.5%;
+    width:90%;
+    height:72px;
+    display:flex;
+}
+.price-option .room-details .room-cancellation{
+    flex:1;
+    font-size:0.83rem;
+}
+.price-option .room-details .room-cancellation p{
+    flex:1;
+    color:rgb(33, 172, 33);
+}
+.price-option .room-details .room-price{
+    flex:1;
+}
+.price-option .room-details .room-price h2{
+    text-align: right;
+    width:100%;
+    font-size:1.5rem;
+    font-weight: 700;
+}
+.price-option .room-details .room-price p{
+    font-size:0.7rem;
+    text-align: right;
+    color:rgb(137, 137, 137);
+}
+.price-option .room-details .room-price p span{
+    font-weight:700
+}
+.price-option .downlink{
+    margin-left:4%;
+    margin-top:1.5%;
+    background-color:#e64833;
+    height:50px;
+    width:92%;
+    border-radius: 6px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    font-weight:700;
+    color:white;
+}

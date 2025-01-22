@@ -1,0 +1,19 @@
+.room-wrapper{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    align-items:center;
+    margin-top:2.5%
+}
+.room-wrapper .wrapper-header{
+    margin-bottom:10px;
+    min-width:1150px;
+}
+.room-wrapper .wrapper-header div{
+    color:#e64833;
+    padding:5px;
+    font-weight:700;
+    border-radius: 6px;
+    border:0.5px solid #e64833;
+    
+}
