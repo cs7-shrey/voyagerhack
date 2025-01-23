@@ -3,9 +3,10 @@ import { useState, useRef, useEffect } from "react";
 import { useCallback } from "react";
 // import { LiveAudioVisualizer } from 'react-audio-visualize';
 import AudioMotionAnalyzer from 'audiomotion-analyzer';
-import { useSocketState } from "@/store/useSocketState";
+import { useSocketStore } from "@/store/useSocketStore";
 import { useNavigate } from "react-router";
 import { useHotelStore } from "@/store/useHotelStore";
+import { Mic } from "lucide-react";
 
 const Voice = () => {
     const [isStreaming, setIsStreaming] = useState(false);
@@ -26,7 +27,7 @@ const Voice = () => {
         connectLlmSocket,
         disconnectAudioSocket,
         // disconnectLlmSocket
-    } = useSocketState();
+    } = useSocketStore();
     const { setHotels, setFromVoice } = useHotelStore.getState();
 
 
@@ -65,6 +66,38 @@ const Voice = () => {
             cleanup();
         };
     }, [cleanup]);
+    useEffect(() => {
+        if (isStreaming && canvasRef.current) {
+            console.log('got here')
+            const audioMotion = new AudioMotionAnalyzer(canvasRef.current, {
+                source: sourceNodeRef.current,
+                canvas: canvasRef.current,
+                mode: 7,            // key player
+                reflexAlpha: 1,
+                reflexRatio: 0.5,
+                showPeaks: false,
+                roundBars: true,
+                lineWidth: 1,
+                outlineBars: true,
+                showScaleX: false,
+                minDecibels: -100,
+                gradient: "prism",
+                showBgColor: false,
+                overlay: true,
+                bgAlpha: 0,
+                colorMode: "bar-level",
+                useCanvas: true,
+                connectSpeakers: false
+            })
+            audioMotion.registerGradient('white', {
+                bgColor: "transparent",
+                colorStops: [
+                    { color: "black" }
+                ]
+            })
+            audioMotion.gradient = "white"
+        }
+    }, [isStreaming])
     const toggleStreaming = async () => {
         if (isStreaming) {
             cleanup();
@@ -139,33 +172,8 @@ const Voice = () => {
                 // source node
                 const source = audioCtx.createMediaStreamSource(mediaStream);
                 sourceNodeRef.current = source;
-                if (canvasRef.current) {
-                    const audioMotion = new AudioMotionAnalyzer(canvasRef.current, {
-                        source: sourceNodeRef.current,
-                        canvas: canvasRef.current,
-                        mode: 7,            // key player
-                        reflexAlpha: 1,
-                        reflexRatio: 0.5,
-                        showPeaks: false,
-                        roundBars: true,
-                        showScaleX: false,
-                        gradient: "prism",
-                        showBgColor: false,
-                        overlay: true,
-                        bgAlpha: 0,
-                        colorMode: "bar-level",
-                        connectSpeakers: false
-                    })
-                    audioMotion.registerGradient('white', {
-                        bgColor: "#05203C",
-                        colorStops: [
-                            { color: "white" }
-                        ]
-                    })
-                    audioMotion.gradient = "white"
-                }
-
-
+                
+                
                 // worklet node -> will process audio and send it to main thread
                 await audioCtx.audioWorklet.addModule(
                     "/audio-processors/linear-pcm-processor.js"
@@ -179,7 +187,7 @@ const Voice = () => {
                 // connections
                 source.connect(audioWorkletNode);
                 // audioWorkletNode.connect(audioCtx.destination);
-
+                
                 audioWorkletNode.port.onmessage = (event) => {
                     const buffer = event.data; // Int16Array
                     if (audioSocket?.OPEN) {
@@ -188,6 +196,7 @@ const Voice = () => {
                         audioSocket.send(buffer);
                     }
                 };
+
                 setIsStreaming(true);
             } catch (error) {
                 console.error("Error starting audio stream:", error);
@@ -198,22 +207,28 @@ const Voice = () => {
     };
 
     return (
-        <div>
-            <button onClick={toggleStreaming}>
+        <div className="flex justify-center bg-primary w-fit py-4 rounded-md">
+            {/* <button onClick={toggleStreaming}>
                 {isStreaming ? "Stop Streaming" : "Start Streaming"}
             </button>
             <button
                 className="bg-white text-black rounded-md p-2"
                 onClick={() => (lang === "en" ? setLang("hi") : setLang("en"))}>
                 {lang}
-            </button>
-            <div>
-                {/* <LLM /> */}
-            </div>
-            <div>
+            </button> */}
+            
+            <div className="self-center rounded-md">
                 <button onClick={toggleStreaming}>
-                    <div className="h-20 w-40 rounded-full" id="container">
-                        <canvas ref={canvasRef} className="w-full h-full bg-accent rounded-full p-2" />
+                    <div className="h-24 w-40 rounded-full flex flex-col justify-center items-center gap-2" id="container">
+                        <div className="h-10 w-20 flex justify-center items-center">
+                            {!isStreaming ? 
+                                <Mic size={30}/> :
+                                <canvas ref={canvasRef} className="w-full h-full rounded-full p-2" /> 
+                            }
+                        </div>
+                        <div className="text-black/55">
+                            {isStreaming ? "Listening..." : "Voice Search"}
+                        </div>
                     </div>
                 </button>
             </div>
