@@ -1,0 +1,25 @@
+.room-wrapper{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    align-items:center;
+    margin-top:2.5%;
+}
+.room-wrapper .wrapper-header{
+    margin-bottom:10px;
+    width:90% !important;
+    display:flex;
+}
+.room-wrapper .wrapper-header div{
+    color:#e64833;
+    padding:5px;
+    font-weight:700;
+    border-radius: 6px;
+    border:0.5px solid #e64833;
+    
+} 
+@media (max-width:665px){
+    .room-wrapper .wrapper-header{
+        display:none;
+    }
+}
