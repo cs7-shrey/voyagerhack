@@ -1,7 +1,6 @@
 import HotelCard from "../../components/HotelCard";
 import { useNavigate, useSearchParams } from "react-router";
 import { axiosInstance } from "../../lib/axiosConfig";
-// import type { Hotel } from "../../components/HotelCard";
 import Filters from "@/components/Filters";
 import { useState, useEffect } from "react";
 import { useSearchStore } from "@/store/useSearchStore";
@@ -20,7 +19,6 @@ export default function Hotels() {
     const [filtersDropdown, setFiltersDropdown] = useState(false);
     // const [hotels, setHotels] = useState<Hotel[]>([]);
     const { hotels, setHotels } = useHotelStore();
-    const { fromVoice, setFromVoice } = useHotelStore.getState(); 
     const navigate = useNavigate()
     // searchParams.
     // some fetch call to the db to get hotels
@@ -30,11 +28,14 @@ export default function Hotels() {
     // const { queryTerm } = useSearchStore();
     const [searchParams] = useSearchParams();
     useEffect(() => {
+        const { fromVoice, setFromVoice } = useHotelStore.getState(); 
         stateInitUsingQueryParams(searchParams);
         if (fromVoice) {
             setFromVoice(false);
+            console.log('it was from voice. going back')
             return;
         }
+        console.log("it was not from voice. going to fetch")
         const {
             queryTerm,
             checkIn,
@@ -89,7 +90,7 @@ export default function Hotels() {
             }
         }
         getHotels();
-    }, [searchParams, navigate, setHotels, fromVoice, setFromVoice]);
+    }, [searchParams, navigate, setHotels]);
 
     // test
     useEffect(() => {

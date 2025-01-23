@@ -13,7 +13,7 @@ interface SocketState {
     disconnectLlmSocket: () => void;
 }
 
-export const useSocketState = create<SocketState>()((set, get) => ({
+export const useSocketStore = create<SocketState>()((set, get) => ({
     audioSocket: null,
     llmSocket: null,
     canSpeak: false,

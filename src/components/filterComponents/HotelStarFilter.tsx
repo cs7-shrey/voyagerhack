@@ -11,35 +11,9 @@ const HotelStarFilter = () => {
         { text: "4", isSelected: false },
         { text: "5", isSelected: false },
     ]);
-    // const setSelected = (text: string) => {
-    //     if (text === "0+" && !hotelStarState[0].isSelected) {
-    //         setHotelStarState(hotelStarState.map((star) => {
-    //             return { ...star, isSelected: star.text === "0+" }
-    //         }))
-    //     }
-    //     else if (text !== "0+" && hotelStarState[0].isSelected) {
-    //         setHotelStarState(hotelStarState.map((star) => {
-    //             if (star.text === "0+") {
-    //                 return { ...star, isSelected: false }
-    //             }
-    //             return { ...star, isSelected: star.text === text }
-    //         }
-    //         ))
-    //     }
-    //     else {
-    //         setHotelStarState(hotelStarState.map((star) => {
-    //             if (star.text === text) {
-    //                 return { ...star, isSelected: !star.isSelected }
-    //             }
-    //             return star;
-    //         }))
-    //     }
-    // }
     useEffect(() => {
-        console.log('ye run hua')
         const { setTempHotelStar } = useTempFilterStore.getState();
         const { hotelStar } = useSearchStore.getState();
-        console.log("ye rahe hotel stars asli state wale", hotelStar);
         setTempHotelStar(hotelStar);
     }, [])
     const { tempHotelStar } = useTempFilterStore();
