@@ -1,6 +1,9 @@
 from pydantic import BaseModel, Field
 from .main import Tool
-
+from tavily import TavilyClient
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 class SearchAPI(Tool):
     """Searches about any given topic using a search API tool"""
@@ -10,4 +13,6 @@ class SearchAPI(Tool):
     
     
 def search_api(query: str): 
+    client = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
+    response = client.search(query)
     pass
