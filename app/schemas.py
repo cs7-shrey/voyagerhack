@@ -1,6 +1,21 @@
 from pydantic import BaseModel
 from typing import Optional
+import datetime
 
+
+# the decoded token data that is used to the current user
+class TokenData(BaseModel):
+    user_id: int
+    
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+class UserCreate(BaseModel):
+    name: str
+    email: str
+    password: str
+    
 class SearchSuggestion(BaseModel):
     label: str
     sublabel: str
@@ -23,15 +38,23 @@ class Place(BaseModel):
 
 class SearchFilters(BaseModel):
     place: Place
-    check_in: str
-    check_out: str
-    min_budget: int = 0
-    max_budget: int = 50000
+    check_in: Optional[str] = (datetime.date.today() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+    check_out: Optional[str] = (datetime.date.today() + datetime.timedelta(days=2)).strftime('%Y-%m-%d')
+    min_budget: Optional[int] = 0
+    max_budget: Optional[int] = 50000
     hotel_star: list[int] = [0,1,2,3,4,5]
-    user_rating: float = 0  
-    property_type: list[str] = []
+    user_rating: Optional[float] = 0  
+    property_type: Optional[list[str]] = []
     hotel_amenity_codes: Optional[list[str]] = []
     room_amenity_codes: Optional[list[str]] = []
+
+class Status(BaseModel):
+    code: int
+    message: str
+class VoiceSearchResponse(BaseModel):
+    status: Status
+    filters: SearchFilters
+    data: list[HotelSearchResponse]
 
 class Constants(BaseModel):
     name: str

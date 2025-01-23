@@ -1,7 +1,8 @@
-from sqlalchemy import select, distinct, func, and_
-from sqlalchemy.orm import aliased, Session
 from app.models import Hotel, City, HotelAmenityMapping, HotelAmenity, RoomType, RoomAmenityMapping, RoomAmenity, RatePlan
 from app.schemas import SearchFilters
+from sqlalchemy import select, func, and_
+from sqlalchemy.orm import Session
+
 def get_hotels_with_filters(filters: SearchFilters, session: Session):
     mapping = {
         "city": City.name,
@@ -132,13 +133,13 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
         .limit(10)
     )
     results = []
-    results = session.execute(final_query)
+    results = session.execute(final_query).mappings().all()
     # print(session.execute(q2))
     # for result in session.execute(final_query):
     #     print(result)
     return results
 
-
+        
 
 
 

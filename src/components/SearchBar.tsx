@@ -1,19 +1,19 @@
-import { useEffect } from 'react'
 import { useNavigate } from 'react-router';
 import SearchDropdown from './SearchDropdown';
 import { useSearchStore } from '@/store/useSearchStore';
 import { formatDate } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
+import Voice from '@/routes/Voice';
 
 
 const SearchBar = () => {
   const { queryTerm, checkIn, checkOut, setCheckIn, setCheckOut } = useSearchStore();
   const navigate = useNavigate();
-  useEffect(() => {
-    console.log("checkIn", checkIn);
-  }, [checkIn]);
   return (
     <div>
+      <div>
+        < Voice />
+      </div>
       <div className="bg-accent rounded-md">
         <div className="flex flex-col md:flex-row gap-2 justify-start mt-4 items-start md:items-end p-4">
           <div className="flex flex-col md:flex-row justify-startmd:justify-center items-start md:items-end mx-2 mt-2 gap-2">
@@ -53,6 +53,7 @@ const SearchBar = () => {
               className="flex px-4 py-2 rounded-md text-white bg-accentForeground"
               onClick={(e) => {
                 e.preventDefault();
+                if (!queryTerm.place || !queryTerm.type) return;
                 navigate(`/hotels?q=${encodeURIComponent(queryTerm.place)}&type=${queryTerm.type}&checkIn=${formatDate(checkIn)}&checkOut=${formatDate(checkOut)}`);
               }}
             >

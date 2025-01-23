@@ -30,4 +30,4 @@ venv
 __pycache__
 .env
 test.*
-.vite
+received_audio.wav
