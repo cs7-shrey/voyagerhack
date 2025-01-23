@@ -2,7 +2,9 @@
     display:flex;
     width:100%;
     min-height:245px;
-    border-bottom: 0.5px solid #001843;}
+    border-bottom: 0.5px solid #001843;
+}
+
 .room-offer .room-offer-details{
     flex:1;
     height:100%;
@@ -38,15 +40,45 @@
     font-weight:700
 }
 .room-offer .room-pricing .downlink{
-    margin-left:15%;
+    margin-left:25%;
     margin-top:7.5%;
     background:linear-gradient(to bottom left,orange,#e64833);
     height:50px;
-    width:70%;
+    width:50%;
     border-radius: 6px;
     display:flex;
     align-items: center;
     justify-content: center;
     font-weight:700;
+    padding:0.15%;
+    padding-left:0%;
+}
+.room-offer .room-pricing .downlink p{
     color:white;
+    height:100%;
+    width:100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    border-radius:6px;
+    margin-left:1%;
+}
+@media (max-width:795px){
+    .room-offer {
+        min-height:200px;
+    }
+    .room-offer .room-offer-details li{
+        font-size:0.75rem;
+    }
+    .room-offer .room-pricing .downlink p{
+        font-size:0.7rem;
+    }
+ }
+ @media (max-width:725px){
+    .room-offer .room-pricing .downlink{
+        margin-top:4%;
+    }
+    .room-offer .room-offer-details li{
+        font-size:0.68rem;
+    }
 }

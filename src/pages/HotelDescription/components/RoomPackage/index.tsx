@@ -1,7 +1,7 @@
 import "./room-package.css"
 import RoomImage from "../../../../assets/RoomImage.png"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBed,faMap,faRulerCombined,faUser, faUtensils } from '@fortawesome/free-solid-svg-icons';
+import { faBed,faRulerCombined,faUser} from '@fortawesome/free-solid-svg-icons';
 import RoomOffer from "./components/RoomOffer";
 const RoomPackage=()=>{
     return (

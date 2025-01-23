@@ -21,7 +21,9 @@ const RoomOffer=()=>{
                     <span>1 Room</span> per night
                 </p>
                 <button className="downlink">
+                    <p>
                         SELECT ROOM
+                    </p>
                 </button>
             </div>
         </div>

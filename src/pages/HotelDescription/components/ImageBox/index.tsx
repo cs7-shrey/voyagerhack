@@ -4,11 +4,14 @@ import Image1 from "../../../../assets/Side1.png"
 import Image2 from "../../../../assets/Side2.png"
 import Image3 from "../../../../assets/Center1.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBed,faMap,faUser, faUtensils } from '@fortawesome/free-solid-svg-icons';
+import { faBed,faMap,faStar,faUser, faUtensils } from '@fortawesome/free-solid-svg-icons';
 import GoldBorder from "../../../../assets/GoldBorder.png"
 const ImageBox=()=>{
     return (
         <div className="to-center">
+            <div className="hotel-star">
+                <p> 4 <FontAwesomeIcon icon={faStar} color="gold"/> hotel</p>
+            </div>
             <div className="hotel-view">
                 <div className="image-box">
                     <div className="header">
@@ -19,8 +22,9 @@ const ImageBox=()=>{
                             <p><FontAwesomeIcon icon={faMap}/> &nbsp;Gurugram, Haryana |&nbsp; <FontAwesomeIcon icon={faUtensils}/> &nbsp;Authententic Indian Cuisine</p>
                         </div>
                         <div className="hotel-location">
-                            <button>
-
+                            <button className="user-review">
+                                <div className="icon"><FontAwesomeIcon icon={faStar} color="gold"/>4.5 &nbsp;</div>
+                                <div className="supp-text"> User Reviews</div>
                             </button>
                         </div>
                     </div>

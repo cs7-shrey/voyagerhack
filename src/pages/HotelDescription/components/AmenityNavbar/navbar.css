@@ -36,3 +36,14 @@
     cursor: pointer;
     color:#e64833;
 }
+
+@media (max-width:900px){
+    .amenity-nav .nav-links{
+        width:75%;
+    }
+}
+@media (max-width:725px){
+    .amenity-nav{
+        display:none;
+    }
+}
