@@ -33,7 +33,6 @@ app.include_router(user.router)
 app.include_router(hotel.router)
 
 
-
 @app.get("/")
 async def read_root():
     return {"Hello": "World"}

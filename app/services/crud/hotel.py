@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session, aliased
 from sqlalchemy import select, and_, func
 from app.models import Hotel, HotelAmenityMapping, HotelAmenity, RoomType, RoomAmenity, RoomAmenityMapping, RatePlan
+
 def get_hotel_info_by_id(id: int, db: Session):
     # HotelAmenityMapping 
     ham = aliased(HotelAmenityMapping)
@@ -70,5 +71,3 @@ def get_hotel_room_info(id: int, db: Session):
     )
     results = db.execute(final_query).mappings().all()
     return results
-    
-    
