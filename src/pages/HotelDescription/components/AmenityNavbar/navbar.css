@@ -6,7 +6,8 @@
     box-shadow:5px 0px 5px rgb(168, 168, 168);
     margin-top:25px;
     /* background: linear-gradient(to right, white,white, white,lightgrey); */
-    background: linear-gradient(to right, orange,orange, #e64833);
+    /* background: black */
+    background-color: rgb(226, 224, 224);
 }
 .amenity-nav .nav-links{
     height:100%;
@@ -31,10 +32,10 @@
     /* background:linear-gradient(to bottom right,white,white, rgb(244, 244, 244),lightgrey) */
 }
 .amenity-nav .nav-links div:hover{
-    border-bottom:5px solid #e64833;
+    border-bottom:5px solid var(--accent);
     background:white;
     cursor: pointer;
-    color:#e64833;
+    color:var(--accent);
 }
 
 @media (max-width:900px){

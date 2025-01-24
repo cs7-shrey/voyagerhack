@@ -42,7 +42,7 @@
 .room-offer .room-pricing .downlink{
     margin-left:25%;
     margin-top:7.5%;
-    background:linear-gradient(to bottom left,orange,#e64833);
+    background:linear-gradient(var(--accent));
     height:50px;
     width:50%;
     border-radius: 6px;
@@ -52,6 +52,8 @@
     font-weight:700;
     padding:0.15%;
     padding-left:0%;
+    border:0.1px solid white;
+    box-shadow: 0px 0px 50px black;
 }
 .room-offer .room-pricing .downlink p{
     color:white;

@@ -1,3 +1,9 @@
+:root {
+    --primary: #ffffff;
+    --secondary: #000000;
+    --accent: #05203C;
+    --accentForeground: #014DAF;
+  }
 .room-wrapper{
     display:flex;
     flex-direction:column;
@@ -9,14 +15,14 @@
     margin-bottom:10px;
     width:90% !important;
     display:flex;
+    gap:1%;
 }
 .room-wrapper .wrapper-header div{
-    color:#e64833;
+    color: var(--secondary);
     padding:5px;
     font-weight:700;
     border-radius: 6px;
-    border:0.5px solid #e64833;
-    
+    box-shadow:1px 2px 3px var(--accent);
 } 
 @media (max-width:665px){
     .room-wrapper .wrapper-header{

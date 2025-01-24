@@ -11,7 +11,7 @@ const SearchBar = () => {
   const navigate = useNavigate();
   return (
     <div>
-      <div className="rounded-md" style={{backgroundColor:"orange",boxShadow:"0px 0px 20px black"}}>
+      <div className="rounded-md bg-accent">
         <div className="flex flex-col sm:flex-row gap-2 justify-start mt-4 items-start sm:items-center md:items-center p-4">
           <div className='min-h-full'>
             < Voice />
@@ -56,7 +56,6 @@ const SearchBar = () => {
               </div>
               <div className='px-2 m-2'>
                 <button
-                style={{backgroundColor:"#e64833"}}
                   className="flex px-4 py-2 rounded-md text-white bg-accentForeground"
                   onClick={(e) => {
                     e.preventDefault();
