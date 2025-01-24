@@ -32,7 +32,7 @@ async def login(user_info: schemas.UserLogin, response: Response, db: Session = 
         httponly=True,  # This makes the cookie inaccessible to JavaScript
         # secure=True,    # Use this flag in production to send cookies only over HTTPS
         samesite="lax",  # Protects against CSRF attacks
-        domain="localhost"
+        domain="localhost" # TODO: change this in production
     )
     return {"message": "login successful"}
 
