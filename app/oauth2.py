@@ -42,7 +42,7 @@ def verify_access_token(token: str, credentials_exception: Exception):
     return token_data
 
 def get_current_client(request: Request):
-    print(request.cookies)
+    # print(request.cookies.get("access_token"))
     credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Couldn't not validate credentials",
     headers={"WWW-Authenticate": "Bearer"})
     token = request.cookies.get("access_token")

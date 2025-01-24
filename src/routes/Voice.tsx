@@ -99,6 +99,7 @@ const Voice = () => {
         }
     }, [isStreaming])
     const toggleStreaming = async () => {
+        console.log("testing")
         if (isStreaming) {
             cleanup();
             setIsStreaming(false);

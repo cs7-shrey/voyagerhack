@@ -1,3 +1,4 @@
+import "./styles/logo.css"
 function LetterDiv({ letter }: { letter: string }) {
     return (
         <div className="font-bold font-mono px-1 bg-primary text-secondary rounded-sm">{letter}</div>
@@ -5,12 +6,13 @@ function LetterDiv({ letter }: { letter: string }) {
 }
 const Logo = () => {
     return (
-        <div className="text-xl font-bold font-mono flex gap-1 items-center">
-            <LetterDiv letter="H" />
+        <div className="text-xl font-bold font-mono flex gap-1 items-center logo-half">
+            {/* <LetterDiv letter="H" />
             <LetterDiv letter="A" />
             <LetterDiv letter="V" />
             <LetterDiv letter="E" />
-            <LetterDiv letter="N" />
+            <LetterDiv letter="N" /> */}
+            HAVEN
         </div>
     )
 }
