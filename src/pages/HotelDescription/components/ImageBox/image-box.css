@@ -242,7 +242,7 @@
     }
     .image-box .main-box {
         height:min-content;
-        background-image: linear-gradient(to bottom right,#e64833,#e64833,orange);
+        /* background-image: linear-gradient(to bottom right,#e64833,#e64833,orange); */
         padding:1% 0.2%;
     }
     .image-box .main-box .center-image img{

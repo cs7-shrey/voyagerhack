@@ -19,7 +19,7 @@ function App() {
   return (
     <div>
       <nav className="bg-accent">
-        <div className="bg-accent text-primary p-8 flex justify-between" style={{backgroundColor:"#05203C",boxShadow:"0px 50px 100px black"}}>
+        <div className="bg-accent text-primary p-8 flex justify-between" style={{boxShadow:"0px 50px 100px black"}}>
           {/* <Logo /> */}
           {/* <div>
             <Button className="text-secondary">Sign In</Button>
@@ -51,7 +51,7 @@ function App() {
           <div className="text-6xl font-extrabold font-sans text-primary"
             style={{textShadow:"0px 0px 1px black"}}
             >
-              Find hotels with <span style={{textShadow:"0px 0px 20px white"}}>AI</span>
+              Find hotels with AI
             </div>
             <div>
               {/* <Voice /> */}
