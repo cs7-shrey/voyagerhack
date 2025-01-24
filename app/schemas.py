@@ -32,6 +32,28 @@ class HotelSearchResponse(BaseModel):
     user_rating_count: int
     images: list[str]
     
+class Beds(BaseModel):
+    type: str
+    count: int  
+    bedTypeKey: Optional[str] = None # TODO: CHANGE THIS LATER
+    
+class RatePlan(BaseModel):
+    plan_id: int
+    pay_mode: str
+    base_fare: float
+    total_discount: float
+    taxes: float
+class HotelRoomResponse(BaseModel):
+    room_type_id: int
+    room_type_name: str
+    room_photos: list[str]
+    max_guests: int
+    max_adults: int
+    max_children: int
+    beds: Optional[list[Beds]] = []
+    display_amenities: list[str]
+    rate_plans: list[RatePlan]
+    
 class Place(BaseModel):
     name: str
     type: str
