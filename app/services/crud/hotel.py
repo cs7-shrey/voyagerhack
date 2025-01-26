@@ -48,7 +48,8 @@ def get_hotel_room_info(id: int, db: Session):
                     'pay_mode', rp.pay_mode,
                     'base_fare', rp.base_fare,
                     'total_discount', rp.total_discount,
-                    'taxes', rp.taxes
+                    'taxes', rp.taxes,
+                    'filter_code', rp.filter_code
                 )
             ).label('rate_plans'),
         )
