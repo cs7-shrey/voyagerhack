@@ -18,17 +18,21 @@ const ImageNavigator = ({ images, onClose }: ImageNavigatorProps) => {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
+  const imageTags = images.map((img, index) => (
+    <img
+      src={img}
+      alt={`Image ${index + 1}`}
+      className="w-full h-full max-h-64 min-h-full object-cover"
+    />
+  ))
 
   return (
     <div className={`relative min-h-60 max-h-64 ${isFullscreen ? 'fixed inset-0 z-50 bg-black' : 'w-full'}`}>
       {/* Main Image */}
       <div className="relative w-full h-full min-h-60 bg-gray-100">
-        <img
-          src={images[currentIndex]}
-          alt={`Image ${currentIndex + 1}`}
-          className="w-full h-full max-h-64 min-h-full object-cover"
-        />
         
+        { imageTags[currentIndex] }
+
         {/* Navigation Controls */}
         <div className="absolute inset-0 flex items-center justify-between p-4">
           <button

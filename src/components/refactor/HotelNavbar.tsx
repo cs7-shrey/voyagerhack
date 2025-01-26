@@ -15,7 +15,7 @@
 
 const HotelNavbar = () => { 
     return (
-        <nav className="w-full sticky top-24 h-16 mt-6 bg-primary z-50 hidden md:block">
+        <nav className="w-full sticky top-24 h-16 mt-6 bg-primary z-[45] hidden md:block">
             <div className="h-full w-3/5 ml-[10%] flex gap-0.5 bg-white lg:w-3/5 md:w-3/4">
                 {["Room Types", "Amenities", "Reviews", "Location", "Similar Hotels"].map((item) => (
                     <div 
