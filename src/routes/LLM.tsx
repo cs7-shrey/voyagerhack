@@ -7,7 +7,7 @@ const LLM = () => {
     const handleConnection = useCallback(() => {
         if (!isConnected) {
             try {
-                wsRef.current = new WebSocket('ws://localhost:8000/hotel/ws/llm');
+                wsRef.current = new WebSocket('ws://localhost:8000/ws/llm/search');
                 
                 wsRef.current.onopen = () => {
                     setIsConnected(true);

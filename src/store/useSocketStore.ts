@@ -28,7 +28,7 @@ export const useSocketStore = create<SocketState>()((set, get) => ({
             return                      // wouldn't happen in a ideal case
         }
         // the llm web socket is open
-        const audioSocket = new WebSocket(`ws://localhost:8000/hotel/ws/audio/${lang}`);
+        const audioSocket = new WebSocket(`ws://localhost:8000/ws/audio/${lang}`);
         const res = await new Promise((resolve, reject) => {
             audioSocket.onopen = () => {
                 console.log("Audio WebSocket connected!");
@@ -56,7 +56,7 @@ export const useSocketStore = create<SocketState>()((set, get) => ({
         if (get().llmSocket?.OPEN) {
             get().llmSocket?.close()
         }
-        const llmSocket = new WebSocket('ws://localhost:8000/hotel/ws/llm');
+        const llmSocket = new WebSocket('ws://localhost:8000/ws/llm/search');
         const res = await new Promise((resolve, reject) => {
             llmSocket.onopen = () => {
                 console.log("LLM WebSocket connected!");

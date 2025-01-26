@@ -16,7 +16,7 @@ import wave
 
 
 load_dotenv()
-router = APIRouter(prefix="/hotel", tags=["hotel"])
+router = APIRouter(prefix="/", tags=["hotel"])
 
 API_KEY = os.getenv('SPEECHMATICS_API_KEY')
 PATH_TO_FILE = "received_audio.wav"
@@ -74,7 +74,7 @@ async def audio_websocket(ws: WebSocket, language: str, current_user: TokenData 
     except Exception as e:
         print(e)
         
-@router.websocket("/ws/llm")
+@router.websocket("/ws/llm/search")
 async def llm_response_websocket(ws: WebSocket, current_user: TokenData = Depends(socket_get_current_client), db: Session = Depends(get_db)):
     await ws.accept()
     user_transcription_mapping[current_user.user_id] = asyncio.Queue()
