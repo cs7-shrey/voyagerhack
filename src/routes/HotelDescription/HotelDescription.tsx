@@ -1,9 +1,9 @@
-import AmenityNavbar from "@/pages/HotelDescription/components/AmenityNavbar";
 import ImageBox from "@/components/refactor/ImageBox";
 import Navbar from "@/pages/HotelDescription/components/Navbar"
 import RoomOption from "@/components/refactor/RoomOption";
 import { useEffect } from "react";
 import { useHotelDescStore } from "@/store/useHotelDescStore";
+import HotelNavbar from "@/components/refactor/HotelNavbar";
 
 // const RoomPackageMapper = () => {
 //     const randomList = [1, 2, 3]
@@ -32,7 +32,7 @@ const HotelDescription: React.FC<Props> = ({ id }) => {
         getRoomData(id);
     }, [id])
     return (
-        <>
+        <div className="relative">
             <Navbar />
             <ImageBox
                 name={hotelData?.name}
@@ -45,16 +45,16 @@ const HotelDescription: React.FC<Props> = ({ id }) => {
                 firstRoomOptionPrice={roomData?.[0].rate_plans?.[0].base_fare}
                 firstRoomOptionTaxes={roomData?.[0].rate_plans?.[0].taxes}
                 nRoomOptions={roomData?.length}
-            />
-            <AmenityNavbar />
-            <div className="grid grid-cols-10 bg-[#F0F0F0]">
-                <div className="col-span-8 col-start-2">
-                    <div className="room-wrapper">
-                        <div className="wrapper-header">
+            />  
+            <HotelNavbar />
+            <div className="flex flex-col justify-center items-center md:grid md:grid-cols-10 overflow-y-auto top-0 bg-[#d6d6d696]">
+                <div className="col-span-8 col-start-2 mx-auto">
+                    <div className="room-wrapper flex flex-col items-center">
+                        {/* <div className="wrapper-header">
                             <div style={{ flex: "1.3", display: "flex", alignItems: "center", justifyContent: "center", height: "50px" }}>Room Details</div>
                             <div style={{ flex: "1", display: "flex", alignItems: "center", justifyContent: "center", height: "50px" }}>Room Options</div>
                             <div style={{ flex: "1", display: "flex", alignItems: "center", justifyContent: "center", height: "50px" }}>Price</div>
-                        </div>
+                        </div> */}
                         {roomData?.map((_, i) => (
                             <RoomOption 
                                 key={i}
@@ -64,7 +64,7 @@ const HotelDescription: React.FC<Props> = ({ id }) => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 export default HotelDescription;

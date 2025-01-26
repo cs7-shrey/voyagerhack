@@ -2,9 +2,10 @@ import Image1 from "@/assets/Side1.png";
 import Image2 from "@/assets/Side2.png";
 import Image3 from "@/assets/Center1.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBed, faMap, faStar, faUser, faUtensils } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faMap, faUser, faUtensils } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import HotelImagePopup from "./HotelImagesPopup";
+import { Star } from "lucide-react";
 
 interface Props {
   name: string | undefined;
@@ -18,7 +19,7 @@ interface Props {
   firstRoomOptionTaxes: number | undefined;
   nRoomOptions: number | undefined;
 }
-const ImageBox: React.FC<Props> = ({ name, location, hotelStar, userRating, images, firstRoomOptionName, firstRoomOptionPrice, firstRoomOptionTaxes, nRoomOptions}) => {
+const ImageBox: React.FC<Props> = ({ name, location, hotelStar, userRating, images, firstRoomOptionName, firstRoomOptionPrice, firstRoomOptionTaxes, nRoomOptions }) => {
   const [showPopup, setShowPopup] = useState(false);
   const handleClick = () => {
     setShowPopup((prev) => !prev);
@@ -32,12 +33,6 @@ const ImageBox: React.FC<Props> = ({ name, location, hotelStar, userRating, imag
   })
   return (
     <div className="flex flex-col w-full items-center shadow-md p-4">
-      <div className="w-full mb-2">
-        <p className="inline-flex items-center border border-gray-300 rounded-md px-2 py-1 text-sm">
-          {hotelStar} <FontAwesomeIcon icon={faStar} className="text-yellow-500 ml-1" /> hotel    {/* FIX THIS */}
-        </p>
-      </div>
-
       {/* Container for images and pricing */}
       <div className="flex flex-col md:flex-row flex-wrap w-full max-w-6xl gap-4">
 
@@ -46,28 +41,45 @@ const ImageBox: React.FC<Props> = ({ name, location, hotelStar, userRating, imag
           {/* Header */}
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-xl font-bold">{name}</h2>
+              <div>
+                <h2 className="text-xl font-bold">{name}</h2>
+              </div>
+              {/* Hotel Class (Star Rating) */}
+              <div className="flex items-center mb-2">
+                {[...Array(hotelStar)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="size-3 md:size-4 fill-[#E55842] text-[#E55842]"
+                  />
+                ))}
+              </div>
               <p className="text-sm text-gray-500 mt-1">
                 <FontAwesomeIcon icon={faMap} className="mr-1" />
-                  {location} |{" "}
+                {location} |{" "}
                 <FontAwesomeIcon icon={faUtensils} className="mr-1" />
                 Authentic Indian Cuisine
               </p>
             </div>
-            <button className="shadow-sm rounded-md overflow-hidden flex">
+            {/* <button className="shadow-sm rounded-md overflow-hidden flex">
               <div className="bg-blue-500 text-white px-2 py-1 flex items-center">
                 <FontAwesomeIcon icon={faStar} className="mr-1 text-yellow-300" />
                 {userRating}
               </div>
               <div className="px-2 py-1 text-gray-500 text-sm">User Reviews</div>
-            </button>
+            </button> */}
+            {/* <div className="text-4xl font-[900]">
+                {userRating}<span className="text-medium font-normal text-secondary/60">/5</span>
+            </div> */}
+            <div className="p-2 text-primary bg-accent rounded-md">
+              {userRating}
+            </div>
           </div>
 
           {/* Main Images: Center + Side */}
           <div className="flex flex-col md:flex-row gap-2">
             <div className="relative md:flex-1 min-w-[70%]" onClick={handleClick}>
               <img
-                src = {images?.[0] ? "https:" + images?.[0] : Image1}
+                src={images?.[0] ? "https:" + images?.[0] : Image1}
                 alt="Main"
                 className="w-full rounded-md shadow h-full min-h-[480x]"
               />
@@ -113,14 +125,13 @@ const ImageBox: React.FC<Props> = ({ name, location, hotelStar, userRating, imag
               </div>
             </div>
             <a href="#room-options">
-            <button 
-              className="border-2 border-blue-500 text-blue-500 font-bold py-2 px-4 w-full rounded-md"
-              // onClick={() => navigate('#room-options')}  
-            >
-              VIEW {nRoomOptions} ROOM OPTIONS
+              <button
+                className="bg-accent text-primary hover:bg-accent/90 font-bold py-2 px-4 w-full rounded-md text-[0.8rem] md:text-sm lg:text-[0.9rem]" 
+              >
+                VIEW {nRoomOptions} ROOM OPTIONS
 
-            </button>
-              </a>
+              </button>
+            </a>
           </div>
 
           {/* Special Amenities */}
@@ -137,9 +148,9 @@ const ImageBox: React.FC<Props> = ({ name, location, hotelStar, userRating, imag
             </ol>
           </div> */}
           {
-            showPopup 
+            showPopup
             &&
-            <HotelImagePopup images={images ? images : []} onClose={handleClick}/>
+            <HotelImagePopup images={images ? images : []} onClose={handleClick} />
           }
         </div>
       </div>

@@ -41,22 +41,20 @@ const RoomOffer: React.FC<Props> = (ratePlan) => {
         </div>
   
         {/* Right Section */}
-        <div className="flex-1 h-full bg-[#05203C]">
-          <h2 className="mt-[15%] ml-[5%] text-[1.7rem] md:text-3xl font-bold text-white">
+        <div className="flex flex-col justify-start flex-1 h-full border-l-2 px-3">
+          <h2 className="mt-[5%] text-[1.24rem] md:text-2xl font-bold text-secondary">
             <span className="font-light">₹</span>{ratePlan.base_fare}
           </h2>
-          <p className="ml-[5%] text-xs md:text-sm text-[#bab9b9]">
+          <p className="mx-1 text-xs md:text-[0.8rem] text-secondary/60">
             +₹{ratePlan.taxes} taxes & fees<br/>
             <span className="font-bold">1 Room</span> per night
           </p>
-          <button className="ml-[25%] mt-[7.5%] h-[50px] w-[50%] rounded-lg flex items-center justify-center 
-              font-bold p-[0.15%] pl-0 border border-white shadow-[0px_0px_50px_black] 
-              bg-gradient-to-r from-[var(--accent)]
-              sm:mt-[4%]">
-            <p className="text-white hf-full w-full flex items-center justify-center rounded-lg ml-[1%] 
-                md:text-xs">
+          <button className="mt-[7.5%] py-2 min-h-[40px] w-full md:w-[80%] lg:w-[60%] rounded-lg flex items-center justify-center 
+              font-bold p-2
+              bg-accent text-white text-xs md:text-[0.75rem] lg:text-[0.8rem]
+              sm:mt-[4%]"
+          >
               SELECT ROOM
-            </p>
           </button>
         </div>
       </div>

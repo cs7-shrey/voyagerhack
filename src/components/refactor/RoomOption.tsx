@@ -1,9 +1,8 @@
 // import RoomImage from "@/assets/RoomImage.png"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBed, faRulerCombined, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faBed, /* faRulerCombined, */ faUser } from '@fortawesome/free-solid-svg-icons';
 import RoomOffer from "./RoomOffer";
 import { type RoomType } from "@/store/useHotelDescStore";
-import ImageNavigator from "../ImageNavigator";
 import RoomMoreInfo from "./RoomMoreInfo";
 import { useState, useEffect } from "react";
 
@@ -24,16 +23,15 @@ const RoomOption: React.FC<Props> = (roomType: RoomType) => {
   }, [roomMoreInfo]);
   // console.log(roomType)
   return (
-    <div className="flex flex-col sm:flex-row w-11/12 mt-8 rounded-lg gap-4 bg-primary/90" id="room-options">
+    <div className="flex flex-col sm:flex-row w-11/12 mt-8 rounded-lg bg-primary/80" id="room-options">
       {/* Left Section - Image and Specifications */}
-      <div className="flex flex-col rounded-lg p-4 flex-[1.3] sm:max-w-[45%]">
+      <div className="flex flex-col sticky top-0 p-4 sm:max-w-[50%]  border border-r-2">
         <div className="ml-2 mt-2">
           <b className="text-lg">{roomType.room_type_name}</b>
         </div>
         <div className="z-10">
         <button onClick={handleClick} className="relative">
         <img 
-        // TODO: ADD A SHOW PHOTOS BUTTON
           src={roomType.room_photos[0]} 
           alt="Deluxe Room" 
           className="w-11/12 mx-auto mt-4 rounded-lg"
@@ -60,7 +58,7 @@ const RoomOption: React.FC<Props> = (roomType: RoomType) => {
       </div>
 
       {/* Right Section - Room Offers */}
-      <div className="flex flex-col border border-primary rounded-r-lg border-l-0 h-[505px] overflow-y-auto flex-2 sm:min-w-[320px] max-w-full sm:w-[55%] self-center">
+      <div className="flex flex-col border border-primary rounded-r-lg border-l-0 h-[505px] pl-2 pt-2 overflow-y-auto flex-2 max-w-full sm:w-[55%] md:w-[55%] self-center">
         {
           roomType.rate_plans.map((rp, index) => (
             <RoomOffer key={index} sNo={index+1} {...rp} />
@@ -72,7 +70,7 @@ const RoomOption: React.FC<Props> = (roomType: RoomType) => {
           <RoomMoreInfo images={roomType.room_photos} onClose={handleClick} amenities={roomType.display_amenities}/>
         )
       }
-      {/* <ImageNavigator images={roomType.room_photos} /> */}
+
     </div>
   )
 }

@@ -1,16 +1,21 @@
 import { Route, Routes } from "react-router";
-import { Button } from "./components/ui/button";
 import RecentSearches from "./components/RecentSearches";
 import Hotels from "./routes/hotels/Hotels";
 import SearchBar from "./components/SearchBar";
-
-import HotelDescription from "./pages/HotelDescription"
+import HotelDescription from "@/routes/HotelDescription/HotelDescription";
+// import HotelDescription from "./pages/HotelDescription"
 import bg from "/hotel.jpg"
 // import bg from "./assets/vacation.jpg";
-import Logo from "./components/ui/Logo";
+// import Logo from "./components/ui/Logo";
 import Voice from "./routes/Voice";
 import Login from "./routes/Login";
 import LogoIdea from "./assets/Screenshot 2025-01-24 at 9.44.03 PM.png"
+// import RoomOffer from "./components/refactor/RoomOffer";
+// import RoomOffer2 from "./pages/HotelDescription/components/RoomPackage/components/RoomOffer";
+// import RoomPackage from "./components/refactor/RoomPackage";
+// import RoomPackage2 from "./pages/HotelDescription/components/RoomPackage";
+// import ImageBox from "./components/refactor/ImageBox";
+import ImageBox2 from "./pages/HotelDescription/components/ImageBox";
 // import Visualizer from "./routes/Visualizer";
 
 function App() {
@@ -80,13 +85,18 @@ export default function AppRouter() {
       <Route path="/hello" element={<h1>hello</h1>} />
       <Route path="/hotels" element={<Hotels />} />
       <Route path="/voice" element={<Voice />} />
-      <Route path="/hotel-desc" element={<HotelDescription/>}/>
+      <Route path="/hotel-desc" element={<HotelDescription id={BigInt("200703161155527273")}/>}/>
       <Route path="/login" element={<Login />} />
       <Route path="/dummy" element={
-        <div className="sm:flex lg:grid lg:grid-cols-12 md:grid-cols-5">
-          <div className="md:col-span-4 lg:col-span-5 lg:col-start-4 flex justify-center p-4">
-            <SearchBar />
-          </div>
+        <div className="w-full flex flex-col bg-[#F0F0F0] justify-center items-center">
+          {/* <RoomOffer /> */}
+          {/* <RoomOffer2 /> */}
+          {/* <RoomPackage /> */}
+          {/* <RoomPackage2 /> */}
+          {/* <ImageBox /> */}
+          <ImageBox2 />
+
+          
         </div>
         } />
     </Routes>
