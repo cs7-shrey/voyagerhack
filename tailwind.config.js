@@ -1,3 +1,5 @@
+import { color } from 'framer-motion';
+
 /** @type {import('tailwindcss').Config} */
 const {nextui} = require("@nextui-org/theme");
 
@@ -31,18 +33,36 @@ export default {
           scrollbarColor: '#ffffff1 #212121',
         },
         '.scrollbar-webkit': {
+          scrollbarColor: '#ffffff1 #bfbfbf',
           '&::-webkit-scrollbar': {
-            width: '10px',
+            width: '0.2rem',
+            height: '20px',
           },
           '&::-webkit-scrollbar-track': {
-            backgroundColor: '#1F2937',
+            backgroundColor: '#cdcdcd',   // works
           },
           '&::-webkit-scrollbar-thumb': {
-            backgroundColor: '#4B5563',
-            borderRadius: '20px',
-            border: '3px solid #1F2937',
+            // color: '#ff0000',
+            backgroundColor: '#999999',
+            borderRadius: '2px',
+            // border: '3px solid #1F2937',
           },
         },
+        // '.scrollbar-verythin': {
+        //   scrollbarWidth: 'thin',
+        //   scrollbarColor: '#ffffff1 #212121',
+        //   '&::-webkit-scrollbar': {
+        //     width: '1px',
+        //   },
+        //   '&::-webkit-scrollbar-track': {
+        //     backgroundColor: '#1F2937',
+        //   },
+        //   '&::-webkit-scrollbar-thumb': {
+        //     backgroundColor: '#4B5563',
+        //     borderRadius: '20px',
+        //     border: '1px solid #1F2937',
+        //   }
+        // }
       }
       addUtilities(newUtilities, ['responsive', 'hover']);
     }

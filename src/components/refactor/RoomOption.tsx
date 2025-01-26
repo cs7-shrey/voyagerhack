@@ -58,7 +58,7 @@ const RoomOption: React.FC<Props> = (roomType: RoomType) => {
       </div>
 
       {/* Right Section - Room Offers */}
-      <div className="flex flex-col border border-primary rounded-r-lg border-l-0 h-[505px] pl-2 pt-2 overflow-y-auto flex-2 max-w-full sm:w-[55%] md:w-[55%] self-center">
+      <div className="flex flex-col border border-primary rounded-r-lg border-l-0 h-[505px] pl-2 pt-2 overflow-y-auto scrollbar-webkit flex-2 max-w-full sm:w-[55%] md:w-[55%] self-center">
         {
           roomType.rate_plans.map((rp, index) => (
             <RoomOffer key={index} sNo={index+1} {...rp} />

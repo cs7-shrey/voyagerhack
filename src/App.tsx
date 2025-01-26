@@ -3,19 +3,13 @@ import RecentSearches from "./components/RecentSearches";
 import Hotels from "./routes/hotels/Hotels";
 import SearchBar from "./components/SearchBar";
 import HotelDescription from "@/routes/HotelDescription/HotelDescription";
-// import HotelDescription from "./pages/HotelDescription"
 import bg from "/hotel.jpg"
 // import bg from "./assets/vacation.jpg";
 // import Logo from "./components/ui/Logo";
 import Voice from "./routes/Voice";
 import Login from "./routes/Login";
 import LogoIdea from "./assets/Screenshot 2025-01-24 at 9.44.03 PM.png"
-// import RoomOffer from "./components/refactor/RoomOffer";
-// import RoomOffer2 from "./pages/HotelDescription/components/RoomPackage/components/RoomOffer";
-// import RoomPackage from "./components/refactor/RoomPackage";
-// import RoomPackage2 from "./pages/HotelDescription/components/RoomPackage";
-// import ImageBox from "./components/refactor/ImageBox";
-import ImageBox2 from "./pages/HotelDescription/components/ImageBox";
+import ChatBox from "./components/chat/ChatBox";
 // import Visualizer from "./routes/Visualizer";
 
 function App() {
@@ -88,15 +82,10 @@ export default function AppRouter() {
       <Route path="/hotel-desc" element={<HotelDescription id={BigInt("200703161155527273")}/>}/>
       <Route path="/login" element={<Login />} />
       <Route path="/dummy" element={
-        <div className="w-full flex flex-col bg-[#F0F0F0] justify-center items-center">
-          {/* <RoomOffer /> */}
-          {/* <RoomOffer2 /> */}
-          {/* <RoomPackage /> */}
-          {/* <RoomPackage2 /> */}
-          {/* <ImageBox /> */}
-          <ImageBox2 />
-
-          
+        <div className="w-full flex border-2 h-screen justify-end bg-black/10 items-center">
+          <div className="h-screen w-[30%] text-black">
+            <ChatBox />
+          </div>
         </div>
         } />
     </Routes>

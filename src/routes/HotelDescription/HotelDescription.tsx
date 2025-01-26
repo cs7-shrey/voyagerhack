@@ -1,30 +1,23 @@
 import ImageBox from "@/components/refactor/ImageBox";
 import Navbar from "@/pages/HotelDescription/components/Navbar"
 import RoomOption from "@/components/refactor/RoomOption";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useHotelDescStore } from "@/store/useHotelDescStore";
 import HotelNavbar from "@/components/refactor/HotelNavbar";
+import { Bot } from "lucide-react";
+import ChatBox from "@/components/chat/ChatBox";
 
-// const RoomPackageMapper = () => {
-//     const randomList = [1, 2, 3]
-//     return (
-//         <div className="room-wrapper">
-//             <div className="wrapper-header">
-//                 <div style={{ flex: "1.3", display: "flex", alignItems: "center", justifyContent: "center", height: "50px" }}>Room Details</div>
-//                 <div style={{ flex: "1", display: "flex", alignItems: "center", justifyContent: "center", height: "50px" }}>Room Options</div>
-//                 <div style={{ flex: "1", display: "flex", alignItems: "center", justifyContent: "center", height: "50px" }}>Price</div>
-//             </div>
-//             {randomList.map((_, i) => (<RoomPackage key={i} />))}
-//         </div>
-//     )
-// }
 interface Props {
     id: bigint
 }
 
 const HotelDescription: React.FC<Props> = ({ id }) => {
     const { hotelData, roomData } = useHotelDescStore();
+    const [chatBoxOpen, setChatBoxOpen] = useState(false);
     // console.log(roomData);
+    const onClick = () => {
+        setChatBoxOpen((prev) => !prev);
+    }
 
     useEffect(() => {
         const { getHotelData, getRoomData } = useHotelDescStore.getState();
@@ -64,6 +57,18 @@ const HotelDescription: React.FC<Props> = ({ id }) => {
                     </div>
                 </div>
             </div>
+            {!chatBoxOpen && 
+            <div className="fixed bottom-2 right-2 rounded-lg size-16 flex justify-center items-center bg-accent">
+                <button className="w-full h-full p-4" onClick={onClick}>
+                    <Bot color="white" size={28}/>
+                </button>
+            </div>}
+            {
+                chatBoxOpen &&
+                <div className="fixed bottom-2 right-2 inset-0 z-50 h-full w-full bg-transparent/30">
+                        <ChatBox onClose={onClick}/>
+                </div>
+            }
         </div>
     )
 }
