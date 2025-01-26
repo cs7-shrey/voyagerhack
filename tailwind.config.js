@@ -16,6 +16,9 @@ export default {
         accent: "#05203C",
         accentForeground: "#014DAF",
       },
+      fontFamily: {
+        'chat-message': ["chatMessage", "sans-serif"]
+      }
   	}
   },
   plugins: [
