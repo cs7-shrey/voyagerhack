@@ -3,11 +3,12 @@
     position:sticky;
     top:100px;
     height:65px;
-    box-shadow:5px 0px 5px rgb(168, 168, 168);
+    /* box-shadow:5px 0px 5px rgb(168, 168, 168); */
     margin-top:25px;
     /* background: linear-gradient(to right, white,white, white,lightgrey); */
     /* background: black */
     background-color: rgb(226, 224, 224);
+    z-index: 45;
 }
 .amenity-nav .nav-links{
     height:100%;

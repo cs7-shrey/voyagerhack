@@ -3,8 +3,8 @@ import ImageBox from "./components/ImageBox";
 import Navbar from "./components/Navbar"
 import RoomPackage from "./components/RoomPackage";
 import "./hotel-desc.css"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faStar } from "@fortawesome/free-solid-svg-icons";
 const RoomPackageMapper=()=>{
     const randomList=[1,2,3]
     return (
@@ -14,7 +14,7 @@ const RoomPackageMapper=()=>{
                 <div style={{flex:"1",display:"flex",alignItems:"center",justifyContent:"center",height:"50px"}}>Room Options</div>
                 <div style={{flex:"1",display:"flex",alignItems:"center",justifyContent:"center",height:"50px"}}>Price</div>
             </div>
-            {randomList.map((e)=>(<RoomPackage/>))}
+            {randomList.map((_, i)=>(<RoomPackage key={i}/>))}
         </div>
     )
 }
@@ -24,7 +24,11 @@ const HotelDescription=()=>{
             <Navbar/>
             <ImageBox/>
             <AmenityNavbar/>
-            <RoomPackageMapper/>
+            <div className="grid grid-cols-10 bg-[#F0F0F0]">
+                <div className="col-span-8 col-start-2">
+                    <RoomPackageMapper/>
+                </div>
+            </div>
         </>
     )
 }
