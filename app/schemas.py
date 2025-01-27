@@ -1,7 +1,7 @@
+import datetime
+from enum import Enum
 from pydantic import BaseModel
 from typing import Optional
-import datetime
-
 
 # the decoded token data that is used to the current user
 class TokenData(BaseModel):
@@ -94,6 +94,10 @@ class VoiceSearchResponse(BaseModel):
     status: Status
     filters: SearchFilters
     data: list[HotelSearchResponse]
+
+class ChatMode(str, Enum):
+    voice = "voice"
+    text = "text"
 
 class Constants(BaseModel):
     name: str

@@ -14,7 +14,7 @@ class SearchAPI(Tool):
     
     
 async def search_api(query: str): 
-    async with httpx.AsyncClient as client:
+    async with httpx.AsyncClient() as client:
         response = await client.post(
             "https://api.tavily.com/search",
             json={
@@ -22,5 +22,5 @@ async def search_api(query: str):
                 "api_key": os.getenv("TAVILY_API_KEY"),
                 "include_answer": "basic"
             })
-        return response
+        return response.json()
     

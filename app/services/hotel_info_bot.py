@@ -7,6 +7,7 @@ from langchain_core.messages import HumanMessage, AIMessage, SystemMessage, Tool
 from langchain_google_genai import ChatGoogleGenerativeAI
 import json
 import os
+import copy
 
 load_dotenv()
 llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp", api_key=os.getenv('GOOGLE_API_KEY'))
@@ -15,7 +16,12 @@ llm_with_tools = llm.bind_tools([GetHotelInfo, GetDistance, SearchAPI])
 
 class HotelInfoBot:
     def __init__(self, hotel_name, location, hotel_info):
-        self.system_prompt = SYSTEM_PROMPT
+        self.system_prompt = f"""
+            {SYSTEM_PROMPT}
+            SYSTEM GENERATED DETAILS: 
+                Hotel Name: {hotel_name}
+                Location: {location}
+        """
         self.hotel_name = hotel_name
         self.location_name = location
         self.class_to_fn_mapping = {
@@ -24,32 +30,29 @@ class HotelInfoBot:
             "SearchAPI": search_api
         }
         self.hotel_info = hotel_info
+        self.messages = [
+            SystemMessage(self.system_prompt)
+        ]
         
     async def get_hotel_info(self):
         return self.hotel_info
     
     async def talk(self, prompt):
-        human_message = f"""
-            SYSTEM GENERATED DETAILS: 
-            Hotel Name: {self.hotel_name}
-            Location: {self.location_name}
-            
-            USER PROMPT: {prompt}
-        """
-        messages = [
-            SystemMessage(self.system_prompt),
-            HumanMessage(human_message)
-        ]
-        ai_msg = await llm_with_tools.ainvoke(messages)
+        self.messages.append(HumanMessage(prompt))
+        context_messages = copy.deepcopy(self.messages)            # context messages will contain toll calls
+        ai_msg = await llm_with_tools.ainvoke(context_messages)
         if not ai_msg.tool_calls:
-            return ai_msg
+            self.messages.append(AIMessage(ai_msg.content))
+            return ai_msg.content
         
-        messages.append(ai_msg)
+        context_messages.append(ai_msg)
 
         for tool_call in ai_msg.tool_calls:
             selected_tool = self.class_to_fn_mapping[tool_call['name']]
             tool_output = await selected_tool(**tool_call['args'])
-            messages.append(ToolMessage(content=json.dumps(tool_output), name=tool_call['name'], tool_call_id=tool_call['id']))
+            context_messages.append(ToolMessage(content=json.dumps(tool_output), name=tool_call['name'], tool_call_id=tool_call['id']))
             
-        final_message = await llm_with_tools.ainvoke(messages)
-        return final_message
+        final_message = await llm_with_tools.ainvoke(context_messages)
+        self.messages.append(AIMessage(final_message.content))
+        print("ye raha final message", final_message)
+        return final_message.content

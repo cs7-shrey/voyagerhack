@@ -16,7 +16,7 @@ import wave
 
 
 load_dotenv()
-router = APIRouter(prefix="/", tags=["hotel"])
+router = APIRouter(tags=["voice search"])
 
 API_KEY = os.getenv('SPEECHMATICS_API_KEY')
 PATH_TO_FILE = "received_audio.wav"
