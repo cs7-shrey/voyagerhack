@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge"
 import { axiosInstance } from "./axiosConfig"
 import { type queryTerm, type Amenity } from "../store/useSearchStore"
 import { useSearchStore } from "../store/useSearchStore"
+import { useHotelDescStore } from "@/store/useHotelDescStore"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -94,4 +95,35 @@ export function stateInitUsingQueryParams(searchParams: URLSearchParams) {
     filters.hotelAmenities || [],
     filters.roomAmenities || []
   )
+}
+
+export function getHotelInfoFormatted() {
+  const { hotelData, roomData } = useHotelDescStore.getState()
+  // TODO: improve the format of the prompt
+  const info =  `
+    THIS IS THE BASIC HOTEL INFORMATION IN JSON FORMAT:
+    ${JSON.stringify(
+      {
+        ...hotelData,
+        images: null
+      }
+    )}
+
+    THERE ARE THE ROOM OPTIONS THE HOTEL OFFERS WITH VARIOUS RATE PLANS:
+    ${JSON.stringify(
+      roomData?.map((room) => {
+        return {
+          ...room,
+          room_photos: null,
+          rate_plans: room.rate_plans.map((plan) => {
+            return {
+              ...plan,
+              total_discount: null
+            }
+          })
+        }
+      })
+    )}
+  `
+  return info
 }

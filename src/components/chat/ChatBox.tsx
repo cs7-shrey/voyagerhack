@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import InputMessage from './InputMessage'
 import Message from './Message'
 import { X } from 'lucide-react'
+import { useHotelPageChatStore } from '@/store/useHotelPageChatStore'
 
 interface Props {
     onClose: () => void
 }
 const ChatBox: React.FC<Props> = ({ onClose }) => {
     // some state logic
+    const { messages } = useHotelPageChatStore();
+    const endRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        endRef?.current?.scrollIntoView({behavior: "smooth"})
+    })
+    console.log(messages)
     return (
         <div className="sm:w-[80%] md:w-[30rem] sm:ml-auto m-4 border-4 flex flex-col gap-2 relative justify-end rounded-2xl bg-white h-[95%] px-4 pb-4">
             <div className='mb-auto sticky flex justify-between h-24'>
@@ -37,7 +44,10 @@ const ChatBox: React.FC<Props> = ({ onClose }) => {
                 <Message text="ohooo, mahol pura wavy" sender="bot" />
                 <Message text="ohooo, mahol pura wavy" sender="bot" />
                 <Message text="ohooo, mahol pura wavy" sender="bot" />
-
+                {messages.map((msg, index) => (
+                    <Message key={index} text={msg.text} sender={msg.sender} />
+                ))}
+                <div ref={endRef}></div>
             </div>
             <InputMessage />
         </div>

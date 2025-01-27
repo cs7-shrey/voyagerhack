@@ -3,6 +3,7 @@ import React from 'react'
 interface Props {
     sender: "user" | "bot";
     text: string
+    mode?: "voice" | "text"
 }
 const Message: React.FC<Props> = ({sender, text}) => {
   return (
