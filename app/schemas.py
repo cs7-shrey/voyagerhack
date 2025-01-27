@@ -42,6 +42,7 @@ class HotelInfoResponse(BaseModel):
     user_rating_count: int
     property_type: str
     images: list[str]
+    amenities: list[str]
     
 class Beds(BaseModel):
     type: str

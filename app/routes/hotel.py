@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, WebSocket, Query
+from fastapi import APIRouter, Depends, WebSocket, Query, WebSocketDisconnect, WebSocketException
 from app.database import get_db
 from app.schemas import HotelRoomResponse, HotelInfoResponse, ChatMode
 from sqlalchemy.orm import Session
@@ -49,17 +49,27 @@ async def hotel_chat_ws(
     id: int, 
     hotel_name: str = Query(...), 
     hotel_location: str = Query(...), 
-    db: Session = Depends(get_db), 
     current_user: int = Depends(socket_get_current_client)
 ):
     await ws.accept()
     json_data = await ws.receive_json()
     agent = HotelInfoBot(hotel_name=hotel_name, location=hotel_location, hotel_info=json_data['hotel_info'])
-    mode = await ws.receive_text()
-    if mode is ChatMode.text:
-        message = await ws.receive_text()
-        response = await agent.talk(message)
-        await ws.send_text(response)
-    elif mode is ChatMode.voice:
-        ...
-    
+    while True:
+        try:
+            mode = await ws.receive_text()
+            print(mode)
+            print(mode == ChatMode.text)
+            if mode == ChatMode.text:
+                print('idhar aagye')
+                message = await ws.receive_text()
+                response = await agent.talk(message)
+                await ws.send_text(response)
+            elif mode is ChatMode.voice:
+                ...
+        except WebSocketDisconnect:
+            print('chat ws disconnected') 
+            return
+        except WebSocketException:
+            print("an error occured in web socket")
+            return
+        

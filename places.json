@@ -1,0 +1,175 @@
+{
+  "places": [
+    {
+      "formattedAddress": "Asset No 02 GMR Hospitality District IGI Airport New Delhi Aerocity, Delhi 110037- Lobby Level, Aerocity, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=5427013166386216192",
+      "displayName": {
+        "text": "Food Exchange",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "Lower Ground Floor, Worldmark 1, Aerocity, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=3277833057341704207",
+      "displayName": {
+        "text": "Qavalli Aerocity",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "9, Pandara Rd, Pandara Flats, Market, New Delhi, Delhi 110003, India",
+      "googleMapsUri": "https://maps.google.com/?cid=16377187630919108291",
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "displayName": {
+        "text": "Ichiban Pandara Road",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "Holiday Inn New Delhi International Airport, Asset Area 12,, Asset Area 12 Hospitality District, Hospitality District, Aerocity, Indira Gandhi International Airport, Aerocity, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=9709761345894709494",
+      "displayName": {
+        "text": "Viva all-day dining Holiday Inn Aerocity",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "Shop 4, Lower Ground Floor, Worldmark 1, Aerocity Access Rd, Aerocity, Mahipalpur, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=14111034713223299910",
+      "priceLevel": "PRICE_LEVEL_EXPENSIVE",
+      "displayName": {
+        "text": "Daryaganj Restaurant",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "58 1st & 2nd Floor, Khan Market, Rabindra Nagar, New Delhi, Delhi 110003, India",
+      "googleMapsUri": "https://maps.google.com/?cid=128388757452141223",
+      "priceLevel": "PRICE_LEVEL_EXPENSIVE",
+      "displayName": {
+        "text": "The Chatter House",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "Shop 3, Worldmark 1, Aerocity Access Rd, Aerocity, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=5658001831729562124",
+      "displayName": {
+        "text": "Punjab Grill Aerocity",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "Asset No 02 GMR Hospitality District IGI Airport New Delhi, Aerocity- Novotel Lobby Level, Northern Access Rd, Aerocity, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=11926844088000147275",
+      "displayName": {
+        "text": "Quoin",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "11, First Floor, Khan Market, Rabindra Nagar, New Delhi, Delhi 110003, India",
+      "googleMapsUri": "https://maps.google.com/?cid=7473777710856670851",
+      "displayName": {
+        "text": "Fat Lulu's",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "Subramania Bharti Marg, Sujan Sing Park North, Sujan Singh Park, New Delhi, Delhi 110003, India",
+      "googleMapsUri": "https://maps.google.com/?cid=6145299723980870463",
+      "priceLevel": "PRICE_LEVEL_EXPENSIVE",
+      "displayName": {
+        "text": "Yellow Brick Road",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "60-61, Middle Lane, Khan Market, Rabindra Nagar, New Delhi, Delhi 110003, India",
+      "googleMapsUri": "https://maps.google.com/?cid=12705597843287979032",
+      "priceLevel": "PRICE_LEVEL_EXPENSIVE",
+      "displayName": {
+        "text": "Town Hall",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "First Floor, 69, Khan Market, Rabindra Nagar, New Delhi, Delhi 110003, India",
+      "googleMapsUri": "https://maps.google.com/?cid=14348390032482199452",
+      "priceLevel": "PRICE_LEVEL_EXPENSIVE",
+      "displayName": {
+        "text": "Yum Yum Cha Khan Market",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "6. Lower Ground Floor, Worldmark 1, Aerocity, Indira Gandhi International Airport, Delhi, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=2650514132810325371",
+      "displayName": {
+        "text": "La Roca",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "Taj Mahal Hotel, 1, Maan Singh Rd, near Khan Market, South Block, India Gate, New Delhi, Delhi 110011, India",
+      "googleMapsUri": "https://maps.google.com/?cid=15202726477800121283",
+      "priceLevel": "PRICE_LEVEL_VERY_EXPENSIVE",
+      "displayName": {
+        "text": "Varq",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "Roseate House, Asset 10, Aerocity, Aerocity, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=1407014120821551887",
+      "priceLevel": "PRICE_LEVEL_VERY_EXPENSIVE",
+      "displayName": {
+        "text": "Kheer - Roseate House",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "J W Marriott Hotel, Aerocity, Indira Gandhi International Airport, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=3157559935021522729",
+      "priceLevel": "PRICE_LEVEL_VERY_EXPENSIVE",
+      "displayName": {
+        "text": "K3 - New Delhi's Food Theatre",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "57, Khan Market, Prithiviraj Market, Khan Market, Rabindra Nagar, New Delhi, Delhi 110003, India",
+      "googleMapsUri": "https://maps.google.com/?cid=6500347863635583180",
+      "displayName": {
+        "text": "Anglow",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "Ground Floor, Asset No.1, Aerocity, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=9007897470896350476",
+      "priceLevel": "PRICE_LEVEL_EXPENSIVE",
+      "displayName": {
+        "text": "AnnaMaya FoodHall - Andaz Delhi",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "IGI Rd, Aerocity, Ibis, New Delhi, Delhi, 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=3623569403326620150",
+      "displayName": {
+        "text": "SPICE IT",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "16, Pandara Rd, Pandara Flats, Market, New Delhi, Delhi 110003, India",
+      "googleMapsUri": "https://maps.google.com/?cid=18413272296047389067",
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "displayName": {
+        "text": "Pindi Restaurant Delhi",
+        "languageCode": "en"
+      }
+    }
+  ]
+}

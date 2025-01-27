@@ -10,6 +10,7 @@ interface HotelData {
     userRatingCount: number;
     propertyType: string;
     images: string[];
+    amenities: string[];
 }
 
 export interface RatePlan {
@@ -63,7 +64,8 @@ export const useHotelDescStore = create<HotelDescStore>()((set) => ({
                 userRating: response.data.user_rating,
                 userRatingCount: response.data.user_rating_count,
                 propertyType: response.data.property_type,
-                images: response.data.images
+                images: response.data.images,
+                amenities: response.data.amenities
             } })
         } catch (error) {
             console.log("Error fetching hotel data: ", error)

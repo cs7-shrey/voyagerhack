@@ -28,7 +28,7 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
         const { hotelData }  = useHotelDescStore.getState()
         const name = hotelData?.name
         const location = hotelData?.location
-        const ws = new WebSocket(`ws://${BASE_URL}/hotel/${id}/ws/chat?mode=text&hotel_name=${name}&hotel_location=${location}`);
+        const ws = new WebSocket(`ws://${BASE_URL}/hotel/exp/${id}/ws/chat?mode=text&hotel_name=${name}&hotel_location=${location}`);
         const res = await new Promise((resolve, reject) => {
             ws.onopen = () => {
                 const info = getHotelInfoFormatted();
@@ -49,5 +49,8 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
         set({ textSocket: ws})
         return ws
     },
-    disconnectTextSocket: () => {},
+    disconnectTextSocket: () => {
+        if(!get().textSocket) return
+        get().textSocket?.close()
+    },
 }));

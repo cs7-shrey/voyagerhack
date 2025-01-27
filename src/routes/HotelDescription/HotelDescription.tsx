@@ -14,7 +14,7 @@ interface Props {
 const HotelDescription: React.FC<Props> = ({ id }) => {
     const { hotelData, roomData } = useHotelDescStore();
     const [chatBoxOpen, setChatBoxOpen] = useState(false);
-    // console.log(roomData);
+    console.log(hotelData);
     const onClick = () => {
         setChatBoxOpen((prev) => !prev);
     }
