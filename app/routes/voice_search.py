@@ -4,7 +4,7 @@ from app.oauth2 import socket_get_current_client
 from app.database import get_db
 from app.services.filters_processing import process_llm_filters
 from app.services.speech import Speech   
-from app.schemas import TokenData, SearchFilters, HotelSearchResponse, VoiceSearchResponse, Status
+from app.schemas import TokenData, SearchFilters
 from dotenv import load_dotenv
 from fastapi import APIRouter, WebSocket, Depends
 import io

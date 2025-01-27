@@ -65,11 +65,6 @@ def process_llm_filters(llm_filters, SearchFiltersSchema: Type[BaseModel], db: S
             }
             return final_response
         query_dict = {k: v for k, v in llm_filters['filters'].items() if v is not None}
-        # check for location presence
-        # query_dict['place'] = {
-        #     'name': query_dict['place'],
-        #     'type': 'city'
-        # }
         suggestions = get_suggestions(query_dict['place'], suggestion_search_space)
         if suggestions[0]['score'] < 90:
             final_response['status'] = {

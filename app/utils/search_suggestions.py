@@ -44,6 +44,7 @@ def get_suggestion_space() -> list:
 
 def custom_sort(choices, query):
     results = []
+    print(query, len(choices))
     for choice in choices:
         # 1. Partial Ratio (Important for Substring Matching):
         partial_ratio = fuzz.partial_ratio(query, choice['label'])

@@ -14,6 +14,7 @@ class SearchAPI(Tool):
     
     
 async def search_api(query: str): 
+    print('using search api')
     async with httpx.AsyncClient() as client:
         response = await client.post(
             "https://api.tavily.com/search",
