@@ -27,23 +27,6 @@ const ChatBox: React.FC<Props> = ({ onClose }) => {
             </div>
             <hr></hr>
             <div className='overflow-y-auto scrollbar-webkit flex flex-col gap-2 pr-1'>
-                <Message text="this is a message that has gotten very long for now and there probably seems to be something wrong" sender="user" />
-                <Message text="oh yeah, I'm the bot. The og chadGPT if you know." sender="bot" />
-                <Message text="kehndi, hun neend ni aundi, pachtaundi to laake yaari jaata de munde hun khendi fir need ni aundi" sender="user" />
-                <Message text="ohooo, mahol pura wavy" sender="bot" />
-                <Message text="ohooo, mahol pura wavy" sender="bot" />
-                <Message text="ohooo, mahol pura wavy" sender="bot" />
-                <Message text="ohooo, mahol pura wavy" sender="bot" />
-                <Message text="ohooo, mahol pura wavy" sender="bot" />
-                <Message text="ohooo, mahol pura wavy" sender="bot" />
-                <Message text="ohooo, mahol pura wavy" sender="bot" />
-                <Message text="ohooo, mahol pura wavy" sender="bot" />
-                <Message text="ohooo, mahol pura wavy" sender="bot" />
-                <Message text="ohooo, mahol pura wavy" sender="bot" />
-                <Message text="ohooo, mahol pura wavy" sender="bot" />
-                <Message text="ohooo, mahol pura wavy" sender="bot" />
-                <Message text="ohooo, mahol pura wavy" sender="bot" />
-                <Message text="ohooo, mahol pura wavy" sender="bot" />
                 {messages.map((msg, index) => (
                     <Message key={index} text={msg.text} sender={msg.sender} />
                 ))}
