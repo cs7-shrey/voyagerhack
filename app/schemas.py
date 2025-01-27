@@ -1,7 +1,7 @@
+import datetime
+from enum import Enum
 from pydantic import BaseModel
 from typing import Optional
-import datetime
-
 
 # the decoded token data that is used to the current user
 class TokenData(BaseModel):
@@ -31,6 +31,45 @@ class HotelSearchResponse(BaseModel):
     user_rating: float = 0
     user_rating_count: int
     images: list[str]
+
+class HotelInfoResponse(BaseModel):
+    id: int
+    gi_id: int
+    name: str
+    location: str
+    hotel_star: int
+    user_rating: float = 0
+    user_rating_count: int
+    property_type: str
+    images: list[str]
+    
+class Beds(BaseModel):
+    type: str
+    count: int  
+    bedTypeKey: Optional[str] = None # TODO: CHANGE THIS LATER
+
+class RatePlan(BaseModel):
+    plan_id: int
+    pay_mode: str
+    base_fare: float
+    total_discount: float
+    taxes: float
+    filter_code: list[str]
+class HotelRoomResponse(BaseModel):
+    room_type_id: int
+    room_type_name: str
+    room_photos: list[str]
+    max_guests: int
+    max_adults: int
+    max_children: int
+    beds: Optional[list[Beds]] = []
+    display_amenities: list[str]
+    rate_plans: list[RatePlan]
+    
+class Beds(BaseModel):
+    type: str
+    count: int  
+    bedTypeKey: Optional[str] = None # TODO: CHANGE THIS LATER
     
 class Place(BaseModel):
     name: str
@@ -55,6 +94,10 @@ class VoiceSearchResponse(BaseModel):
     status: Status
     filters: SearchFilters
     data: list[HotelSearchResponse]
+
+class ChatMode(str, Enum):
+    voice = "voice"
+    text = "text"
 
 class Constants(BaseModel):
     name: str

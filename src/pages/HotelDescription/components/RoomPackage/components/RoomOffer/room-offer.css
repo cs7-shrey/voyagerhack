@@ -1,0 +1,86 @@
+.room-offer{
+    display:flex;
+    width:100%;
+    min-height:245px;
+    border-bottom: 0.5px solid #001843;
+}
+
+.room-offer .room-offer-details{
+    flex:1;
+    height:100%;
+}
+.room-offer .room-offer-details ol{
+    margin:10%;
+    font-size: 0.9rem;
+    color:grey;
+    list-style-type: disc;
+}
+.room-offer .room-pricing{
+    flex:1;
+    height:100%;
+    background-color: #05203C;
+}
+.room-offer .room-pricing{
+    flex:1;
+}
+.room-offer .room-pricing h2{
+    margin-top:15%;
+    width:100%;
+    margin-left: 5%;
+    font-size:1.8rem;
+    font-weight: 700;
+    color:white;
+}
+.room-offer .room-pricing p{
+    font-size:0.85rem;
+    margin-left: 5%;
+    color:rgb(186, 185, 185);
+}
+.room-offer .room-pricing p span{
+    font-weight:700
+}
+.room-offer .room-pricing .downlink{
+    margin-left:25%;
+    margin-top:7.5%;
+    background:linear-gradient(var(--accent));
+    height:50px;
+    width:50%;
+    border-radius: 6px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    font-weight:700;
+    padding:0.15%;
+    padding-left:0%;
+    border:0.1px solid white;
+    box-shadow: 0px 0px 50px black;
+}
+.room-offer .room-pricing .downlink p{
+    color:white;
+    height:100%;
+    width:100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    border-radius:6px;
+    margin-left:1%;
+}
+@media (max-width:795px){
+    .room-offer {
+        min-height:200px;
+    }
+    .room-offer .room-offer-details li{
+        font-size:0.75rem;
+    }
+    .room-offer .room-pricing .downlink p{
+        font-size:0.7rem;
+    }
+ }
+ @media (max-width:725px){
+    .room-offer .room-pricing .downlink{
+        margin-top:4%;
+    }
+    .room-offer .room-offer-details li{
+        font-size:0.68rem;
+    }
+}

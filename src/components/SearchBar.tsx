@@ -11,9 +11,7 @@ const SearchBar = () => {
   const navigate = useNavigate();
   return (
     <div>
-      <div>
-      </div>
-      <div className="bg-accent rounded-md">
+      <div className="rounded-md bg-accent">
         <div className="flex flex-col sm:flex-row gap-2 justify-start mt-4 items-start sm:items-center md:items-center p-4">
           <div className='min-h-full'>
             < Voice />

@@ -1,12 +1,15 @@
 import { Route, Routes } from "react-router";
-import { Button } from "./components/ui/button";
 import RecentSearches from "./components/RecentSearches";
 import Hotels from "./routes/hotels/Hotels";
 import SearchBar from "./components/SearchBar";
-import bg from "/hotel.jpg";
-import Logo from "./components/ui/Logo";
+import HotelDescription from "@/routes/HotelDescription/HotelDescription";
+import bg from "/hotel.jpg"
+// import bg from "./assets/vacation.jpg";
+// import Logo from "./components/ui/Logo";
 import Voice from "./routes/Voice";
 import Login from "./routes/Login";
+import LogoIdea from "./assets/Screenshot 2025-01-24 at 9.44.03 PM.png"
+import ChatBox from "./components/chat/ChatBox";
 // import Visualizer from "./routes/Visualizer";
 
 function App() {
@@ -15,14 +18,14 @@ function App() {
   return (
     <div>
       <nav className="bg-accent">
-        <div className="bg-accent text-primary p-8 flex justify-between">
-          <Logo />
-          <div>
+        <div className="bg-accent text-primary p-8 flex justify-between" style={{boxShadow:"0px 50px 100px black"}}>
+          {/* <Logo /> */}
+          {/* <div>
             <Button className="text-secondary">Sign In</Button>
-          </div>
+          </div> */}
+          <img src={LogoIdea} style={{height:"50px",boxShadow:"1px 1px 5px black"}}/>
         </div>
       </nav>
-      <div className="relative z-10">
         <div
           style={{
             background: `url(${bg})`,
@@ -40,11 +43,13 @@ function App() {
           }}
           className="flex flex-col justify-center items-center z-20 bg-no-repeat relative"
         >
-          <div className="absolute inset-0 bg-black/20">
-          </div>
+          {/* <div className="absolute inset-0 bg-black/20">
+          </div> */}
           {/* hotel search form with location, checkin date and checkout date */}
-          <div className="relative w-[60%] flex flex-col gap-4 items-start min-w-fit z-50">
-            <div className="text-6xl font-extrabold font-sans text-primary">
+          <div className="w-[60%] flex flex-col gap-4 items-start min-w-fit">
+          <div className="text-6xl font-extrabold font-sans text-primary"
+            style={{textShadow:"0px 0px 1px black"}}
+            >
               Find hotels with AI
             </div>
             <div>
@@ -57,7 +62,6 @@ function App() {
             </div>
           </div>
         </div>
-      </div>
       <div>
         <RecentSearches />
       </div>
@@ -75,7 +79,15 @@ export default function AppRouter() {
       <Route path="/hello" element={<h1>hello</h1>} />
       <Route path="/hotels" element={<Hotels />} />
       <Route path="/voice" element={<Voice />} />
+      <Route path="/hotel-desc" element={<HotelDescription id={BigInt("200703161155527273")}/>}/>
       <Route path="/login" element={<Login />} />
+      <Route path="/dummy" element={
+        <div className="w-full flex border-2 h-screen justify-end bg-black/10 items-center">
+          <div className="h-screen w-[30%] text-black">
+            <ChatBox />
+          </div>
+        </div>
+        } />
     </Routes>
   );
 }
