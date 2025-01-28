@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Send } from "lucide-react";
+import {  Send } from "lucide-react";
 import { useHotelPageChatStore } from "@/store/useHotelPageChatStore";
 import { type Message } from "@/store/useHotelPageChatStore";
 import { textChat } from "@/lib/chat";

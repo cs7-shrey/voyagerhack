@@ -4,7 +4,6 @@ import { Mic } from 'lucide-react'
 import { AudioService } from '@/lib/audioService'
 import { useEffect, useCallback, useRef } from 'react'
 import { voiceChat } from '@/lib/chat'
-import { text } from 'stream/consumers'
 
 const Voice = () => {
     // web socket connections

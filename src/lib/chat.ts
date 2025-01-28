@@ -1,3 +1,5 @@
+import { useHotelPageChatStore } from "@/store/useHotelPageChatStore";
+
 export enum ChatMode {
     Text = "text",
     Voice = "voice"
@@ -28,7 +30,7 @@ export async function textChat(mainWs: WebSocket, userMessage: string): Promise<
     return llmMessage;
 }
 
-export async function voiceChat(mainWs: WebSocket, audioWs?: WebSocket) {
+export async function voiceChat(mainWs: WebSocket): Promise<string | void> {
     // TBD
     if (!mainWs.OPEN) {
         return
@@ -36,9 +38,15 @@ export async function voiceChat(mainWs: WebSocket, audioWs?: WebSocket) {
     let llmMessage = '';
     await mainWs.send(ChatMode.Voice)
     await new Promise((resolve, reject) => {
+        const { messages: prevMessages, setMessages } = useHotelPageChatStore.getState();
         mainWs.onmessage = (serverMessage) => {
             console.log(serverMessage) // TODO: remove this later
             llmMessage = serverMessage.data
+            setMessages([...prevMessages, {
+                sender: "bot",
+                text: llmMessage,
+                mode: "text"
+            }])
             resolve(true)
         }
         mainWs.onerror = () => {
