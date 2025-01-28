@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Mic, Send } from "lucide-react";
+import { Send } from "lucide-react";
 import { useHotelPageChatStore } from "@/store/useHotelPageChatStore";
 import { type Message } from "@/store/useHotelPageChatStore";
 import { textChat } from "@/lib/chat";
+import Voice from "./Voice";
 
 const InputMessage = () => {
   const [userMessage, setUserMessage] = useState("");
@@ -79,9 +80,7 @@ const InputMessage = () => {
         {
           (userMessage.length == 0)
           &&
-          <button className='text-secondary/80'>
-            <Mic size={20}/>
-          </button>
+          <Voice />
         }
         <button>
           <div className={`rounded-full ${userMessage.length == 0 ? 'bg-[#F1F2F2]' : 'bg-accentForeground'} pl-2 pr-[0.6rem] py-[0.55rem]`}>
