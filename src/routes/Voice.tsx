@@ -155,7 +155,7 @@ const Voice = () => {
                         console.log("An error in llm web socket", error);
                     }
                 }
-                // Capture audio
+                // Capture audio. mediaStream -> a stream of media content carrying raw data from microphone
                 const mediaStream = await navigator.mediaDevices.getUserMedia({
                     audio: {
                         echoCancellation: true,
@@ -166,19 +166,20 @@ const Voice = () => {
 
                 mediaStreamRef.current = mediaStream;
 
-                // audio context
+                // audio context -> controlls the audio thread
                 const audioCtx = new AudioContext();
                 audioContextRef.current = audioCtx;
 
-                // source node
+                // source node -> works in the audio thread to receive audio from media stream -> does some internal magic to send audio to worklet script/node
                 const source = audioCtx.createMediaStreamSource(mediaStream);
                 sourceNodeRef.current = source;
                 
                 
-                // worklet node -> will process audio and send it to main thread
+                // this addModule loads a script in a separate worklet thread which registers a processor (see /audio-processors)
                 await audioCtx.audioWorklet.addModule(
                     "/audio-processors/linear-pcm-processor.js"
                 );
+                // worklet node -> will process audio and send it to main thread. the processing happens in its separate thread (worker thread) the worklet node uses the registered processor -> acts as an interface to the newly registerd script
                 const audioWorkletNode = new AudioWorkletNode(
                     audioCtx,
                     "linear-pcm-processor"
