@@ -3,10 +3,12 @@ import { useHotelPageChatStore } from '@/store/useHotelPageChatStore'
 import { Mic } from 'lucide-react'
 import { AudioService } from '@/lib/audioService'
 import { useEffect, useCallback, useRef } from 'react'
+import { voiceChat } from '@/lib/chat'
+import { text } from 'stream/consumers'
 
 const Voice = () => {
     // web socket connections
-    const { connectAudioSocket, canSpeak, disconnectAudioSocket } = useHotelPageChatStore()
+    const { connectAudioSocket, canSpeak, disconnectAudioSocket, textSocket, setCanSpeak } = useHotelPageChatStore()
     const audioServiceRef = useRef<AudioService>()
     // streaming audio to websocket via audioService
     console.log(canSpeak)
@@ -35,6 +37,13 @@ const Voice = () => {
         audioServiceRef.current = audioService
         await audioService.initialize();
         console.log(audioServiceRef.current.workletNode)
+        if (textSocket) {
+            voiceChat(textSocket)
+        }
+        else {
+            setCanSpeak(false)
+            toggleStreaming();
+        }
         const ws = await connectAudioSocket('en');
         if (ws) {
             ws.onmessage = (message) => {

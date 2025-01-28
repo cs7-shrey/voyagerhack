@@ -19,7 +19,7 @@ export const useSocketStore = create<SocketState>()((set, get) => ({
     canSpeak: false,
     setAudioSocket: (socket: WebSocket) => set({ audioSocket: socket }),
     setLlmSocket: (socket: WebSocket) => set({ llmSocket: socket }),
-    setCanSpeak: (canSpeak: boolean) => set({ canSpeak }),
+    setCanSpeak: (canSpeak: boolean) => set({ canSpeak }),  
     connectAudioSocket: async (lang) => {
         if (get().audioSocket?.OPEN) {
             get().disconnectAudioSocket();
@@ -28,7 +28,7 @@ export const useSocketStore = create<SocketState>()((set, get) => ({
             return                      // wouldn't happen in a ideal case
         }
         // the llm web socket is open
-        const audioSocket = new WebSocket(`ws://localhost:8000/ws/audio/${lang}`);
+        const audioSocket = new WebSocket(`ws://localhost:8000/ws/audio/${lang}?service=search`);
         const res = await new Promise((resolve, reject) => {
             audioSocket.onopen = () => {
                 console.log("Audio WebSocket connected!");
