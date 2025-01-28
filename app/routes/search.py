@@ -3,7 +3,7 @@ from ..utils.search_suggestions import get_suggestions, get_suggestion_space
 from .. import schemas, models
 from ..database import get_db
 from sqlalchemy.orm import Session
-from app.services.hotel_filter import get_hotels_with_filters
+from app.services.crud.hotel.filter import get_hotels_with_filters
 
 router = APIRouter(prefix="/search", tags=["search"])
 

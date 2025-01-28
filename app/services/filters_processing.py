@@ -1,6 +1,6 @@
 from app.database import get_db
 from app.routes.search import suggestion_search_space
-from app.services.hotel_filter import get_hotels_with_filters
+from app.services.crud.hotel.filter import get_hotels_with_filters
 from app.utils.search_suggestions import get_suggestions
 from pydantic import BaseModel
 from sqlalchemy.orm import Session

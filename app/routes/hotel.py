@@ -3,7 +3,7 @@ from app.database import get_db
 from app.schemas import HotelRoomResponse, HotelInfoResponse, ChatMode
 from sqlalchemy.orm import Session
 from app.oauth2 import get_current_client, socket_get_current_client
-from app.services.crud.hotel import get_hotel_info_by_id, get_hotel_room_info
+from app.services.crud.hotel.info import get_hotel_info_by_id, get_hotel_room_info
 from app.services.hotel_info_bot import HotelInfoBot
 
 router = APIRouter(prefix="/hotel", tags=["hotel"])
