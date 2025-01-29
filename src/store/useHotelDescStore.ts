@@ -41,8 +41,8 @@ export interface RoomType {
 interface HotelDescStore {
     hotelData: HotelData | null;
     roomData: RoomType[]| null;
-    setHotelData: (data: HotelData) => void;
-    setRoomData: (data: RoomType[]) => void;
+    setHotelData: (data: HotelData | null) => void;
+    setRoomData: (data: RoomType[] | null) => void;
     getHotelData: (id: bigint) => Promise<void>;
     getRoomData: (id: bigint) => Promise<void>;
 }
@@ -53,6 +53,8 @@ export const useHotelDescStore = create<HotelDescStore>()((set) => ({
     setHotelData: (data) => set({ hotelData: data }),
     setRoomData: (data) => set({ roomData: data }),
     getHotelData : async (id)  => {
+        // set({hotelData: null})
+        console.log(id)
         try {
             const response = await axiosInstance.get(`/hotel/${id}`)
             set({ hotelData: {
@@ -72,6 +74,7 @@ export const useHotelDescStore = create<HotelDescStore>()((set) => ({
         }
     },   
     getRoomData: async (id) => {
+        // set({roomData: []})
         try {
             const response= await axiosInstance.get(`/hotel/${id}/rooms`)
             console.log(response.data)

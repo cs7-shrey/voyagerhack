@@ -32,7 +32,7 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
     setCanSpeak: (canSpeak: boolean) => set({ canSpeak }),
     connectTextSocket: async (id) => {
         // check if the socket already open : TODO
-        if (get().textSocket?.OPEN) {
+        if (get().textSocket?.readyState === WebSocket.OPEN) {
             get().textSocket?.close()
         }
         const { hotelData }  = useHotelDescStore.getState()
@@ -61,10 +61,10 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
     },
     connectAudioSocket: async (lang) => {
         //
-        if (get().audioSocket?.OPEN) {
+        if (get().audioSocket?.readyState === WebSocket.OPEN) {
             get().audioSocket?.close()
         }
-        if (!get().textSocket?.OPEN) {
+        if (get().textSocket?.readyState !== WebSocket.OPEN) {
             return
         }
         const audioSocket = new WebSocket(`ws://${BASE_URL}/ws/audio/${lang}?service=chat`);
@@ -79,7 +79,7 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
             }
         })
         if (!res ) {
-            if (audioSocket.OPEN) audioSocket.close();
+            if (audioSocket.readyState === WebSocket.OPEN) audioSocket.close();
             set({ audioSocket: null })
             set({ canSpeak: false})
             return
@@ -89,11 +89,11 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
         return audioSocket
     },
     disconnectTextSocket: () => {
-        if(!get().textSocket || !get().audioSocket?.CLOSED) return
+        if(!get().textSocket || get().textSocket?.readyState !== WebSocket.CLOSED || get().textSocket?.readyState !== WebSocket.CLOSING) return
         get().textSocket?.close()
     },
     disconnectAudioSocket: () => {
-        if (!get().audioSocket || !get().audioSocket?.CLOSED) return
+        if (!get().audioSocket || get().audioSocket?.readyState !== WebSocket.CLOSED || get().audioSocket?.readyState !== WebSocket.CLOSING) return
         get().audioSocket?.close()
         set({ canSpeak: false})
     }

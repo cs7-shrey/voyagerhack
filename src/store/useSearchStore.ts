@@ -6,7 +6,7 @@ export interface queryTerm {
 }
 
 export interface Amenity {
-    name: string;
+    name?: string;
     code: string;
 }
 interface SearchStore {

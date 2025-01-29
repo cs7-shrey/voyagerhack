@@ -21,10 +21,10 @@ export const useSocketStore = create<SocketState>()((set, get) => ({
     setLlmSocket: (socket: WebSocket) => set({ llmSocket: socket }),
     setCanSpeak: (canSpeak: boolean) => set({ canSpeak }),  
     connectAudioSocket: async (lang) => {
-        if (get().audioSocket?.OPEN) {
+        if (get().audioSocket?.readyState === WebSocket.OPEN) {
             get().disconnectAudioSocket();
         }
-        if (!get().llmSocket?.OPEN) {
+        if (get().llmSocket?.readyState !== WebSocket.OPEN) {
             return                      // wouldn't happen in a ideal case
         }
         // the llm web socket is open
@@ -53,7 +53,7 @@ export const useSocketStore = create<SocketState>()((set, get) => ({
         }
     },
     connectLlmSocket: async () => {
-        if (get().llmSocket?.OPEN) {
+        if (get().llmSocket?.readyState === WebSocket.OPEN) {
             get().llmSocket?.close()
         }
         const llmSocket = new WebSocket('ws://localhost:8000/ws/llm/search');
@@ -79,14 +79,14 @@ export const useSocketStore = create<SocketState>()((set, get) => ({
     },
     disconnectAudioSocket: () => {
         const skt = get().audioSocket
-        if (skt?.OPEN) {
+        if (skt?.readyState === WebSocket.OPEN) {
             skt.close();
         }
         set({ audioSocket: null });
     },
     disconnectLlmSocket: () => {
         const skt = get().llmSocket
-        if (skt?.OPEN) {
+        if (skt?.readyState === WebSocket.OPEN) {
             skt.close();
         }
         set({ llmSocket: null });
