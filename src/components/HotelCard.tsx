@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Star } from 'lucide-react';
+import { Link } from 'react-router';
 
 export interface Hotel {
-    id: number;
+    id: bigint;
     name: string;
     location: string;
     base_fare?: number;
@@ -13,6 +14,7 @@ export interface Hotel {
 }
 
 const HotelCard: React.FC<Hotel> = ({
+    id,
     name,
     location,
     base_fare = 0,
@@ -23,7 +25,7 @@ const HotelCard: React.FC<Hotel> = ({
 }) => {
     // State to track the currently displayed main image
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-
+    // const { id } = useLoaderData()
     // Calculate the number of remaining images for the "+X" overlay
     const remainingImages = images.length - 4;
 
@@ -54,6 +56,7 @@ const HotelCard: React.FC<Hotel> = ({
     return (
         <div className="flex rounded-lg overflow-hidden shadow-lg w-full bg-white">
             {/* Left side - Main Image and Thumbnail Gallery */}
+            <Link to={`/hotel/${id}`} className='w-full h-full flex' target='_blank'>
             <div className="w-32 md:size-52 lg:size-52 relative flex flex-col">
                 {/* Main Image */}
                 <div className="h-48">
@@ -136,6 +139,7 @@ const HotelCard: React.FC<Hotel> = ({
                     </div>
                 )}
             </div>
+            </Link>
         </div>
     );
 };
