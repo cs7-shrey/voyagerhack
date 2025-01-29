@@ -54,7 +54,6 @@ export const useHotelDescStore = create<HotelDescStore>()((set) => ({
     setRoomData: (data) => set({ roomData: data }),
     getHotelData : async (id)  => {
         // set({hotelData: null})
-        console.log(id)
         try {
             const response = await axiosInstance.get(`/hotel/${id}`)
             set({ hotelData: {
@@ -70,23 +69,21 @@ export const useHotelDescStore = create<HotelDescStore>()((set) => ({
                 amenities: response.data.amenities
             } })
         } catch (error) {
-            console.log("Error fetching hotel data: ", error)
+            console.error("Error fetching hotel data: ", error)
         }
     },   
     getRoomData: async (id) => {
         // set({roomData: []})
         try {
             const response= await axiosInstance.get(`/hotel/${id}/rooms`)
-            console.log(response.data)
             const data = response.data
             response.data.forEach((room: RoomType) => {
                 room.rate_plans.sort((a: RatePlan, b: RatePlan) => a.base_fare - b.base_fare)
             })
             
             set({ roomData: data })
-                // console.log(response.data)
         } catch (error) {
-            console.log("Error fetching room data: ", error)                
+            console.error("Error fetching room data: ", error)                
         }
     }
 }))

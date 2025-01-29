@@ -7,6 +7,7 @@ import { AudioService } from "@/lib/audioService";
 import { useSocketStore } from "@/store/useSocketStore";
 import { Mic } from "lucide-react";
 import { useLllmFilters } from "@/lib/voiceSearch";
+import { generateCurrentFiltersAsString } from "@/lib/utils";
 
 const Voice = () => {
     const [isStreaming, setIsStreaming] = useState(false);
@@ -25,6 +26,7 @@ const Voice = () => {
         connectAudioSocket,
         connectLlmSocket,
         disconnectAudioSocket,
+        setWaitingForMessage,
         // disconnectLlmSocket
     } = useSocketStore();
 
@@ -75,6 +77,7 @@ const Voice = () => {
     }, [isStreaming])
     const toggleStreaming = async () => {
         if (isStreaming) {
+            setWaitingForMessage(true);
             cleanup();
             setIsStreaming(false);
         } else {
@@ -83,6 +86,7 @@ const Voice = () => {
                 const llmSocket = await connectLlmSocket();
                 const audioSocket = await connectAudioSocket();
                 if (audioSocket && llmSocket) {
+                    llmSocket.send(JSON.stringify({"previous_filters": generateCurrentFiltersAsString()}));
                     audioSocket.onmessage = (message) => {
                         console.log(message)
                     }
@@ -92,7 +96,7 @@ const Voice = () => {
                             if (jsonResponse.status) {
                                 // console.log(jsonResponse)
                                 const filters = jsonResponse.filters;
-                                filterProcessing(filters, jsonResponse.status, jsonResponse.data)
+                                filterProcessing(filters, jsonResponse.status, jsonResponse.data);
                             }
                         } catch (error) {
                             console.error("Error parsing JSON:", error);
@@ -101,16 +105,18 @@ const Voice = () => {
                     llmSocket.onclose = () => {
                         cleanup();
                         setIsStreaming(false);
+                        setWaitingForMessage(false);
                         console.log("WebSocket disconnected!");
                     }
                     audioSocket.onclose = () => {
                         setIsStreaming(false)
                     }
                     audioSocket.onerror = (error) => {
-                        console.log("An error in audio web socket", error);
+                        console.error("An error in audio web socket", error);
                     }
                     llmSocket.onerror = (error) => {
-                        console.log("An error in llm web socket", error);
+                        setWaitingForMessage(false);
+                        console.error("An error in llm web socket", error);
                     }
                 }                
                 
@@ -135,15 +141,6 @@ const Voice = () => {
 
     return (
         <div className="flex justify-center bg-primary w-fit h-fit py-2 rounded-md">
-            {/* <button onClick={toggleStreaming}>
-                {isStreaming ? "Stop Streaming" : "Start Streaming"}
-            </button>
-            <button
-                className="bg-white text-black rounded-md p-2"
-                onClick={() => (lang === "en" ? setLang("hi") : setLang("en"))}>
-                {lang}
-            </button> */}
-            
             <div className="self-center rounded-md">
                 <button onClick={toggleStreaming}>
                     <div className="h-12 w-16 rounded-full flex flex-col justify-start items-center" id="container">

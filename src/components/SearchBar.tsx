@@ -76,25 +76,30 @@ const SearchBar = () => {
     //   </div>
     // </div>
     <>
-      <div className='flex bg-white rounded-md'>
-        <div className='min-h-full border-r-2'>
-          <Voice />
+      <div className='flex flex-col md:flex-row bg-white rounded-md'>
+        {/* voice controls */}
+        <div className='flex self-center md:self-start border-l-2 rounded-md md:rounded-none md:border-0'>
+          <div className='min-h-full border-r-2'>
+            <Voice />
+          </div>
+          <div className='border-r-2 flex justify-center items-center'>
+            <LanguageButton />
+          </div>
         </div>
-        <div className='border-r-2 flex justify-center items-center'>
-          <LanguageButton />
-        </div>
-        <div className='flex items-end'>
-          <div className="flex flex-col mx-2 mt-auto py-3 border-r-2">
+        <div className='flex flex-col sm:flex-row items-end border-t-4 md:border-none'>   {/* height ok */}
+          {/* search input and dropdown */}
+          <div className="flex flex-col w-full sm:w-auto px-2 justify-center my-auto lg:mt-auto py-3">
             <div className='text-secondary/55 text-xs'>
               Where do you want to stay?
             </div>
             <SearchDropdown />
           </div>
-          <div className='flex sm:items-start md:items-end flex-col md:flex-row h-full'>
-            <div className='flex gap-2 sm:flex-row h-full' id='checkInCheckOut'>
+          {/* checkin-checkout-search-button */}
+          <div className='flex sm:items-start md:items-end flex-col md:flex-row h-full border-t-2 border-l-0 sm:border-l-4 md:border-l-2 md:border-t-0'>
+            <div className='flex gap-2 sm:flex-row h-full pl-1' id='checkInCheckOut'>
               <CheckInOut />
             </div>
-            <div className='w-full h-full'>
+            <div className='w-full h-full md:rounded-r-md'>
               <SearchButton />
             </div>
             {/* <div className="text-white flex font-bold gap-1">

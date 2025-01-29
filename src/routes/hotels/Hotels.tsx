@@ -11,11 +11,14 @@ import { stateInitUsingQueryParams } from "@/lib/utils";
     // Mic,     
     //  MicOff 
     // } from "lucide-react";
+import { HashLoader } from "react-spinners"
 import { useHotelStore } from "@/store/useHotelStore";
 import TopBar from "@/components/TopBar";
+import { useSocketStore } from "@/store/useSocketStore";
 
 export default function Hotels() {
     const [filtersDropdown, setFiltersDropdown] = useState(false);
+    const { waitingForMessage } = useSocketStore();
     // const [hotels, setHotels] = useState<Hotel[]>([]);
     const { hotels, setHotels } = useHotelStore();
     const navigate = useNavigate()
@@ -91,13 +94,21 @@ export default function Hotels() {
         getHotels();
     }, [searchParams, navigate, setHotels]);
 
+    useEffect(() => {
+        if (waitingForMessage) {
+          document.body.style.overflow = 'hidden';
+        }
+        return () => {
+          document.body.style.overflow = 'unset';
+        };
+      }, [waitingForMessage]);
     // test
     useEffect(() => {
         console.log('mounted')
     }, [])
     return (
         <div className="relative">
-            <nav className="bg-accent px-4 sticky top-0 z-50">
+            <nav className="bg-accent px-4 sm:sticky sm:top-0 z-50">
                 <TopBar />
             </nav>
             <div className="p-4 relative z-20">
@@ -127,6 +138,9 @@ export default function Hotels() {
                     ))}
                 </div>
             </div>
+            {waitingForMessage && <div className="fixed inset-0 top-0 left-0 z-50 flex justify-center items-center bg-secondary/50">
+                <HashLoader />
+            </div>}
         </div>
     );
 }

@@ -5,10 +5,12 @@ interface SocketState {
     llmSocket: WebSocket | null;
     canSpeak: boolean;
     lang: Language;
+    waitingForMessage: boolean;
     setAudioSocket: (socket: WebSocket) => void;
     setLlmSocket: (socket: WebSocket) => void;
     setCanSpeak: (canSpeak: boolean) => void;
     setLang: (lang: Language) => void;
+    setWaitingForMessage: (wfm: boolean) => void
     connectAudioSocket: () => Promise<WebSocket | void>;
     connectLlmSocket: () => Promise<WebSocket | void>;
     disconnectAudioSocket: () => void;
@@ -20,10 +22,12 @@ export const useSocketStore = create<SocketState>()((set, get) => ({
     llmSocket: null,
     canSpeak: false,
     lang: Language.English,
+    waitingForMessage: false,
     setAudioSocket: (socket: WebSocket) => set({ audioSocket: socket }),
     setLlmSocket: (socket: WebSocket) => set({ llmSocket: socket }),
     setCanSpeak: (canSpeak: boolean) => set({ canSpeak }),  
     setLang: (lang) => set({lang}),
+    setWaitingForMessage: ( waitingForMessage ) => set({waitingForMessage}),    
     connectAudioSocket: async () => {
         if (get().audioSocket?.readyState === WebSocket.OPEN) {
             get().disconnectAudioSocket();

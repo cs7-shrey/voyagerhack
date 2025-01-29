@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import "./styles/logo.css"
 function LetterDiv({ letter }: { letter: string }) {
     return (
@@ -6,6 +7,7 @@ function LetterDiv({ letter }: { letter: string }) {
 }
 const Logo = () => {
     return (
+        <Link to={"/"} >
         <div className="text-xl font-bold font-mono flex gap-1 items-center">
             <LetterDiv letter="H" />
             <LetterDiv letter="A" />
@@ -14,6 +16,7 @@ const Logo = () => {
             <LetterDiv letter="N" />
             {/* HAVEN */}
         </div>
+        </Link>
     )
 }
 

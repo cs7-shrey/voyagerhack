@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 import UserRatingFilter from "./filterComponents/UserRatingFilter";
 import RoomAmenityFilter from "./filterComponents/RoomAmenityFilter";
 import HotelPriceFilter from "./filterComponents/HotelPriceFilter";
+import { generateCurrentFiltersAsString } from "@/lib/utils";
 // import { useSearchParams } from "react-router";
 
 
@@ -73,7 +74,7 @@ const Filters: React.FC<Props> = ({ filterIconClick }) => {
         stateInitUsingQueryParams(searchParams);
     }
     const handleReset = () => {}
-    
+    generateCurrentFiltersAsString();
     return (
         <div 
         className={`bg-primary w-full min-w-sm max-h-[70vh] rounded-lg shadow-md p-4 overflow-y-auto scrollbar-webkit scrollbar-thin`}>
