@@ -10,7 +10,6 @@ const Voice = () => {
     const { connectAudioSocket, canSpeak, disconnectAudioSocket, textSocket, setCanSpeak } = useHotelPageChatStore()
     const audioServiceRef = useRef<AudioService>()
     // streaming audio to websocket via audioService
-    console.log(canSpeak)
     // message updates
     const cleanup = useCallback(() => {
         console.log('cleaning up audio socket service')
@@ -18,11 +17,12 @@ const Voice = () => {
             audioServiceRef.current.cleanup()
             audioServiceRef.current = undefined
         }
+        const { audioSocket } = useHotelPageChatStore.getState()
+        console.log(audioSocket?.readyState)
         disconnectAudioSocket();
     }, [disconnectAudioSocket])
     useEffect(() => {
         return () => {
-            console.log('durghatna')
             cleanup();
         }
     }, [cleanup])
@@ -60,7 +60,7 @@ const Voice = () => {
             ws.send(buffer)
         })
     }
-
+    console.log(canSpeak)
     return (
         <button 
             className={`text-secondary/80 rounded-full size-10 ${canSpeak ? 'animate-pulse-slow' : ''}`} 
