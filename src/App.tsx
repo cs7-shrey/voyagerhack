@@ -83,7 +83,6 @@ export default function AppRouter() {
         <Route path="/hello" element={<h1>hello</h1>} />
         <Route path="/hotels" element={<Hotels />} />
         <Route path="/voice" element={<Voice />} />
-        <Route path="/hotel-desc" element={<HotelDescription id={BigInt("200703161155527273")} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/hotel/:id" element={<HotelDescription />} />
         <Route path="/dummy" element={

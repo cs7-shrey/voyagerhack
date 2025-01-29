@@ -23,7 +23,7 @@ class SearchSuggestion(BaseModel):
     score: float
 
 class HotelSearchResponse(BaseModel):
-    id: int
+    id: str
     name: str
     location: str
     base_fare: float = 0.0

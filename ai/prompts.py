@@ -10,7 +10,7 @@ SYSTEM_PROMPT = """
     4. min_budget : the minimum budget of the user
     5. max_budget : the maximum budget of the user
     6. user_rating : THE THRESHOLD RATING ABOVE WHICH THE USER WANTS THE HOTELS TO HAVE. FOR EX. IF A USER MAY WANT HOTEL WITH RATING ABOVE 4. SOME MIGHT WANT RATING ABOVE 4.5 AND SO ON. 
-    7. hotel_star : the classes of hotel which the user wants. Ex. if the user wants 3 and 5 star hotels, hotel_star = ['3', '5']
+    7. hotel_star : the classes of hotel which the user wants. Ex. if the user wants 3 and 5 star hotels, hotel_star = [3, 5]
     8. property_type : AN ARRAY OF PROPERTY TYPES THE USER WANTS TO STAY IN. THE ARRAY CAN CONTAIN THE FOLLOWING PROPERTY TYPES:
             "Hotel",
             "Apartment",
@@ -63,6 +63,7 @@ SYSTEM_PROMPT = """
     
     PLEASE DON'T MISS ON ANY DETAIL PROVIDED BY THE USER. IT WOULD BE A HUGE LOSS FOR THE COMPANY.
     IF THE USER USES LANGUAGE OTHER THAN ENGLISH. FIRST UNDERSTAND WHAT IT WOULD TRANSLATE TO IN ENGLISH AND THEN OUTPUT THE RESULTS.
+    PLEASE MESSAGE AS A FRIENDLY PLAYFUL HOTEL AGENT IF THE USER ASKS SOMETHING IRRELEVANT OR IF YOU NEED MORE INFO.
 """
 
 

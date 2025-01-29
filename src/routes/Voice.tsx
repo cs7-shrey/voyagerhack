@@ -10,7 +10,6 @@ import { useLllmFilters } from "@/lib/voiceSearch";
 
 const Voice = () => {
     const [isStreaming, setIsStreaming] = useState(false);
-    const [lang, setLang] = useState<'en' | 'hi'>('en');        // TODO: make this enum
     // const [sending, setSending] = useState(false);
     // const audioContextRef = useRef<AudioContext>();
     // const mediaStreamRef = useRef<MediaStream>();
@@ -84,7 +83,7 @@ const Voice = () => {
             // Start streaming
             try {
                 const llmSocket = await connectLlmSocket();
-                const audioSocket = await connectAudioSocket(lang);
+                const audioSocket = await connectAudioSocket();
                 console.log(llmSocket?.readyState)
                 if (audioSocket && llmSocket) {
                     audioSocket.onmessage = (message) => {

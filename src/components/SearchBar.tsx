@@ -6,6 +6,7 @@ import SearchDropdown from './SearchDropdown';
 import SearchButton from './search/SearchButton';
 import CheckInOut from './search/CheckInOut';
 import Voice from '@/routes/Voice';
+import LanguageButton from './search/LanguageButton';
 
 
 const SearchBar = () => {
@@ -77,7 +78,10 @@ const SearchBar = () => {
     <>
       <div className='flex bg-white rounded-md'>
         <div className='min-h-full border-r-2'>
-          < Voice />
+          <Voice />
+        </div>
+        <div className='border-r-2 flex justify-center items-center'>
+          <LanguageButton />
         </div>
         <div className='flex items-end'>
           <div className="flex flex-col mx-2 mt-auto py-3 border-r-2">

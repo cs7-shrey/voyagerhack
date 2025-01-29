@@ -97,7 +97,7 @@ export default function Hotels() {
     }, [])
     return (
         <div className="relative">
-            <nav className="bg-accent px-4 abolute sticky">
+            <nav className="bg-accent px-4 sticky top-0 z-50">
                 <TopBar />
             </nav>
             <div className="p-4 relative z-20">

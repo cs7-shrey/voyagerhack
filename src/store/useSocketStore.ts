@@ -1,13 +1,15 @@
 import { create } from 'zustand'
-
+import { Language } from '@/lib/language';
 interface SocketState {
     audioSocket: WebSocket | null;
     llmSocket: WebSocket | null;
-    canSpeak: boolean
+    canSpeak: boolean;
+    lang: Language;
     setAudioSocket: (socket: WebSocket) => void;
     setLlmSocket: (socket: WebSocket) => void;
-    setCanSpeak: (canSpeak: boolean) => void
-    connectAudioSocket: (lang: 'en' | 'hi') => Promise<WebSocket | void>;
+    setCanSpeak: (canSpeak: boolean) => void;
+    setLang: (lang: Language) => void;
+    connectAudioSocket: () => Promise<WebSocket | void>;
     connectLlmSocket: () => Promise<WebSocket | void>;
     disconnectAudioSocket: () => void;
     disconnectLlmSocket: () => void;
@@ -17,10 +19,12 @@ export const useSocketStore = create<SocketState>()((set, get) => ({
     audioSocket: null,
     llmSocket: null,
     canSpeak: false,
+    lang: Language.English,
     setAudioSocket: (socket: WebSocket) => set({ audioSocket: socket }),
     setLlmSocket: (socket: WebSocket) => set({ llmSocket: socket }),
     setCanSpeak: (canSpeak: boolean) => set({ canSpeak }),  
-    connectAudioSocket: async (lang) => {
+    setLang: (lang) => set({lang}),
+    connectAudioSocket: async () => {
         if (get().audioSocket?.readyState === WebSocket.OPEN) {
             get().disconnectAudioSocket();
         }
@@ -28,7 +32,7 @@ export const useSocketStore = create<SocketState>()((set, get) => ({
             return                      // wouldn't happen in a ideal case
         }
         // the llm web socket is open
-        const audioSocket = new WebSocket(`ws://localhost:8000/ws/audio/${lang}?service=search`);
+        const audioSocket = new WebSocket(`ws://localhost:8000/ws/audio/${get().lang}?service=search`);
         const res = await new Promise((resolve, reject) => {
             audioSocket.onopen = () => {
                 console.log("Audio WebSocket connected!");

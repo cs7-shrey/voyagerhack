@@ -37,10 +37,12 @@ async def audio_websocket(ws: WebSocket, language: str, service: str = Query(...
     send_task = asyncio.create_task(ws_speech.send_audio_from_queue())
     await ws.send_text('speak')
     asyncio.create_task(websocket_timeout(ws, 20))
-    
+    current_time = time.time()
     try:
         print('started')
         async for message in ws.iter_bytes():
+            if time.time() - current_time > 20:
+                break
             audio_data += message
             await ws_speech.audio_queue.put(message)
         await ws_speech.audio_queue.put(None)

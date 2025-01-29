@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import { type Hotel } from "@/components/HotelCard";
 import { useSearchStore } from "@/store/useSearchStore";
 import toast from "react-hot-toast";
-import { stat } from "fs";
 
 interface Place {
     name: string;
