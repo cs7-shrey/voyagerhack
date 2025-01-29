@@ -44,7 +44,6 @@ const Voice = () => {
     }, [cleanup]);
     useEffect(() => {
         if (isStreaming && canvasRef.current) {
-            console.log('got here')
             const audioMotion = new AudioMotionAnalyzer(canvasRef.current, {
                 source: sourceNodeRef.current,
                 canvas: canvasRef.current,
@@ -75,7 +74,6 @@ const Voice = () => {
         }
     }, [isStreaming])
     const toggleStreaming = async () => {
-        console.log("testing")
         if (isStreaming) {
             cleanup();
             setIsStreaming(false);
@@ -84,7 +82,6 @@ const Voice = () => {
             try {
                 const llmSocket = await connectLlmSocket();
                 const audioSocket = await connectAudioSocket();
-                console.log(llmSocket?.readyState)
                 if (audioSocket && llmSocket) {
                     audioSocket.onmessage = (message) => {
                         console.log(message)
@@ -92,9 +89,8 @@ const Voice = () => {
                     llmSocket.onmessage = (message) => {
                         try {
                             const jsonResponse = JSON.parse(message.data);
-                            console.log(jsonResponse.status)
                             if (jsonResponse.status) {
-                                console.log(jsonResponse)
+                                // console.log(jsonResponse)
                                 const filters = jsonResponse.filters;
                                 filterProcessing(filters, jsonResponse.status, jsonResponse.data)
                             }

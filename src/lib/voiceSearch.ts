@@ -36,7 +36,7 @@ export function useLllmFilters() {
             // alert(status.message)
             toast(status.message, {
                 icon: '🤠',
-                removeDelay: 3000
+                removeDelay: 4000
                 // style: {
                 //     "color": "#0062E3"
                 // }

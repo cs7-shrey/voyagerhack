@@ -11,10 +11,12 @@ interface HotelPageChatStore {
     textSocket: WebSocket | null;
     audioSocket: WebSocket | null;
     canSpeak: boolean;
+    waitingForMessage: boolean;
     setMessages: (messages: Message[]) => void;
     setTextSocket: (socket: WebSocket) => void;
     setAudioSocket: (socket: WebSocket) => void;
-    setCanSpeak: (canSpeak: boolean) => void
+    setCanSpeak: (canSpeak: boolean) => void;
+    setWaitingForMessage: (waitingForMessage: boolean) => void;
     connectTextSocket: (id: bigint) => Promise<WebSocket | void>;
     connectAudioSocket: (lang: 'en' | 'hi') => Promise<WebSocket | void>;
     disconnectTextSocket: () => void;
@@ -26,10 +28,12 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
     textSocket: null,
     audioSocket: null,
     canSpeak: false,
+    waitingForMessage: false,
     setMessages: (messages) => set({ messages }),
     setTextSocket: ( socket ) => set({textSocket: socket}),
     setAudioSocket: ( socket ) => set({ audioSocket: socket}),
     setCanSpeak: (canSpeak: boolean) => set({ canSpeak }),
+    setWaitingForMessage: (waitingForMessage) => set({ waitingForMessage }),
     connectTextSocket: async (id) => {
         // check if the socket already open : TODO
         if (get().textSocket?.readyState === WebSocket.OPEN) {
@@ -93,8 +97,8 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
         get().textSocket?.close()
     },
     disconnectAudioSocket: () => {
+        set({ canSpeak: false})
         if (!get().audioSocket || get().audioSocket?.readyState !== WebSocket.CLOSED || get().audioSocket?.readyState !== WebSocket.CLOSING) return
         get().audioSocket?.close()
-        set({ canSpeak: false})
     }
 }));
