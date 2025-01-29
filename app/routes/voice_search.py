@@ -9,6 +9,7 @@ from fastapi import APIRouter, WebSocket, Depends
 import os
 from sqlalchemy.orm import Session
 from app.services.queues import queue_maps
+from app.services.timeout import websocket_timeout
 
 
 load_dotenv()
@@ -23,18 +24,19 @@ prev_context_mapping: dict[int, dict] = {}                  # TODO: implement th
 @router.websocket("/ws/llm/search")
 async def llm_response_websocket(ws: WebSocket, current_user: TokenData = Depends(socket_get_current_client), db: Session = Depends(get_db)):
     await ws.accept()
+    asyncio.create_task(websocket_timeout(ws, 40))
+    json_data = await ws.receive_json()
+    print(json_data)
+    previous_filters = json_data['previous_filters']
     transcript_queues = queue_maps['search']
     transcript_queues[current_user.user_id] = asyncio.Queue()
     transcript = ''
-    # TODO: ADD timeout here
     while not transcript:
         transcript = await transcript_queues[current_user.user_id].get()
-    # send the transcription to gemini
-    print('gemini ko bhej rahe hai', transcript)
-    response = await llm.invoke(transcript)     # set this in the context of next prompt
+    print('sending to gemini...', transcript)
+    response = await llm.invoke(transcript, previous_filters)     
     filters_dict = llm.parse_llm_response(response.text)
     response = process_llm_filters(filters_dict, SearchFilters, db)
-    print('here')
     hotels = response['data']
     response['data'] = [dict(hotel) for hotel in hotels]
     await ws.send_json(response)

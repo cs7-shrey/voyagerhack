@@ -21,9 +21,19 @@ model = genai.GenerativeModel(
 )
 
 # chat_session.
-async def invoke(prompt):
+async def invoke(prompt, previous_filters_string):
   chat_session = model.start_chat(
     history=[
+      {
+      "role": "user",
+      "parts": [
+        f"""
+          SYSTEM GENERATED PREVIOUSLY USED FILTERS:
+          {previous_filters_string}
+          USE IT AS CONTEXT FOR FURTHER QUERIES
+        """
+      ],
+    },
     ]
   )
   response = await chat_session.send_message_async(prompt)
