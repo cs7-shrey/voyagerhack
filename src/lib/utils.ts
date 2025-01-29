@@ -128,3 +128,23 @@ export function getHotelInfoFormatted() {
   `
   return info
 }
+
+export function generateCurrentFiltersAsString() {
+  const { 
+    queryTerm, checkIn, checkOut, minBudget, maxBudget, userRating, hotelStar, propertyType, hotelAmenities, roomAmenities
+   } = useSearchStore.getState()
+
+   const filterString = `
+    place: ${queryTerm.place}
+    check_in: ${formatDate(checkIn)}
+    check_out: ${formatDate(checkOut)}
+    min_budget: ${minBudget}
+    max_budget: ${maxBudget}
+    user_rating: ${userRating}
+    hotel_star: ${JSON.stringify(hotelStar)}
+    property_type: ${propertyType.length > 0 ? JSON.stringify(propertyType) : JSON.stringify(propertyType) + " (Empty array means all available types)"}
+    hotel_amenities: ${JSON.stringify(hotelAmenities.map((amenity) => amenity.code))}
+    room_amenities: ${JSON.stringify(roomAmenities.map((amenity) => amenity.code))} 
+   `
+  return filterString
+}
