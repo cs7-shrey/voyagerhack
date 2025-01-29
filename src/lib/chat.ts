@@ -48,7 +48,6 @@ export async function voiceChat(mainWs: WebSocket): Promise<string | void> {
     let llmMessage = '';
     try {
         await mainWs.send(ChatMode.Voice)
-        setWaitingForMessage(true)
         await new Promise((resolve, reject) => {
             const { messages: prevMessages, setMessages } = useHotelPageChatStore.getState();
             mainWs.onmessage = (serverMessage) => {

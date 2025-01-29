@@ -98,9 +98,6 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
     },
     disconnectAudioSocket: () => {
         set({ canSpeak: false})
-        const ws = get().audioSocket
-        console.log(ws)
-        console.log(ws?.readyState)
         if (!get().audioSocket || get().audioSocket?.readyState !== WebSocket.CLOSED || get().audioSocket?.readyState !== WebSocket.CLOSING) return
         get().audioSocket?.close()
     }

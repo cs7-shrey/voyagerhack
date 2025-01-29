@@ -7,7 +7,7 @@ import { voiceChat } from '@/lib/chat'
 
 const Voice = () => {
     // web socket connections
-    const { connectAudioSocket, canSpeak, disconnectAudioSocket, textSocket, setCanSpeak } = useHotelPageChatStore()
+    const { connectAudioSocket, canSpeak, disconnectAudioSocket, textSocket, setCanSpeak, setWaitingForMessage } = useHotelPageChatStore()
     const audioServiceRef = useRef<AudioService>()
     // streaming audio to websocket via audioService
     // message updates
@@ -26,8 +26,9 @@ const Voice = () => {
             cleanup();
         }
     }, [cleanup])
-    const toggleStreaming = async () => {
+    const toggleStreaming = async (retry: int) => {
         if(canSpeak) {
+            setWaitingForMessage(true)
             cleanup();
             return
         }
@@ -41,7 +42,9 @@ const Voice = () => {
         }
         else {
             setCanSpeak(false)
-            toggleStreaming();
+            if (retry > 4) return
+            toggleStreaming(retry + 1);              // TODO: can trigger unlimited retries. fix
+            return
         }
         const ws = await connectAudioSocket('en');
         if (ws) {
@@ -64,7 +67,7 @@ const Voice = () => {
     return (
         <button 
             className={`text-secondary/80 rounded-full size-10 ${canSpeak ? 'animate-pulse-slow' : ''}`} 
-            onClick={() => toggleStreaming()}
+            onClick={() => toggleStreaming(1)}
         >
             <Mic size={20} className='my-auto mx-auto' color={`${canSpeak ? 'red' : 'black'}`} />
         </button>

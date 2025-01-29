@@ -15,7 +15,7 @@ const ChatBox: React.FC<Props> = ({ onClose }) => {
     useEffect(() => {
         endRef?.current?.scrollIntoView({behavior: "smooth"})
     })
-    console.log(messages)
+
     return (
         <div className="sm:w-[80%] md:w-[30rem] overflow-auto sm:ml-auto m-4 border-4 flex flex-col gap-2 relative justify-end rounded-2xl bg-white h-[95%] px-4 pb-4">
             <div className='mb-auto sticky flex justify-between h-24 border-b-2'>
