@@ -6,23 +6,35 @@ import { useHotelDescStore } from "@/store/useHotelDescStore";
 import HotelNavbar from "@/components/refactor/HotelNavbar";
 import { Bot } from "lucide-react";
 import ChatBox from "@/components/chat/ChatBox";
+import { useNavigate, useParams } from "react-router";
 
-interface Props {
-    id: bigint
-}
-
-const HotelDescription: React.FC<Props> = ({ id }) => {
+const HotelDescription = () => {
     const { hotelData, roomData } = useHotelDescStore();
     const [chatBoxOpen, setChatBoxOpen] = useState(false);
     console.log(hotelData);
     const onClick = () => {
         setChatBoxOpen((prev) => !prev);
     }
+    let { id } = useParams()
+    console.log(id)
+    const navigate = useNavigate()
+    if (!id) {
+        id = "124123412341234123"
+        navigate('/')
+    }
+    useEffect(() => {
+        return () => {
+            const { setHotelData, setRoomData } = useHotelDescStore.getState();
+            setHotelData(null);
+            setRoomData(null)
+            console.log('oh no')
+        }
+    }, [])
 
     useEffect(() => {
         const { getHotelData, getRoomData } = useHotelDescStore.getState();
-        getHotelData(id);
-        getRoomData(id);
+        getHotelData(BigInt(id));
+        getRoomData(BigInt(id));
     }, [id])
     return (
         <div className="relative">

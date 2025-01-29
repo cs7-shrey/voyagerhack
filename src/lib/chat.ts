@@ -6,7 +6,7 @@ export enum ChatMode {
 }
 export async function textChat(mainWs: WebSocket, userMessage: string): Promise<string | void> {
     // connect to the web socket and send the hotel data
-    if (!mainWs.OPEN) {
+    if (mainWs.readyState !== WebSocket.OPEN) {
         return
     }
     let llmMessage = '';
@@ -32,7 +32,7 @@ export async function textChat(mainWs: WebSocket, userMessage: string): Promise<
 
 export async function voiceChat(mainWs: WebSocket): Promise<string | void> {
     // TBD
-    if (!mainWs.OPEN) {
+    if (mainWs.readyState !== WebSocket.OPEN) {
         return
     }
     let llmMessage = '';

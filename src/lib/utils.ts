@@ -83,6 +83,7 @@ export function stateInitUsingQueryParams(searchParams: URLSearchParams) {
   const filters = JSON.parse(searchParams.get("filters") || "{}");
   const checkIn = checkInDate ? new Date(checkInDate) : new Date();
   const checkOut = checkOutDate ? new Date(checkOutDate) : new Date(new Date().setDate(new Date().getDate() + 1));
+  console.log(filters.hotelStar)
   setInitialFiltersState(
     { place: q || "", type: type || "" },
     checkIn,

@@ -16,12 +16,16 @@ export class AudioService {
         autoGainControl: true
     }) {
         console.log('initializing audio service')
+        // Capture audio. mediaStream -> a stream of media content carrying raw data from microphone
         this.mediaStream = await navigator.mediaDevices.getUserMedia({
             audio: config
         });
+        // audio context -> controlls the audio thread
         this.audioContext = new AudioContext();
+        // source node -> works in the audio thread to receive audio from media stream -> does some internal magic to send audio to worklet script/node
         this.sourceNode = this.audioContext.createMediaStreamSource(this.mediaStream)
         
+        // this addModule loads a script in a separate worklet thread which registers a processor (see /audio-processors)
         await this.audioContext.audioWorklet.addModule(
             "/audio-processors/linear-pcm-processor.js"
         )
