@@ -29,6 +29,7 @@
     "react-audio-stream": "^1.0.6",
     "react-audio-visualize": "^1.2.0",
     "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.5.1",
     "react-markdown": "^9.0.3",
     "react-range-slider-input": "^3.0.7",
     "react-speech-recognition": "^3.10.0",
