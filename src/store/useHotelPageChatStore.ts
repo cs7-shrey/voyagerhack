@@ -93,12 +93,14 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
         return audioSocket
     },
     disconnectTextSocket: () => {
-        if(!get().textSocket || get().textSocket?.readyState !== WebSocket.CLOSED || get().textSocket?.readyState !== WebSocket.CLOSING) return
+        if(!get().textSocket || get().textSocket?.readyState == WebSocket.CLOSED || get().textSocket?.readyState == WebSocket.CLOSING) return
         get().textSocket?.close()
     },
     disconnectAudioSocket: () => {
+        console.log('disconnecting audio socket');
         set({ canSpeak: false})
-        if (!get().audioSocket || get().audioSocket?.readyState !== WebSocket.CLOSED || get().audioSocket?.readyState !== WebSocket.CLOSING) return
+        if (!get().audioSocket || get().audioSocket?.readyState == WebSocket.CLOSED || get().audioSocket?.readyState == WebSocket.CLOSING) return
         get().audioSocket?.close()
+        console.log('disconnected')
     }
 }));
