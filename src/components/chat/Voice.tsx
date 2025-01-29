@@ -2,41 +2,47 @@
 import { useHotelPageChatStore } from '@/store/useHotelPageChatStore'
 import { Mic } from 'lucide-react'
 import { AudioService } from '@/lib/audioService'
-import { useEffect, useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { voiceChat } from '@/lib/chat'
+import { VoiceWebSocketService } from '@/lib/voice/VoiceWebSocket'
+import { Service } from '@/lib/voice/VoiceWebSocket'
 
 const Voice = () => {
     // web socket connections
-    const { connectAudioSocket, canSpeak, disconnectAudioSocket, textSocket, setCanSpeak, setWaitingForMessage } = useHotelPageChatStore()
+    const SOCKET_BASE_URL = import.meta.env.VITE_SOCKET_BASE_URL;
+    const { canSpeak, textSocket, setCanSpeak, setWaitingForMessage } = useHotelPageChatStore()
     const audioServiceRef = useRef<AudioService>()
+    const voiceSocketRef = useRef<VoiceWebSocketService>();
     // streaming audio to websocket via audioService
     // message updates
     const cleanup = useCallback(() => {
         console.log('cleaning up audio socket service')
+        setCanSpeak(false)
         if (audioServiceRef.current) {
             audioServiceRef.current.cleanup()
             audioServiceRef.current = undefined
         }
-        const { audioSocket } = useHotelPageChatStore.getState()
-        console.log(audioSocket?.readyState)
-        disconnectAudioSocket();
-    }, [disconnectAudioSocket])
+        if (voiceSocketRef.current) {
+            voiceSocketRef.current.disconnect();
+            voiceSocketRef.current = undefined;
+        }
+    }, [setCanSpeak])
     useEffect(() => {
         return () => {
             cleanup();
         }
     }, [cleanup])
-    const toggleStreaming = async (retry: int) => {
-        if(canSpeak) {
+    const toggleStreaming = async (retry: number) => {
+        if(canSpeak) { 
             setWaitingForMessage(true)
             cleanup();
             return
         }
-        console.log('starting audio service')
+
         const audioService = new AudioService();
         audioServiceRef.current = audioService
         await audioService.initialize();
-        console.log(audioServiceRef.current.workletNode)
+
         if (textSocket) {
             voiceChat(textSocket)
         }
@@ -46,24 +52,29 @@ const Voice = () => {
             toggleStreaming(retry + 1);              // TODO: can trigger unlimited retries. fix
             return
         }
-        const ws = await connectAudioSocket('en');
-        if (ws) {
-            ws.onmessage = (message) => {
+        const socketService = new VoiceWebSocketService();
+        socketService.connect(`${SOCKET_BASE_URL}/ws/audio/en`, Service.Chat)
+        voiceSocketRef.current = socketService
+
+        if (socketService.socket) {
+            socketService.socket.onmessage = (message) => {
                 console.log(message)
             }
-            ws.onclose = () => {
+            socketService.socket.onclose = () => {
                 cleanup();
             }
         }
-        if (!ws) {
+        if (!socketService.socket) {
             cleanup();
             return;
         }
+        setCanSpeak(true)
         audioServiceRef.current.onAudioData((buffer: Int16Array) => {
-            ws.send(buffer)
+            if (socketService.socket) {
+                socketService.socket.send(buffer)
+            }
         })
     }
-    console.log(canSpeak)
     return (
         <button 
             className={`text-secondary/80 rounded-full size-10 ${canSpeak ? 'animate-pulse-slow' : ''}`} 
