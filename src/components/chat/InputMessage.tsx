@@ -1,7 +1,9 @@
-import { useState } from "react";
-import { Mic, Send } from "lucide-react";
+import { useEffect, useState } from "react";
+import {  Send } from "lucide-react";
 import { useHotelPageChatStore } from "@/store/useHotelPageChatStore";
 import { type Message } from "@/store/useHotelPageChatStore";
+import { textChat } from "@/lib/chat";
+import Voice from "./Voice";
 
 const InputMessage = () => {
   const [userMessage, setUserMessage] = useState("");
@@ -9,34 +11,29 @@ const InputMessage = () => {
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserMessage(e.target.value);
   };
-  const { connectTextSocket, setMessages } = useHotelPageChatStore();
+  const { connectTextSocket, setMessages, disconnectTextSocket } = useHotelPageChatStore();
 
-  const sendAndWait = async (questionAnswer: Message[]) => {
-    if (userMessage.length == 0) return
-    const ws = await connectTextSocket(BigInt("948109283410")) // change this later: TODO
-    if (ws) {
-      const success = await new Promise((resolve, reject) => {
-        ws.onmessage = (serverMessage) => {
-          console.log(serverMessage)
-          questionAnswer.push({sender: "bot", text: serverMessage.data, "mode": "text"})
-          resolve(true)
-        }
-        ws.send(userMessage)
-        ws.onerror = () => {
-          reject(false)
-        }
-        ws.onclose = () => {
-          console.log('text chat ws closed')
-          reject(false)
-        }
-      })
-      return success
+  useEffect(() => {
+    const connect = async () => {
+      const ws = await connectTextSocket(BigInt("948109283410")) // change this later: TODO
     }
-  }
+    const disconnect = async () => {
+      await disconnectTextSocket()
+    }
+    connect()
+    return () => {
+      disconnect()
+    }
+  }, [connectTextSocket, disconnectTextSocket])
   const onSendMessage = async () => {
-    const { messages: prevMessages } = useHotelPageChatStore.getState()
+    if (userMessage.length == 0) return
+    // const ws = await connectTextSocket(BigInt("948109283410")) // change this later: TODO
+    const { textSocket: ws} = useHotelPageChatStore.getState()
+    if (!ws) {
+      return
+    }
+    const { messages: prevMessages } = useHotelPageChatStore.getState();
     const questionAnswer: Message[] = []
-    setUserMessage('')
     setMessages([...prevMessages, {
       sender: "user",
       text: userMessage,
@@ -47,11 +44,17 @@ const InputMessage = () => {
       text: userMessage,
       mode: "text"
     })
-    const success = await sendAndWait(questionAnswer)
-    if (!success) {
-      setMessages(prevMessages)
-      return
+    setUserMessage('')
+    const llmMsg = await textChat(ws, userMessage)
+    if (!llmMsg || llmMsg?.length === 0) {
+        setMessages(prevMessages)
+        return
     }
+    questionAnswer.push({
+      sender: "bot",
+      text: llmMsg,
+      mode: "text"
+    })
     setMessages([...prevMessages, ...questionAnswer]);
   }
 
@@ -77,9 +80,7 @@ const InputMessage = () => {
         {
           (userMessage.length == 0)
           &&
-          <button className='text-secondary/80'>
-            <Mic size={20}/>
-          </button>
+          <Voice />
         }
         <button>
           <div className={`rounded-full ${userMessage.length == 0 ? 'bg-[#F1F2F2]' : 'bg-accentForeground'} pl-2 pr-[0.6rem] py-[0.55rem]`}>

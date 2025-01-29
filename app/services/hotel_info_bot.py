@@ -1,6 +1,7 @@
 from .tools.get_hotel_info import GetHotelInfo, get_hotel_info
 from .tools.get_distance import GetDistance, get_distance
 from .tools.search_api import SearchAPI, search_api
+from .tools.nearby_places import NearbyPlaces, get_nearby_places
 from .tools.main import SYSTEM_PROMPT
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage, ToolMessage
@@ -27,7 +28,8 @@ class HotelInfoBot:
         self.class_to_fn_mapping = {
             "GetHotelInfo": self.get_hotel_info,
             "GetDistance": get_distance,
-            "SearchAPI": search_api
+            "SearchAPI": search_api,
+            "NearbyPlaces": get_nearby_places
         }
         self.hotel_info = hotel_info
         self.messages = [

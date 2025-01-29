@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Response
 from app import schemas
-from app.services.user_db_crud import get_user_by_email, create_user
+from app.services.crud.user import get_user_by_email, create_user
 from app.services import hashing
 from app.database import get_db
 from sqlalchemy.orm import Session

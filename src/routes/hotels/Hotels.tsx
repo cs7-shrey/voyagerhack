@@ -6,14 +6,13 @@ import { useState, useEffect } from "react";
 import { useSearchStore } from "@/store/useSearchStore";
 import { formatDate } from "@/lib/utils";
 import { SlidersHorizontal } from "lucide-react";
-import SearchBar from "@/components/SearchBar";
-import { stateInitUsingQueryParams } from "@/lib/utils";
-import Logo from "@/components/ui/Logo";
-import { 
+import { stateInitUsingQueryParams } from "@/lib/utils";   
+// import { 
     // Mic,     
-     MicOff 
-    } from "lucide-react";
+    //  MicOff 
+    // } from "lucide-react";
 import { useHotelStore } from "@/store/useHotelStore";
+import TopBar from "@/components/TopBar";
 
 export default function Hotels() {
     const [filtersDropdown, setFiltersDropdown] = useState(false);
@@ -98,22 +97,16 @@ export default function Hotels() {
     }, [])
     return (
         <div className="relative">
-            <nav className="bg-accent px-4">
-                <div className="p-4 flex justify-between">
-                    <Logo />
-                    <div className="text-white flex font-bold gap-1">
-                        Microphone
-                    <MicOff color="#3B5100"/>
-                    </div>
-                </div>
-                <SearchBar />
+            <nav className="bg-accent px-4 sticky top-0 z-50">
+                <TopBar />
             </nav>
-            <div className="bg-[#212121] p-4 relative z-20">
+            <div className="p-4 relative z-20">
                 <button
                     onClick={filtersClick}
-                    className="relative z-30"
+                    className="relative z-30 flex gap-2 bg-accentForeground p-2 rounded-md text-primary"
                 >
                     <SlidersHorizontal size={21} strokeWidth={0.75} color="white" />
+                    Filters
                 </button>
                 {filtersDropdown && (
                     <>

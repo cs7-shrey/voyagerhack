@@ -1,0 +1,53 @@
+{
+  "places": [
+    {
+      "formattedAddress": "536, Street Number 15, Block R, Mahipalpur Village, Mahipalpur, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=17134156696798075743",
+      "displayName": {
+        "text": "R The Lounge",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "A-87, Gali No 4, Block RZ, Mahipalpur Extension, Mahipalpur, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=5185305627756820981",
+      "displayName": {
+        "text": "Blue Eyes Club (Mahipalpur)",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "G4WF+8H8, L block, Mahipalpur Village, Mahipalpur, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=15260747648802962686",
+      "displayName": {
+        "text": "royal Aerocity elite club",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "Aloft Hotel, Aerocity, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=5686024305242445594",
+      "priceLevel": "PRICE_LEVEL_VERY_EXPENSIVE",
+      "displayName": {
+        "text": "Toy Room Delhi",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "Lobby Level, Holiday Inn New Delhi International Airport, Gate No. 1, Asset Area 12 Hospitality District, Asset Area 12, Hospitality District, Indira Gandhi International Airport, Aerocity, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=8894662012710208687",
+      "displayName": {
+        "text": "The Hangar Lounge & Bar - Aerocity’s Premier bar & Lounge",
+        "languageCode": "en"
+      }
+    },
+    {
+      "formattedAddress": "Radisson Blu Plaza, Gurgaon - Delhi Expy, near Mahipalpur Extension, Block R, Mahipalpur Village, Mahipalpur, New Delhi, Delhi 110037, India",
+      "googleMapsUri": "https://maps.google.com/?cid=13490468319264014052",
+      "displayName": {
+        "text": "Savannah Bar",
+        "languageCode": "en"
+      }
+    }
+  ]
+}

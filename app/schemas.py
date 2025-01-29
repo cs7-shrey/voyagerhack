@@ -23,7 +23,7 @@ class SearchSuggestion(BaseModel):
     score: float
 
 class HotelSearchResponse(BaseModel):
-    id: int
+    id: str
     name: str
     location: str
     base_fare: float = 0.0
@@ -42,6 +42,7 @@ class HotelInfoResponse(BaseModel):
     user_rating_count: int
     property_type: str
     images: list[str]
+    amenities: list[str]
     
 class Beds(BaseModel):
     type: str

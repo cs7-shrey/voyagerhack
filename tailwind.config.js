@@ -1,4 +1,4 @@
-import { color } from 'framer-motion';
+import { color, keyframes } from 'framer-motion';
 
 /** @type {import('tailwindcss').Config} */
 const {nextui} = require("@nextui-org/theme");
@@ -16,10 +16,23 @@ export default {
         primary: "#ffffff",
         secondary: "#000000",
         accent: "#05203C",
-        accentForeground: "#014DAF",
+        accentForeground: "#0062E3",
       },
       fontFamily: {
         'chat-message': ["chatMessage", "sans-serif"]
+      },
+      keyframes: {
+        pulse: {
+          '0%, 100%': {
+            opacity: 1, transform: 'scale(1)'
+          },
+          '50%': {
+            opacity: 0.5, transform: 'scale(0.9)'
+          },
+        },
+      },
+      animation: {
+        'pulse-slow': 'pulse 1.5s ease-in-out infinite'
       }
   	}
   },

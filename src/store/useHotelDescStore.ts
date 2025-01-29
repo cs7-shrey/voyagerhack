@@ -10,6 +10,7 @@ interface HotelData {
     userRatingCount: number;
     propertyType: string;
     images: string[];
+    amenities: string[];
 }
 
 export interface RatePlan {
@@ -40,8 +41,8 @@ export interface RoomType {
 interface HotelDescStore {
     hotelData: HotelData | null;
     roomData: RoomType[]| null;
-    setHotelData: (data: HotelData) => void;
-    setRoomData: (data: RoomType[]) => void;
+    setHotelData: (data: HotelData | null) => void;
+    setRoomData: (data: RoomType[] | null) => void;
     getHotelData: (id: bigint) => Promise<void>;
     getRoomData: (id: bigint) => Promise<void>;
 }
@@ -52,6 +53,8 @@ export const useHotelDescStore = create<HotelDescStore>()((set) => ({
     setHotelData: (data) => set({ hotelData: data }),
     setRoomData: (data) => set({ roomData: data }),
     getHotelData : async (id)  => {
+        // set({hotelData: null})
+        console.log(id)
         try {
             const response = await axiosInstance.get(`/hotel/${id}`)
             set({ hotelData: {
@@ -63,13 +66,15 @@ export const useHotelDescStore = create<HotelDescStore>()((set) => ({
                 userRating: response.data.user_rating,
                 userRatingCount: response.data.user_rating_count,
                 propertyType: response.data.property_type,
-                images: response.data.images
+                images: response.data.images,
+                amenities: response.data.amenities
             } })
         } catch (error) {
             console.log("Error fetching hotel data: ", error)
         }
     },   
     getRoomData: async (id) => {
+        // set({roomData: []})
         try {
             const response= await axiosInstance.get(`/hotel/${id}/rooms`)
             console.log(response.data)

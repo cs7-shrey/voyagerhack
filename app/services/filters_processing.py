@@ -1,6 +1,6 @@
 from app.database import get_db
 from app.routes.search import suggestion_search_space
-from app.services.hotel_filter import get_hotels_with_filters
+from app.services.crud.hotel.filter import get_hotels_with_filters
 from app.utils.search_suggestions import get_suggestions
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
@@ -65,11 +65,6 @@ def process_llm_filters(llm_filters, SearchFiltersSchema: Type[BaseModel], db: S
             }
             return final_response
         query_dict = {k: v for k, v in llm_filters['filters'].items() if v is not None}
-        # check for location presence
-        # query_dict['place'] = {
-        #     'name': query_dict['place'],
-        #     'type': 'city'
-        # }
         suggestions = get_suggestions(query_dict['place'], suggestion_search_space)
         if suggestions[0]['score'] < 90:
             final_response['status'] = {

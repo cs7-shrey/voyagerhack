@@ -1,6 +1,4 @@
-import Image1 from "@/assets/Side1.png";
-import Image2 from "@/assets/Side2.png";
-import Image3 from "@/assets/Center1.png";
+import placeholderImg from "/placeholderImg.jpg"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBed, faMap, faUser, faUtensils } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
@@ -79,7 +77,7 @@ const ImageBox: React.FC<Props> = ({ name, location, hotelStar, userRating, imag
           <div className="flex flex-col md:flex-row gap-2">
             <div className="relative md:flex-1 min-w-[70%]" onClick={handleClick}>
               <img
-                src={images?.[0] ? "https:" + images?.[0] : Image1}
+                src={images?.[0] ? "https:" + images?.[0] : placeholderImg}
                 alt="Main"
                 className="w-full rounded-md shadow h-full min-h-[480x]"
               />
@@ -90,12 +88,12 @@ const ImageBox: React.FC<Props> = ({ name, location, hotelStar, userRating, imag
             </div>
             <div className="hidden md:flex-1 md:flex flex-col gap-2 mt-2 md:mt-0">
               <img
-                src={images?.[0] ? "https:" + images?.[1] : Image2}
+                src={images?.[0] ? "https:" + images?.[1] : placeholderImg}
                 alt="Side1"
                 className="w-full rounded-md shadow h-[50%]"
               />
               <img
-                src={images?.[0] ? "https:" + images?.[2] : Image3}
+                src={images?.[0] ? "https:" + images?.[2] : placeholderImg}
                 alt="Side2"
                 className="w-full rounded-md shadow h-[50%]"
               />

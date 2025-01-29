@@ -2,6 +2,7 @@ from app.models import Hotel, City, HotelAmenityMapping, HotelAmenity, RoomType,
 from app.schemas import SearchFilters
 from sqlalchemy import select, func, and_
 from sqlalchemy.orm import Session
+from sqlalchemy import String
 
 def get_hotels_with_filters(filters: SearchFilters, session: Session):
     mapping = {
@@ -18,7 +19,7 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
         filters.property_type = ['Apartment', 'Homestay', 'Guest House', 'Hostel', 'Resort', 'Villa', 'Camp', 'Hotel']
     q1 = (
         select(
-            Hotel.id,
+            func.cast(Hotel.id, String),
             Hotel.name.label('hotel_name'),
             Hotel.hotel_star,
             Hotel.user_rating,
@@ -50,7 +51,7 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
             q1.c.user_rating_count,
             q1.c.images
         )
-        .join(HotelAmenityMapping, q1.c.id == HotelAmenityMapping.hotel_id)
+        .join(HotelAmenityMapping, q1.c.id == func.cast(HotelAmenityMapping.hotel_id, String))
         .join(HotelAmenity, HotelAmenityMapping.amen_id == HotelAmenity.amen_id)
         .where(HotelAmenity.code.in_(filters.hotel_amenity_codes))
         .group_by(q1.c.id, q1.c.hotel_name, q1.c.hotel_star, q1.c.location, q1.c.user_rating, q1.c.user_rating_count, q1.c.images)
@@ -82,7 +83,7 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
             q2,
             RoomType.room_type_id
         )
-        .join(RoomType, q2.c.id == RoomType.hotel_id)
+        .join(RoomType, q2.c.id == func.cast(RoomType.hotel_id, String))
         .join(RoomAmenityMapping, RoomType.room_type_id == RoomAmenityMapping.room_type_id)
         .join(RoomAmenity, RoomAmenity.room_amen_id == RoomAmenityMapping.room_amen_id)
         .where(RoomAmenity.code.in_(filters.room_amenity_codes))
@@ -94,7 +95,7 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
             q2,
             RoomType.room_type_id
         )
-        .join(RoomType, q2.c.id == RoomType.hotel_id)
+        .join(RoomType, q2.c.id == func.cast(RoomType.hotel_id, String))
         .group_by(q2.c.id, q2.c.hotel_name, q2.c.hotel_star, q2.c.location, q2.c.user_rating, q2.c.user_rating_count, q2.c.images, RoomType.room_type_id)
         .cte('q4')
     )

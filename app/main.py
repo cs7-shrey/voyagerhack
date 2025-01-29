@@ -1,7 +1,7 @@
 from . import models
 from . import models
 from .database import engine, get_db
-from .routes import search, constants, voice_search, user, hotel
+from .routes import search, constants, voice_search, user, hotel, voice
 from app.oauth2 import get_current_client
 from dotenv import load_dotenv
 from fastapi import FastAPI, Depends
@@ -31,6 +31,7 @@ app.include_router(search.router)
 app.include_router(constants.router)
 app.include_router(user.router)
 app.include_router(hotel.router)
+app.include_router(voice.router)
 
 
 @app.get("/")

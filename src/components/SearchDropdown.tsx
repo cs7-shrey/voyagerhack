@@ -52,7 +52,7 @@ const SearchDropdown= () => {
         }}
         onFocus={() => setShowDropdown(true)}
         placeholder="Enter hotel or destination"
-        className="w-full lg:w-[50vw] px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500"
+        className="w-full pr-4 rounded-md focus:outline-none selection:border-none selection:outline-none"
       />
       
       {showDropdown && searchValue && (

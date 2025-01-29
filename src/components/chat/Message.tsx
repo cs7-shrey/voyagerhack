@@ -1,4 +1,6 @@
 import React from 'react'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 interface Props {
     sender: "user" | "bot";
@@ -20,7 +22,7 @@ const Message: React.FC<Props> = ({sender, text}) => {
         `}
 
     >
-        {text}
+        <ReactMarkdown children={text} remarkPlugins={[remarkGfm]} />
     </div>
   )
 }
