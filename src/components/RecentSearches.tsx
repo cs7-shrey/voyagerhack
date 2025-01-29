@@ -3,10 +3,10 @@ import { Card } from '@/components/ui/card';
 
 const RecentSearches = () => {
   return (
-    <div className="p-6 font-sans">
+    <div className="p-6 font-sans flex flex-col">
       <h1 className="text-2xl font-bold mb-6 text-[#05203C]">Your recent searches</h1>
       
-      <div className="flex gap-4">
+      <div className="flex gap-4 flex-col sm:flex-row">
         {/* Recent Search Card */}
         <Card className="p-6 bg-white rounded-xl shadow-sm w-72">
           <div className="flex items-center gap-3 mb-4">

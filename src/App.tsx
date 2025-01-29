@@ -10,11 +10,14 @@ import { Toaster } from 'react-hot-toast'
 import Voice from "./routes/Voice";
 import Login from "./routes/Login";
 import Shining from "./components/chat/Shining";
+import { HashLoader } from "react-spinners";
+import { useSocketStore } from "./store/useSocketStore";
 // import Visualizer from "./routes/Visualizer";
 
 function App() {
   // const imgUrl = bg;
   // const anotherImg = 'https://content.skyscnr.com/m/5283dbe4ac4c9189/original/alexander-kaunas-xEaAoizNFV8-unsplash_CROP.jpg?resize=2880px:1148px&quality=80'
+  const { waitingForMessage } = useSocketStore();
   return (
     <div>
       <nav className="bg-accent">
@@ -35,7 +38,7 @@ function App() {
           backgroundSize: "100%",
           backgroundRepeat: "no-repeat",
           position: "relative",
-          width: "100vw",
+          // width: "100vw",
           height: "75vh",
           margin: "0 auto",
           boxSizing: "border-box",
@@ -46,17 +49,14 @@ function App() {
         {/* <div className="absolute inset-0 bg-black/20">
           </div> */}
         {/* hotel search form with location, checkin date and checkout date */}
-        <div className="w-[60%] flex flex-col gap-4 items-start min-w-fit bg-accent rounded-lg px-10 py-10">
+        <div className="w-[60%] flex flex-col gap-4 items-start min-w-fit bg-accent rounded-lg px-0 md:px-10 py-10">
           <div className="text-6xl font-extrabold font-sans text-primary"
             style={{ textShadow: "0px 0px 1px black" }}
           >
             Find hotels with AI
           </div>
-          <div>
-            {/* <Voice /> */}
-          </div>
           <div className="rounded-md">
-            <div className="flex flex-col justify-centeritems-center">
+            <div className="flex flex-col justify-center items-center">
               <SearchBar />
             </div>
           </div>
@@ -65,6 +65,9 @@ function App() {
       <div>
         <RecentSearches />
       </div>
+      {waitingForMessage && <div className="fixed inset-0 top-0 left-0 z-50 flex justify-center items-center bg-secondary/50">
+                <HashLoader />
+            </div>}
     </div>
   );
 }

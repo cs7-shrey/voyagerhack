@@ -11,12 +11,10 @@ import { useNavigate, useParams } from "react-router";
 const HotelDescription = () => {
     const { hotelData, roomData } = useHotelDescStore();
     const [chatBoxOpen, setChatBoxOpen] = useState(false);
-    console.log(hotelData);
     const onClick = () => {
         setChatBoxOpen((prev) => !prev);
     }
     let { id } = useParams()
-    console.log(id)
     const navigate = useNavigate()
     if (!id) {
         id = "124123412341234123"
@@ -27,7 +25,6 @@ const HotelDescription = () => {
             const { setHotelData, setRoomData } = useHotelDescStore.getState();
             setHotelData(null);
             setRoomData(null)
-            console.log('oh no')
         }
     }, [])
 

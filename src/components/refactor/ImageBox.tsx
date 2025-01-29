@@ -148,7 +148,7 @@ const ImageBox: React.FC<Props> = ({ name, location, hotelStar, userRating, imag
           {
             showPopup
             &&
-            <HotelImagePopup images={images ? images : []} onClose={handleClick} />
+            <HotelImagePopup images={images ? images.map((img) => 'https:' + img) : []} onClose={handleClick} />
           }
         </div>
       </div>
