@@ -16,6 +16,7 @@ import SignUp from "./components/auth/SignUp";
 import { useAuthStore } from "./store/useAuthStore";
 import { Protected } from "./routes/Protected";
 import AuthChecker from "./context/AuthChecker";
+import Logout from "./components/auth/Logout";
 // import Visualizer from "./routes/Visualizer";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
             <Button className="text-secondary">Sign In</Button>
           </div> */}
           {/* <img src={LogoIdea} style={{height:"50px",boxShadow:"1px 1px 5px black"}}/> */}
+          <Logout />
         </div>
       </nav>
       <div
