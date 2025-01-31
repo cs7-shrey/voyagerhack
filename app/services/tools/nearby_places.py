@@ -12,11 +12,12 @@ class NearbyPlaces(Tool):
     query: str = Field(..., description="The query to be send to google maps. Ex. nearby restaurants near Novotel, New Delhi")
     
 async def get_nearby_places(query: str):
+    print(query)
     print('nearby places called')
     headers = {
         "Content-Type": "application/json",
         "X-Goog-Api-Key": os.getenv("MAPS_API_KEY") ,
-        "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.priceLevel,places.googleMapsUri,places.shortFormattedAddress",
+        "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.priceLevel,places.googleMapsUri,places.shortFormattedAddress,places.primaryTypeDisplayName",
     }
     async with httpx.AsyncClient() as client:
         response = await client.post("https://places.googleapis.com/v1/places:searchText", json={
@@ -29,7 +30,7 @@ async def get_nearby_places(query: str):
         try:
             # print(response.json())
             places = response.json()['places']
-            places_formatted = list(map(lambda x: {'name': x['displayName']['text'], 'address': x['shortFormattedAddress'], 'google_maps_url': x['googleMapsUri']}, places))
+            places_formatted = list(map(lambda x: {'name': x['displayName']['text'], 'address': x['shortFormattedAddress'], 'google_maps_url': x['googleMapsUri'], 'type': x['primaryTypeDisplayName']}, places))
             print(places_formatted[0])
             return places_formatted[:5] if len(places_formatted) > 5 else places_formatted
         except Exception as e:
