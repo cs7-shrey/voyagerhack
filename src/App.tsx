@@ -8,16 +8,21 @@ import bg from "/hotel.jpg"
 import Logo from "./components/ui/Logo";
 import { Toaster } from 'react-hot-toast'
 import Voice from "./routes/Voice";
-import Login from "./routes/Login";
+import Login from "./components/auth/Login";
 import Shining from "./components/chat/Shining";
 import { HashLoader } from "react-spinners";
 import { useSocketStore } from "./store/useSocketStore";
+import SignUp from "./components/auth/SignUp";
+import { useAuthStore } from "./store/useAuthStore";
+import { Protected } from "./routes/Protected";
+import AuthChecker from "./context/AuthChecker";
 // import Visualizer from "./routes/Visualizer";
 
 function App() {
   // const imgUrl = bg;
   // const anotherImg = 'https://content.skyscnr.com/m/5283dbe4ac4c9189/original/alexander-kaunas-xEaAoizNFV8-unsplash_CROP.jpg?resize=2880px:1148px&quality=80'
   const { waitingForMessage } = useSocketStore();
+  const { authUserEmail } = useAuthStore();
   return (
     <div>
       <nav className="bg-accent">
@@ -68,6 +73,11 @@ function App() {
       {waitingForMessage && <div className="fixed inset-0 top-0 left-0 z-50 flex justify-center items-center bg-secondary/50">
                 <HashLoader />
             </div>}
+            {!authUserEmail && <div className="fixed inset-0 top-0 left-0 z-50 flex justify-center items-center bg-secondary/70">
+              <div className="w-[32rem] min-h-[19rem]">
+                <Outlet />
+              </div>
+            </div>}
     </div>
   );
 }
@@ -78,23 +88,33 @@ export default function AppRouter() {
   return (
     // TODO: Add error page
     <Routes>
+      <Route path="/" element={<AuthChecker />} >
       <Route path="/" element={<>
         <Outlet />
         <Toaster />
       </>}>
-        <Route path="/" element={<App />} />
-        <Route path="/hello" element={<h1>hello</h1>} />
-        <Route path="/hotels" element={<Hotels />} />
-        <Route path="/voice" element={<Voice />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/hotel/:id" element={<HotelDescription />} />
-        <Route path="/dummy" element={
-          <div className="w-full flex border-2 h-screen justify-end bg-black items-center">
-            <div className="h-screen w-[30%] text-black">
-              <Shining />
+          <Route path="/" element={<App />} >
+          <Route path="/" element={<Protected />}>
+            <Route path="/" element={null} />
+          </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+          </Route>
+        <Route path="/" element={<Protected />}>
+          <Route path="/hello" element={<h1>hello</h1>} />
+          <Route path="/hotels" element={<Hotels />} />
+          <Route path="/voice" element={<Voice />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/hotel/:id" element={<HotelDescription />} />
+          <Route path="/dummy" element={
+            <div className="w-full flex border-2 h-screen justify-end bg-black items-center">
+              <div className="h-screen w-[30%] text-black">
+                <Shining />
+              </div>
             </div>
-          </div>
-        } />
+          } />
+        </Route>
+      </Route>
       </Route>
     </Routes>
   );

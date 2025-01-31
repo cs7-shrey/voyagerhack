@@ -48,8 +48,8 @@ const RoomOption: React.FC<Props> = (roomType: RoomType) => {
           <p className="max-w-[50%] text-center text-sm">
             <FontAwesomeIcon icon={faUser} className="text-gray-500" /> Max {roomType.max_guests} Guests
           </p>
-          <p className="max-w-[50%] text-center text-sm">
-            <FontAwesomeIcon icon={faBed} className="text-gray-500" /> {roomType.beds?.[0]?.type ? roomType.beds[0].type : "Bedroom 1-1 king bed / 2 twin beds"} {/* TODO: FIX THIS */}
+          <p className="max-w-[50%] text-center text-sm">?
+            <FontAwesomeIcon icon={faBed} className="text-gray-500" /> {roomType.beds?.[0]?.type ? roomType.beds?.[0]?.type : "Bedroom 1-1 king bed / 2 twin beds"} {/* TODO: FIX THIS */}
           </p>
           {/* <p className="max-w-[50%] text-center text-sm">
             <FontAwesomeIcon icon={faRulerCombined} className="text-gray-500" /> 350 sqft coverage
