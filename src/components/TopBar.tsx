@@ -1,7 +1,8 @@
 
 import Logo from './ui/Logo';
 import SearchBar from './SearchBar';
-  
+import { User } from 'lucide-react';
+import { logout } from '@/store/useAuthStore';  
 const TopBar = () => {
   return (
     <div>
@@ -12,8 +13,12 @@ const TopBar = () => {
           </div>
           <SearchBar />
           <div className='lg:flex hidden'>
-            <button className='flex justify-center items-center bg-accentForeground/70 text-primary py-2 px-4 rounded-lg'>
-              Sign Up
+            <button 
+              onClick={() => logout()}
+              className='flex gap-2 justify-center items-center font-bold hover:bg-gray-500 text-primary py-2 px-4 rounded-lg'
+            >
+              <User/>
+              Log out
             </button>
           </div>
         </div>
