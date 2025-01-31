@@ -37,6 +37,7 @@ export default function Hotels() {
             setFromVoice(false);
             return;
         }
+        console.log('manual search')
         const {
             queryTerm,
             checkIn,

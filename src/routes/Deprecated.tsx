@@ -10,7 +10,7 @@
 
 // const Voice = () => {
 //     const [isStreaming, setIsStreaming] = useState(false);
-//     const [lang] = useState<'en' | 'hi'>('en');        // TODO: make this enum
+//     const [lang] = useState<'en' | 'hi'>('en');        
 //     // const [sending, setSending] = useState(false);
 //     const socketRef = useRef<WebSocket>(undefined);
 //     const audioContextRef = useRef<AudioContext>();

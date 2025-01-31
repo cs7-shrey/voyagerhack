@@ -7,7 +7,7 @@ const LLM = () => {
     const handleConnection = useCallback(() => {
         if (!isConnected) {
             try {
-                wsRef.current = new WebSocket('ws://localhost:8000/ws/llm/search');
+                wsRef.current = new WebSocket(`${import.meta.env.VITE_SOCKET_BASE_URL}/ws/llm/search`);
                 
                 wsRef.current.onopen = () => {
                     setIsConnected(true);
