@@ -4,7 +4,7 @@ from app.schemas import HotelRoomResponse, HotelInfoResponse, ChatMode
 from sqlalchemy.orm import Session
 from app.oauth2 import get_current_client, socket_get_current_client
 from app.services.crud.hotel.info import get_hotel_info_by_id, get_hotel_room_info
-from app.services.hotel_info_bot import HotelInfoBot
+from app.services.hotel_info_agent import HotelChatAgent
 from app.services.queues import queue_maps
 import asyncio
 router = APIRouter(prefix="/hotel", tags=["hotel"])
@@ -33,7 +33,7 @@ async def hotel_chat_ws(
 ):
     await ws.accept()
     json_data = await ws.receive_json()
-    agent = HotelInfoBot(hotel_name=hotel_name, location=hotel_location, hotel_info=json_data['hotel_info'])
+    agent = HotelChatAgent(hotel_name=hotel_name, location=hotel_location, hotel_info=json_data['hotel_info'])
     while True:
         try:
             mode = await ws.receive_text()

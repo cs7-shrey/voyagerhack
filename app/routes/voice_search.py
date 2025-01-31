@@ -1,4 +1,4 @@
-from ai import llm
+from app.services.ai import llm
 import asyncio
 from app.oauth2 import socket_get_current_client
 from app.database import get_db

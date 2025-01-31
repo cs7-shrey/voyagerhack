@@ -15,7 +15,7 @@ llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp", api_key=os.getenv('GO
 llm_with_tools = llm.bind_tools([GetHotelInfo, GetDistance, SearchAPI])
 
 
-class HotelInfoBot:
+class HotelChatAgent:
     def __init__(self, hotel_name, location, hotel_info):
         self.system_prompt = f"""
             {SYSTEM_PROMPT}
@@ -48,13 +48,26 @@ class HotelInfoBot:
             return ai_msg.content
         
         context_messages.append(ai_msg)
-
-        for tool_call in ai_msg.tool_calls:
-            selected_tool = self.class_to_fn_mapping[tool_call['name']]
-            tool_output = await selected_tool(**tool_call['args'])
-            context_messages.append(ToolMessage(content=json.dumps(tool_output), name=tool_call['name'], tool_call_id=tool_call['id']))
+        
+        count = 0
+        while ai_msg.tool_calls:
+            print('calling tools')
+            if count > 4:
+                break
+                # set a manual message here
+            for tool_call in ai_msg.tool_calls:
+                selected_tool = self.class_to_fn_mapping[tool_call['name']]
+                tool_output = await selected_tool(**tool_call['args'])
+                context_messages.append(ToolMessage(content=json.dumps(tool_output), name=tool_call['name'], tool_call_id=tool_call['id']))
+            ai_msg = await llm_with_tools.ainvoke(context_messages)
+            context_messages.append(ai_msg)
             
-        final_message = await llm_with_tools.ainvoke(context_messages)
-        self.messages.append(AIMessage(final_message.content))
-        print("ye raha final message", final_message)
-        return final_message.content
+
+            # selected_tool = self.class_to_fn_mapping[tool_call['name']]
+            # tool_output = await selected_tool(**tool_call['args'])
+            # context_messages.append(ToolMessage(content=json.dumps(tool_output), name=tool_call['name'], tool_call_id=tool_call['id']))
+            
+        # final_message = await llm_with_tools.ainvoke(context_messages)
+        self.messages.append(AIMessage(ai_msg.content))
+        print("ye raha final message", ai_msg)
+        return ai_msg.content
