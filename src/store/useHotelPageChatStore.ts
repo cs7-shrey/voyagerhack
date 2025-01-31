@@ -13,7 +13,7 @@ interface HotelPageChatStore {
     canSpeak: boolean;
     waitingForMessage: boolean;
     setMessages: (messages: Message[]) => void;
-    setTextSocket: (socket: WebSocket) => void;
+    setTextSocket: (socket: WebSocket | null) => void;
     setAudioSocket: (socket: WebSocket) => void;
     setCanSpeak: (canSpeak: boolean) => void;
     setWaitingForMessage: (waitingForMessage: boolean) => void;

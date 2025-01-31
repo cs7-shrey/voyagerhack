@@ -4,29 +4,58 @@ import Message from './Message'
 import { X } from 'lucide-react'
 import { useHotelPageChatStore } from '@/store/useHotelPageChatStore'
 import typing from '@/assets/typing.svg'
+import { Circle } from 'lucide-react'
+import { text } from 'stream/consumers'
 
 interface Props {
     onClose: () => void
 }
 const ChatBox: React.FC<Props> = ({ onClose }) => {
     // some state logic
-    const { messages, waitingForMessage } = useHotelPageChatStore();
+    const { messages, waitingForMessage, textSocket, connectTextSocket } = useHotelPageChatStore();
     const endRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         endRef?.current?.scrollIntoView({behavior: "smooth"})
-    })
+    }, [messages])
+    const widgeColor = textSocket?.readyState === WebSocket.OPEN ? 'rgb(108,161,72)' 
+        : textSocket?.readyState === WebSocket.CONNECTING ? 'rgb(20,20,20)' 
+        : (!textSocket || textSocket?.readyState === WebSocket.CLOSED) ? 'rgb(218,74,34)' : 'rgb(0,200,0)'
+    
+    const widgetText = textSocket?.readyState === WebSocket.OPEN ? 'connected' 
+        : textSocket?.readyState === WebSocket.CONNECTING ? 'connecting' 
+        : (!textSocket || textSocket?.readyState === WebSocket.CLOSED) ? 'disconnected' : 'error'
 
+    const onClick = () => {
+        connectTextSocket(BigInt("12345658"))
+    }
     return (
-        <div className="sm:w-[80%] md:w-[30rem] overflow-auto sm:ml-auto m-4 border-4 flex flex-col gap-2 relative justify-end rounded-2xl bg-white h-[95%] px-4 pb-4">
+        <div className="sm:w-[80%] md:w-[30rem] sm:ml-auto m-4 border-4 flex flex-col gap-2 relative rounded-2xl bg-white h-[95vh] px-4 pb-4">
             <div className='mb-auto sticky flex justify-between h-24 border-b-2'>
                 <img src="/ai.gif" alt="." className='size-16 pt-2' />
+                <div className='flex flex-col my-auto mx-auto items-center relative'>
+                    <button 
+                        disabled={textSocket?.readyState === WebSocket.OPEN || textSocket?.readyState === WebSocket.CONNECTING}
+                        className='flex h-fit gap-2 px-4 py-1 border-2 rounded-full'
+                        onClick={onClick}
+                    >
+                        <Circle size={6} 
+                            fill={widgeColor}
+                            color={widgeColor} 
+                            className='self-center'
+                        /> 
+                        {widgetText}
+                    </button>
+                    {(!textSocket || textSocket?.readyState === WebSocket.CLOSED) && <div className='text-xs absolute top-10 text-secondary/70'>
+                        click to connect
+                    </div>}
+                </div>
                 <button className='self-start ml-auto' onClick={onClose}>
                     <div className='pt-6'>
                         <X />
                     </div>
                 </button>
             </div>
-            <div className='overflow-y-auto h-full scrollbar-webkit flex flex-col justify-end gap-2 pr-1'>
+            <div className='overflow-y-auto flex-1 z-50 scrollbar-webkit mt-auto flex flex-col gap-2 pr-1'>
                 {messages.map((msg, index) => (
                     <Message key={index} text={msg.text} sender={msg.sender} />
                 ))}
