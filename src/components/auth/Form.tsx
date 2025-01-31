@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { AuthType, useAuthStore } from "@/store/useAuthStore";
 import { signUp, login } from "@/store/useAuthStore";
 import { Link } from "react-router";
+import { PulseLoader } from "react-spinners";
 
 interface InputProps {
     label: string;
@@ -40,7 +41,7 @@ const Form: React.FC<FormProps> = ({ type, typeText}) => {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     // let onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-    const { error } = useAuthStore();
+    const { error, isSigningUp, isLoggingIn } = useAuthStore();
     const onSubmit = (e: React.FormEvent<HTMLButtonElement>) =>  {
         e.preventDefault();
         if (!email || !password) {
@@ -93,8 +94,15 @@ const Form: React.FC<FormProps> = ({ type, typeText}) => {
                         {error && <p className="text-red-500 text-sm">{error}</p>}
                     </div>
                     <div className="mx-auto my-2 w-full">
-                        <button className="bg-accent text-white p-2 rounded-md w-full" onClick={onSubmit}>
+                        <button 
+                            className="relative bg-accent text-white p-2 rounded-md w-full" onClick={onSubmit}
+                            disabled={isSigningUp || isLoggingIn}
+                    >
                             {typeText}
+                            {(isSigningUp || isLoggingIn) && 
+                            <div className="absolute inset-0 flex justify-center bg-secondary/80 items-center">
+                                <PulseLoader size={10} color="white"/>
+                            </div>}
                         </button>
                     </div>
                 </div>

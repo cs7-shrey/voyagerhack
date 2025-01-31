@@ -53,7 +53,12 @@ const Voice = () => {
             return
         }
         const socketService = new VoiceWebSocketService();
-        socketService.connect(`${SOCKET_BASE_URL}/ws/audio/en`, Service.Chat)
+        console.log('A')
+        const success = await socketService.connect(`${SOCKET_BASE_URL}/ws/audio/en`, Service.Chat)
+        if (!success) {
+            return
+        }
+        console.log('B')
         voiceSocketRef.current = socketService
 
         if (socketService.socket) {
