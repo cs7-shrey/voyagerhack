@@ -21,7 +21,8 @@ export default function Hotels() {
     const { waitingForMessage } = useSocketStore();
     // const [hotels, setHotels] = useState<Hotel[]>([]);
     const { hotels, setHotels } = useHotelStore();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false)
     // searchParams.
     // some fetch call to the db to get hotels
     const filtersClick = () => {
@@ -51,6 +52,7 @@ export default function Hotels() {
             roomAmenities,
             // setPropertyType,
         } = useSearchStore.getState();
+        setLoading(true)
         const x = searchParams.get("x");
         console.log(x);
         const q = searchParams.get("q");
@@ -71,7 +73,7 @@ export default function Hotels() {
                 hotel_amenity_codes: hotelAmenities.map((amenity) => amenity.code),
                 room_amenity_codes: roomAmenities.map((amenity) => amenity.code),
             }
-            try {   
+            try {
                 const response = await axiosInstance.post("/search/hotels", data, {
                     params: {
                         search_term: q,
@@ -89,6 +91,8 @@ export default function Hotels() {
                 setHotels(response.data);
             } catch (error) {
                 console.error(error);
+            } finally {
+                setLoading(false);
             }
         }
         getHotels();
@@ -107,7 +111,11 @@ export default function Hotels() {
         console.log('mounted')
     }, [])
     return (
-        <div className="relative">
+        <div className="relative"
+             style={{
+                    // backgroundImage: "url('https://plus.unsplash.com/premium_photo-1673795751644-e42b58452dc0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+                }}
+        >
             <nav className="bg-accent px-4 sm:sticky sm:top-0 z-50">
                 <TopBar />
             </nav>
@@ -131,12 +139,16 @@ export default function Hotels() {
                     </>
                 )}
             </div>
-            <div className="sm:flex md:grid md:grid-cols-12 p-4 sm:p-8 bg-[#EFF3F8]">
+            <div className="relative sm:flex md:grid md:grid-cols-12 p-4 sm:p-8 bg-[#EFF3F8]"               /*bg-[#EFF3F8] */
+            >   
                 <div className="col-span-2  md:col-start-2 md:col-span-10 lg:col-start-3 lg:col-span-8 flex flex-col gap-4">
                     {hotels.map((hotel) => (
                         <HotelCard key={hotel.id} {...hotel} />
                     ))}
                 </div>
+                {loading && <div className="fixed inset-0 top-0 left-0 z-50 flex justify-center items-center bg-secondary/50">
+                <HashLoader />
+            </div>}
             </div>
             {waitingForMessage && <div className="fixed inset-0 top-0 left-0 z-50 flex justify-center items-center bg-secondary/50">
                 <HashLoader />
