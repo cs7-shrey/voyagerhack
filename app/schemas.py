@@ -66,12 +66,7 @@ class HotelRoomResponse(BaseModel):
     beds: Optional[list[Beds]] = []
     display_amenities: list[str]
     rate_plans: list[RatePlan]
-    
-class Beds(BaseModel):
-    type: str
-    count: int  
-    bedTypeKey: Optional[str] = None # TODO: CHANGE THIS LATER
-    
+
 class Place(BaseModel):
     name: str
     type: str

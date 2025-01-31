@@ -16,7 +16,7 @@ interface SocketState {
     disconnectAudioSocket: () => void;
     disconnectLlmSocket: () => void;
 }
-
+const BASE_SOCKET_URL = import.meta.env.VITE_SOCKET_BASE_URL;
 export const useSocketStore = create<SocketState>()((set, get) => ({
     audioSocket: null,
     llmSocket: null,
@@ -36,7 +36,7 @@ export const useSocketStore = create<SocketState>()((set, get) => ({
             return                      // wouldn't happen in a ideal case
         }
         // the llm web socket is open
-        const audioSocket = new WebSocket(`ws://localhost:8000/ws/audio/${get().lang}?service=search`);
+        const audioSocket = new WebSocket(`${BASE_SOCKET_URL}/ws/audio/${get().lang}?service=search`);
         const res = await new Promise((resolve, reject) => {
             audioSocket.onopen = () => {
                 console.log("Audio WebSocket connected!");
@@ -64,7 +64,7 @@ export const useSocketStore = create<SocketState>()((set, get) => ({
         if (get().llmSocket?.readyState === WebSocket.OPEN) {
             get().llmSocket?.close()
         }
-        const llmSocket = new WebSocket('ws://localhost:8000/ws/llm/search');
+        const llmSocket = new WebSocket(`${BASE_SOCKET_URL}/ws/llm/search`);
         const res = await new Promise((resolve, reject) => {
             llmSocket.onopen = () => {
                 console.log("LLM WebSocket connected!");

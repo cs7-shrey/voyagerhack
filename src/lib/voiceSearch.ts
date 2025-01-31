@@ -27,18 +27,16 @@ interface Status {
 
 export function useLllmFilters() {
     const navigate = useNavigate()
-    const { setHotels, setFromVoice } = useHotelStore()
+    const { setHotels, setFromVoice, setInfoMessage } = useHotelStore()
     const { setSearchValue } = useSearchStore();
     const processLlmFilters = (filters: BackendFilters, status: Status, hotelData: Hotel[]) => {
+        setInfoMessage(status.message)
         if (status.code !== 200) {
             toast(status.message, {
                 icon: '🤠',
                 removeDelay: 4000
-                // style: {
-                //     "color": "#0062E3"
-                // }
             })
-            return
+            if (!filters?.place?.name) return;
         }
         const queryTerm = filters.place?.name;
         setSearchValue(queryTerm)
@@ -57,7 +55,14 @@ export function useLllmFilters() {
         const filterString = JSON.stringify(searchFilters);
         setHotels(hotelData);
         setFromVoice(true);
-        navigate(`/hotels?q=${queryTerm}&type=${type}&checkIn=${checkIn}&checkOut=${checkOut}&filters=${filterString}`);
+        const urlParams = new URLSearchParams({
+            'q': queryTerm,
+            'type': type,
+            'checkIn': checkIn,
+            'checkOut': checkOut,
+            'filters': filterString
+        })
+        navigate(`/hotels?${urlParams.toString()}`);
     }
     return processLlmFilters
 }

@@ -8,6 +8,7 @@ import { useSocketStore } from "@/store/useSocketStore";
 import { Mic } from "lucide-react";
 import { useLllmFilters } from "@/lib/voiceSearch";
 import { generateCurrentFiltersAsString } from "@/lib/utils";
+import { useHotelStore } from "@/store/useHotelStore";
 
 const Voice = () => {
     const [isStreaming, setIsStreaming] = useState(false);
@@ -18,7 +19,7 @@ const Voice = () => {
     const filterProcessing = useLllmFilters()
     const sourceNodeRef = useRef<MediaStreamAudioSourceNode>();
     const audioServiceRef = useRef<AudioService>();
-
+    
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const {
         // canSpeak,
@@ -76,8 +77,9 @@ const Voice = () => {
         }
     }, [isStreaming])
     const toggleStreaming = async () => {
+        const { llmSocket } = useSocketStore.getState();
         if (isStreaming) {
-            setWaitingForMessage(true);
+            if (llmSocket?.readyState === WebSocket.OPEN) setWaitingForMessage(true);
             cleanup();
             setIsStreaming(false);
         } else {
@@ -86,7 +88,8 @@ const Voice = () => {
                 const llmSocket = await connectLlmSocket();
                 const audioSocket = await connectAudioSocket();
                 if (audioSocket && llmSocket) {
-                    llmSocket.send(JSON.stringify({"previous_filters": generateCurrentFiltersAsString()}));
+                    const { infoMessage } = useHotelStore.getState();
+                    llmSocket.send(JSON.stringify({"previous_filters": generateCurrentFiltersAsString(), "previous_message": infoMessage}));
                     llmSocket.onmessage = (message) => {
                         try {
                             const jsonResponse = JSON.parse(message.data);

@@ -56,7 +56,7 @@ def process_llm_filters(llm_filters, SearchFiltersSchema: Type[BaseModel], db: S
         final_response = set_error(llm_filters)
     # now the llm_filters have valid status codes but still possible for some required fields to be None
     # basically for status code 300, we are trusting the LLM
-    elif llm_filters['status']['code'] == 200:
+    elif llm_filters['status']['code'] == 200 or llm_filters['status']['code'] == 300:
         # TODO: make this checking more programatic in case of more default fields
         if not llm_filters['filters']['place']:
             final_response['status'] = {
@@ -77,8 +77,8 @@ def process_llm_filters(llm_filters, SearchFiltersSchema: Type[BaseModel], db: S
             'name': suggestions[0]['label'],
             'type': suggestions[0]['type']
         }
-        final_response['filters'] = query_dict
         search_filters =  SearchFiltersSchema(**query_dict)
+        final_response['filters'] = search_filters.model_dump()     # making sure that default filters exist
         # query the database
         try:
             final_response['data'] = get_hotels_with_filters(search_filters, db)

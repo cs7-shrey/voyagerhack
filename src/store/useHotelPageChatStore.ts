@@ -39,7 +39,6 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
     setIsTextSocketConnecting: ( isTextSocketConnecting ) => set({ isTextSocketConnecting }),
     setWaitingForMessage: (waitingForMessage) => set({ waitingForMessage }),
     connectTextSocket: async (id) => {
-        // check if the socket already open : TODO
         if (get().textSocket?.readyState === WebSocket.OPEN) {
             get().textSocket?.close()
         }

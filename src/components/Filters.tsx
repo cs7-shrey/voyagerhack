@@ -12,8 +12,6 @@ import HotelPriceFilter from "./filterComponents/HotelPriceFilter";
 import { generateCurrentFiltersAsString } from "@/lib/utils";
 // import { useSearchParams } from "react-router";
 
-
-// TODO: optimize and modularize this fucked up component 
 interface Props {
     filterIconClick: () => void;
 }
