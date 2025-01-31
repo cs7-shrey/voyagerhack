@@ -11,11 +11,20 @@ const InputMessage = () => {
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserMessage(e.target.value);
   };
-  const { connectTextSocket, setMessages, disconnectTextSocket } = useHotelPageChatStore();
+  const { connectTextSocket, setMessages, disconnectTextSocket, setTextSocket } = useHotelPageChatStore();
 
   useEffect(() => {
     const connect = async () => {
+      console.log('connecting')
       const ws = await connectTextSocket(BigInt("948109283410")) // change this later: TODO
+      if (ws) {
+        ws.onclose = () => {
+          // some sort of cleanup
+          console.log('text socket closed by server')
+          disconnectTextSocket();
+          setTextSocket(null);
+        }
+      }
     }
     const disconnect = async () => {
       await disconnectTextSocket()
@@ -24,7 +33,7 @@ const InputMessage = () => {
     return () => {
       disconnect()
     }
-  }, [connectTextSocket, disconnectTextSocket])
+  }, [connectTextSocket, disconnectTextSocket, setTextSocket])
   const onSendMessage = async () => {
     if (userMessage.length == 0) return
     // const ws = await connectTextSocket(BigInt("948109283410")) // change this later: TODO

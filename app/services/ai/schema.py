@@ -1,5 +1,5 @@
 from typing_extensions import TypedDict
-from enums import HotelStar, UserRating, PropertyType, HotelAmenityCode, RoomAmenityCode, StatusCode
+from .enums import HotelStar, UserRating, PropertyType, HotelAmenityCode, RoomAmenityCode, StatusCode
 from google.generativeai.protos import Schema
 from google.ai.generativelanguage_v1beta.types import content
 

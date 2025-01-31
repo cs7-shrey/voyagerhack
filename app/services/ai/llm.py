@@ -38,16 +38,7 @@ async def invoke(prompt, previous_filters_string):
   )
   response = await chat_session.send_message_async(prompt)
   return response
-   
-# def process_filers(filters_dict):
-#   if filters_dict['status']['code'] == "400":
-#     return ...
-#   elif filters_dict['status']['code'] == "300":
-#     return ...
-#   elif filters_dict['status']['code'] == "200":
-#     return ...
-#   else:
-#     return 
+
 
 def parse_llm_response(text):
     """

@@ -1,4 +1,4 @@
-from ai import llm
+from app.services.ai import llm
 import asyncio
 from app.oauth2 import socket_get_current_client
 from app.database import get_db
@@ -26,7 +26,6 @@ async def llm_response_websocket(ws: WebSocket, current_user: TokenData = Depend
     await ws.accept()
     asyncio.create_task(websocket_timeout(ws, 40))
     json_data = await ws.receive_json()
-    print(json_data)
     previous_filters = json_data['previous_filters']
     transcript_queues = queue_maps['search']
     transcript_queues[current_user.user_id] = asyncio.Queue()

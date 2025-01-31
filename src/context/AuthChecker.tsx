@@ -12,10 +12,8 @@ const AuthChecker = () => {
         setCanProcess(true);
     }, [setIsCheckingAuth])
     if (!canProcess || isCheckingAuth) {
-        console.log('returning disaster', !canProcess, isCheckingAuth)
         return (<div>Loading...</div>)
     }
-    console.log('here')
     return (
         <Outlet />
     )

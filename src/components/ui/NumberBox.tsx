@@ -8,7 +8,6 @@ interface Prop {
 const NumberBox: React.FC<Prop> = ({ text, isSelected }) => {
     const { setTempUserRating } = useTempFilterStore();
     const onClick = () => {
-        console.log(Number(text.split("+")[0]));
         setTempUserRating(Number(text.split("+")[0]));
     }
     

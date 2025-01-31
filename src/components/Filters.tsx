@@ -46,8 +46,6 @@ const Filters: React.FC<Props> = ({ filterIconClick }) => {
         // setTempRoomAmenities,
     } = useTempFilterStore();
     
-
-    // console.log('re rendered')
     const handleApply = () => {
         setMinBudget(tempMinBudget);
         setMaxBudget(tempMaxBudget);

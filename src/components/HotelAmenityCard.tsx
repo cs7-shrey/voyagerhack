@@ -12,7 +12,6 @@ const HotelAmenityCard: React.FC<Props> = ({ text, code, isChecked }) => {
     const { tempHotelAmenities, setTempHotelAmenities } = useTempFilterStore();
     const onClick = () => {
         if (!isChecked) {
-            console.log('added amenity')
             setTempHotelAmenities([...tempHotelAmenities, {name: text, code: code}]);
         }
         else {

@@ -48,7 +48,6 @@ async def audio_websocket(ws: WebSocket, language: str, service: str = Query(...
         await ws_speech.audio_queue.put(None)
         t1 = time.time()
         await send_task
-        print('itna to hogya')
         await ws_speech.run(io.BytesIO(audio_data))
         t2 = time.time()
         print(f'transcription took {t2-t1} seconds')

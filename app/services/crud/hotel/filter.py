@@ -135,9 +135,6 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
     )
     results = []
     results = session.execute(final_query).mappings().all()
-    # print(session.execute(q2))
-    # for result in session.execute(final_query):
-    #     print(result)
     return results
 
         

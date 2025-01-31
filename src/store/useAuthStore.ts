@@ -41,7 +41,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
 export async function signUp(name: string, email: string, password: string) {
     const { setIsSigningUp, setError, setAuthUserEmail } = useAuthStore.getState();
-    console.log('signing up')
     try {
         setIsSigningUp(true);
         const response = await axiosInstance.post('/users/signup', { name, email, password });
@@ -71,7 +70,6 @@ export async function signUp(name: string, email: string, password: string) {
 
 export async function login(email: string, password: string) {
     const { setIsLoggingIn, setError, setAuthUserEmail } = useAuthStore.getState();
-    console.log('logging in')
     try {
         setIsLoggingIn(true);
         const response = await axiosInstance.post('/users/login', { email, password });
@@ -100,14 +98,12 @@ export async function login(email: string, password: string) {
 
 export async function checkAuth() {
     const { setIsCheckingAuth, setAuthUserEmail } = useAuthStore.getState();
-    console.log('checking auth')
     try {
         setIsCheckingAuth(true);
         const response = await axiosInstance.get('/users/checkauth');
         if (response.status !== 200) {
             throw new Error('Failed to check auth');
         }
-        console.log(response.data.email);
         setAuthUserEmail(response.data.email);
     }
     catch (error) {

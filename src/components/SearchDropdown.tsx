@@ -32,10 +32,9 @@ const SearchDropdown= () => {
                 new Error('Failed to fetch suggestions');
             }
             setSuggestions(response.data);
-            console.log(response.data);
-        } catch (error) {
-            console.error(error);
-        }
+          } catch (error) {
+              console.error(error);
+          }
     }
     getSuggestions();
   }, [searchValue]);
