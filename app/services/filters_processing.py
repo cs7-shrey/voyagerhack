@@ -66,7 +66,7 @@ def process_llm_filters(llm_filters, SearchFiltersSchema: Type[BaseModel], db: S
             return final_response
         query_dict = {k: v for k, v in llm_filters['filters'].items() if v is not None}
         suggestions = get_suggestions(query_dict['place'], suggestion_search_space)
-        if suggestions[0]['score'] < 90:
+        if not suggestions or suggestions[0]['score'] < 90:
             final_response['status'] = {
                 'code': 300,
                 'message': "The place you are looking for could not be found. Please try again."

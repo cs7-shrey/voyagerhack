@@ -5,9 +5,13 @@ from app.services import hashing
 from app.oauth2 import get_current_client
 from app.database import get_db
 from sqlalchemy.orm import Session
+import os
+from dotenv import load_dotenv
 from ..oauth2 import create_access_token
 
-router: any = APIRouter(prefix='/users', tags=['users'])
+
+load_dotenv()
+router = APIRouter(prefix='/users', tags=['users'])
 
 @router.post('/signup')
 async def signup(user_info: schemas.UserCreate, response: Response, db: Session = Depends(get_db)):
@@ -22,9 +26,9 @@ async def signup(user_info: schemas.UserCreate, response: Response, db: Session 
         key="access_token", 
         value=access_token, 
         httponly=True,  # This makes the cookie inaccessible to JavaScript
-        # secure=True,    # Use this flag in production to send cookies only over HTTPS
+        secure=os.getenv('ENVIRONMENT') and os.getenv('ENVIRONMENT') == "PRODUCTION",    # Use this flag in production to send cookies only over HTTPS
         samesite="lax",  # Protects against CSRF attacks
-        domain="localhost"  # TODO: change this in production
+        domain=os.getenv('BASE_FRONTEND_DOMAIN')  # TODO: change this in production
     )
     return {"message": "User created"}
 
@@ -40,9 +44,9 @@ async def login(user_info: schemas.UserLogin, response: Response, db: Session = 
         key="access_token", 
         value=access_token, 
         httponly=True,  # This makes the cookie inaccessible to JavaScript
-        # secure=True,    # Use this flag in production to send cookies only over HTTPS
+        secure= os.getenv('ENVIRONMENT') and os.getenv('ENVIRONMENT') == "PRODUCTION",    # Use this flag in production to send cookies only over HTTPS
         samesite="lax",  # Protects against CSRF attacks
-        domain="localhost"  # TODO: change this in production
+        domain=os.getenv('BASE_FRONTEND_DOMAIN')  # TODO: change this in production
     )
     return {"message": "login successful"}
 

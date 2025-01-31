@@ -16,7 +16,10 @@ load_dotenv()
 
 app = FastAPI()
 
-origins = ["*"]
+origins = [
+    "http://localhost:5173",
+    os.getenv("BASE_FRONTEND_URL")
+]
 # TODO: Change this to the actual frontend URL
 app.add_middleware(
     CORSMiddleware,
@@ -46,4 +49,4 @@ async def test_hotel(db: Session = Depends(get_db)):
 
 @app.get('/protected')
 async def protected_route(token_data: dict = Depends(get_current_client)):
-    return {"message": "You are under protected route"}
+    return {"message": "You are under protected"}
