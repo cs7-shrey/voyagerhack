@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Star } from 'lucide-react';
 import { Link } from 'react-router';
+import placeholderImg from "/placeholderImg.jpg"
 
 export interface Hotel {
     id: bigint;
@@ -61,7 +62,7 @@ const HotelCard: React.FC<Hotel> = ({
                 {/* Main Image */}
                 <div className="h-48">
                     <img 
-                        src={'https:' + images[selectedImageIndex] || "/api/placeholder/400/320"} 
+                        src={images[selectedImageIndex] ? 'https:' + images[selectedImageIndex] : placeholderImg} 
                         alt={`${name} - View ${selectedImageIndex + 1}`}
                         className="w-full h-full object-cover"
                     />
@@ -76,7 +77,7 @@ const HotelCard: React.FC<Hotel> = ({
                             onMouseEnter={() => setSelectedImageIndex(index)}
                         >
                             <img
-                                src={'https:' + img}
+                                src={img ? 'https:' + img :  placeholderImg}
                                 alt={`${name} - Thumbnail ${index + 1}`}
                                 className="w-full h-full object-cover"
                             />

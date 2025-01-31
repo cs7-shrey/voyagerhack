@@ -5,6 +5,7 @@ import RoomOffer from "./RoomOffer";
 import { type RoomType } from "@/store/useHotelDescStore";
 import RoomMoreInfo from "./RoomMoreInfo";
 import { useState, useEffect } from "react";
+import placeholderImg from "/placeholderImg.jpg"
 
 type Props = RoomType
 
@@ -31,9 +32,9 @@ const RoomOption: React.FC<Props> = (roomType: RoomType) => {
         <div className="z-10">
         <button onClick={handleClick} className="relative">
         <img 
-          src={roomType.room_photos[0]} 
-          alt="Deluxe Room" 
-          className="w-11/12 mx-auto mt-4 rounded-lg"
+          src={roomType.room_photos[0] ? roomType.room_photos[0] : placeholderImg} 
+          alt="room option photo" 
+          className="w-11/12 min-h-10 mx-auto mt-4 rounded-lg"
         />
         <div className="absolute bottom-1 left-4 py-2 px-2 text-left m-1 mr-auto w-fit h-fit max-w-[30%] max-h-[20%] text-xs md:text-sm bg-black/80 text-primary rounded-md">
           +{roomType.room_photos.length - 1}
