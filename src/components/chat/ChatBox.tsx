@@ -5,26 +5,23 @@ import { X } from 'lucide-react'
 import { useHotelPageChatStore } from '@/store/useHotelPageChatStore'
 import typing from '@/assets/typing.svg'
 import { Circle } from 'lucide-react'
-import { text } from 'stream/consumers'
 
 interface Props {
     onClose: () => void
 }
 const ChatBox: React.FC<Props> = ({ onClose }) => {
     // some state logic
-    const { messages, waitingForMessage, textSocket, connectTextSocket } = useHotelPageChatStore();
+    const { messages, waitingForMessage, textSocket, isTextSocketConnecting, connectTextSocket } = useHotelPageChatStore();
     const endRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         endRef?.current?.scrollIntoView({behavior: "smooth"})
     }, [messages])
-    const widgeColor = textSocket?.readyState === WebSocket.OPEN ? 'rgb(108,161,72)' 
-        : textSocket?.readyState === WebSocket.CONNECTING ? 'rgb(20,20,20)' 
+    const widgetColor = textSocket?.readyState === WebSocket.OPEN ? 'rgb(108,161,72)' 
+        : isTextSocketConnecting ? 'rgb(20,20,20)' 
         : (!textSocket || textSocket?.readyState === WebSocket.CLOSED) ? 'rgb(218,74,34)' : 'rgb(0,200,0)'
-    
     const widgetText = textSocket?.readyState === WebSocket.OPEN ? 'connected' 
-        : textSocket?.readyState === WebSocket.CONNECTING ? 'connecting' 
+        : isTextSocketConnecting ? 'connecting' 
         : (!textSocket || textSocket?.readyState === WebSocket.CLOSED) ? 'disconnected' : 'error'
-
     const onClick = () => {
         connectTextSocket(BigInt("12345658"))
     }
@@ -34,18 +31,18 @@ const ChatBox: React.FC<Props> = ({ onClose }) => {
                 <img src="/ai.gif" alt="." className='size-16 pt-2' />
                 <div className='flex flex-col my-auto mx-auto items-center relative'>
                     <button 
-                        disabled={textSocket?.readyState === WebSocket.OPEN || textSocket?.readyState === WebSocket.CONNECTING}
+                        disabled={textSocket?.readyState === WebSocket.OPEN || isTextSocketConnecting}
                         className='flex h-fit gap-2 px-4 py-1 border-2 rounded-full'
                         onClick={onClick}
                     >
                         <Circle size={6} 
-                            fill={widgeColor}
-                            color={widgeColor} 
+                            fill={widgetColor}
+                            color={widgetColor} 
                             className='self-center'
                         /> 
                         {widgetText}
                     </button>
-                    {(!textSocket || textSocket?.readyState === WebSocket.CLOSED) && <div className='text-xs absolute top-10 text-secondary/70'>
+                    {(!textSocket || textSocket?.readyState === WebSocket.CLOSED) && !isTextSocketConnecting && <div className='text-xs absolute top-10 text-secondary/70'>
                         click to connect
                     </div>}
                 </div>
@@ -55,7 +52,7 @@ const ChatBox: React.FC<Props> = ({ onClose }) => {
                     </div>
                 </button>
             </div>
-            <div className='overflow-y-auto flex-1 z-50 scrollbar-webkit mt-auto flex flex-col gap-2 pr-1'>
+            <div className='overflow-y-auto flex-1 z-50 max-h-fit scrollbar-webkit mt-auto flex flex-col gap-2 pr-1'>
                 {messages.map((msg, index) => (
                     <Message key={index} text={msg.text} sender={msg.sender} />
                 ))}

@@ -11,11 +11,13 @@ interface HotelPageChatStore {
     textSocket: WebSocket | null;
     audioSocket: WebSocket | null;
     canSpeak: boolean;
+    isTextSocketConnecting: boolean;
     waitingForMessage: boolean;
     setMessages: (messages: Message[]) => void;
     setTextSocket: (socket: WebSocket | null) => void;
     setAudioSocket: (socket: WebSocket) => void;
     setCanSpeak: (canSpeak: boolean) => void;
+    setIsTextSocketConnecting: ( isTextSocketConnecting: boolean ) => void;
     setWaitingForMessage: (waitingForMessage: boolean) => void;
     connectTextSocket: (id: bigint) => Promise<WebSocket | void>;
     connectAudioSocket: (lang: 'en' | 'hi') => Promise<WebSocket | void>;
@@ -29,16 +31,19 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
     audioSocket: null,
     canSpeak: false,
     waitingForMessage: false,
+    isTextSocketConnecting: false,
     setMessages: (messages) => set({ messages }),
     setTextSocket: ( socket ) => set({textSocket: socket}),
     setAudioSocket: ( socket ) => set({ audioSocket: socket}),
     setCanSpeak: (canSpeak: boolean) => set({ canSpeak }),
+    setIsTextSocketConnecting: ( isTextSocketConnecting ) => set({ isTextSocketConnecting }),
     setWaitingForMessage: (waitingForMessage) => set({ waitingForMessage }),
     connectTextSocket: async (id) => {
         // check if the socket already open : TODO
         if (get().textSocket?.readyState === WebSocket.OPEN) {
             get().textSocket?.close()
         }
+        get().setIsTextSocketConnecting(true);
         const { hotelData }  = useHotelDescStore.getState()
         const name = hotelData?.name
         const location = hotelData?.location
@@ -51,17 +56,27 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
                 resolve(true);
             }
             ws.onerror = () => {
-                console.log("an error with the text chat web socket");
+                console.error("an error with the text chat web socket");
                 reject(false);
             }
         })
         if (!res) {
-            console.log('could not connect')
+            console.error('could not connect')
             ws.close();
             set({ textSocket: null});
             return
         }
+        ws.onclose = () => {
+            // some sort of cleanup
+            console.log('text socket closed by server')
+            get().disconnectTextSocket();
+            get().setTextSocket(null);
+        }
+        ws.onerror = () => {
+            console.log('text socket error')
+        }
         set({ textSocket: ws})
+        get().setIsTextSocketConnecting(false)
         return ws
     },
     connectAudioSocket: async (lang) => {
@@ -72,7 +87,7 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
         if (get().textSocket?.readyState !== WebSocket.OPEN) {
             return
         }
-        const audioSocket = new WebSocket(`ws://${BASE_URL}/ws/audio/${lang}?service=chat`);
+        const audioSocket = new WebSocket(`${BASE_URL}/ws/audio/${lang}?service=chat`);
         const res = await new Promise((resolve, reject) => {
             audioSocket.onopen = () => {
                 console.log("Audio WebSocket connected!");
