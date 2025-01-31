@@ -43,9 +43,9 @@ export function useLllmFilters() {
         const queryTerm = filters.place?.name;
         setSearchValue(queryTerm)
         const type = filters.place?.type;
+        const checkIn = filters?.check_in;
+        const checkOut = filters?.check_out;
         const searchFilters = {
-            checkIn: filters?.check_in,
-            checkOut: filters?.check_out,
             minBudget: filters?.min_budget,
             maxBudget: filters?.max_budget,
             userRating: filters?.user_rating,
@@ -57,7 +57,7 @@ export function useLllmFilters() {
         const filterString = JSON.stringify(searchFilters);
         setHotels(hotelData);
         setFromVoice(true);
-        navigate(`/hotels?q=${queryTerm}&type=${type}&filters=${filterString}`);
+        navigate(`/hotels?q=${queryTerm}&type=${type}&checkIn=${checkIn}&checkOut=${checkOut}&filters=${filterString}`);
     }
     return processLlmFilters
 }
