@@ -46,5 +46,4 @@ async def test_hotel(db: Session = Depends(get_db)):
 
 @app.get('/protected')
 async def protected_route(token_data: dict = Depends(get_current_client)):
-    print(token_data)
-    return {"message": "You are under protected data"}
+    return {"message": "You are under protected route"}

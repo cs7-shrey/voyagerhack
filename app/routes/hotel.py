@@ -40,7 +40,6 @@ async def hotel_chat_ws(
             print(mode)
             print(mode == ChatMode.text)
             if mode == ChatMode.text:
-                print('idhar aagye')
                 message = await ws.receive_text()
                 response = await agent.talk(message)
                 await ws.send_text(response)

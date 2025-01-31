@@ -9,5 +9,3 @@ class GetHotelInfo(Tool):
     
 def get_hotel_info():
     pass
-
-print(GetHotelInfo.model_fields)

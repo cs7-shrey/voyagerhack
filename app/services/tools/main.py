@@ -34,7 +34,6 @@ class Tool(BaseModel):
 def toolify(ToolDeclaration: Type[Tool]):    
     name = ToolDeclaration.__fname__
     description = ToolDeclaration.__description__
-    print(name)
     
     if not ToolDeclaration.model_fields: 
         return genai.protos.FunctionDeclaration(

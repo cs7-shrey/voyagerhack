@@ -206,7 +206,7 @@ class Speech(WebsocketClient):
                 await self.websocket.send(message)
             except websockets.exceptions.ConnectionClosedOK:
                 # Can occur if a timeout has closed the connection.
-                print("bhai dekho web socket ho chuka hai band")
+                print("Web socket already closed")
                 return
             except websockets.exceptions.ConnectionClosedError:
                 print("Disconnected while sending a message().")
@@ -339,7 +339,6 @@ class Speech(WebsocketClient):
         #     [self.consumer_task], return_when=asyncio.FIRST_EXCEPTION
         # )
 
-        # print('yaha tak aaye the')
         # # done = done1 | done2
         # # pending = pending1 | pending2
         # # If a task is pending the other one threw an exception, so tidy up

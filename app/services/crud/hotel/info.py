@@ -4,8 +4,6 @@ from app.models import Hotel, HotelAmenityMapping, HotelAmenity, RoomType, RoomA
 
 def get_hotel_info_by_id(id: int, db: Session):
     # HotelAmenityMapping 
-    print(id)
-    print(type(id))
     ham = aliased(HotelAmenityMapping)
     ha = aliased(HotelAmenity)
     query = (
@@ -27,7 +25,6 @@ def get_hotel_info_by_id(id: int, db: Session):
     .group_by(Hotel.id, Hotel.gi_id, Hotel.name, Hotel.location, Hotel.hotel_star, Hotel.user_rating, Hotel.user_rating_count, Hotel.property_type, Hotel.images)
     )
     results = db.execute(query).mappings().one()
-    print(results)
     return dict(results)
 
 def get_hotel_room_info(id: int, db: Session):
