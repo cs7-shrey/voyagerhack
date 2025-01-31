@@ -21,7 +21,6 @@ const RoomOption: React.FC<Props> = (roomType: RoomType) => {
       document.body.style.overflow = 'unset';
     };
   }, [roomMoreInfo]);
-  // console.log(roomType)
   return (
     <div className="flex flex-col sm:flex-row w-11/12 mt-8 rounded-lg bg-primary/80" id="room-options">
       {/* Left Section - Image and Specifications */}

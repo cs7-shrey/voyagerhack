@@ -15,7 +15,6 @@ export class AudioService {
         noiseSuppression: true,
         autoGainControl: true
     }) {
-        console.log('initializing audio service')
         // Capture audio. mediaStream -> a stream of media content carrying raw data from microphone
         this.mediaStream = await navigator.mediaDevices.getUserMedia({
             audio: config
@@ -36,10 +35,8 @@ export class AudioService {
         this.sourceNode.connect(this.workletNode)
     }
     onAudioData(callback: (buffer: Int16Array) => void) {
-        // console.log(this.workletNode)
         if (this.workletNode) {
             this.workletNode.port.onmessage = (event) => {
-                console.log('sending bytes')
                 callback(event.data)
             }
         }
@@ -48,14 +45,12 @@ export class AudioService {
         return this.sourceNode;
     }
     cleanup() {
-        console.log('cleaning up audio service')
         if (this.mediaStream) {
             this.mediaStream.getTracks().forEach((track) => track.stop());
             this.mediaStream = undefined;
         }
         if (this.workletNode) {
             this.workletNode.disconnect();
-            // console.log('disconnected worklet node')
             this.workletNode = undefined;
         }
         if (this.sourceNode) {

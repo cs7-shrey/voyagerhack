@@ -15,6 +15,7 @@ const InputMessage = () => {
 
   useEffect(() => {
     const connect = async () => {
+      console.log('connecting')
       const ws = await connectTextSocket(BigInt("948109283410")) // change this later: TODO
     }
     const disconnect = async () => {

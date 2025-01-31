@@ -67,7 +67,7 @@ const HotelDescription = () => {
                 </div>
             </div>
             {!chatBoxOpen && 
-            <div className="fixed bottom-2 right-2 rounded-lg size-16 flex justify-center items-center bg-accent">
+            <div className="fixed z-50 bottom-2 right-2 rounded-lg size-16 flex justify-center items-center bg-accent">
                 <button className="w-full h-full p-4" onClick={onClick}>
                     <Bot color="white" size={28}/>
                 </button>

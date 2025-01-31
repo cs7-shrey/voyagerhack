@@ -16,13 +16,12 @@ export async function textChat(mainWs: WebSocket, userMessage: string): Promise<
         setWaitingForMessage(true)
         await new Promise((resolve, reject) => {
             mainWs.onmessage = (serverMessage) => {
-                console.log(serverMessage) // TODO: remove this later
                 llmMessage = serverMessage.data
                 resolve(true)
             }
             mainWs.send(userMessage)
             mainWs.onerror = () => {
-                console.log("an error occured while sending text message")
+                console.error("an error occured while sending text message")
                 resolve(false)
             }
             mainWs.onclose = () => {
@@ -31,7 +30,7 @@ export async function textChat(mainWs: WebSocket, userMessage: string): Promise<
             }        
         })
     } catch (error) {
-        console.log("Error sending text message to llm", error)
+        console.error("Error sending text message to llm", error)
     }
     finally {
         setWaitingForMessage(false)
@@ -51,7 +50,6 @@ export async function voiceChat(mainWs: WebSocket): Promise<string | void> {
         await new Promise((resolve, reject) => {
             const { messages: prevMessages, setMessages } = useHotelPageChatStore.getState();
             mainWs.onmessage = (serverMessage) => {
-                console.log(serverMessage) // TODO: remove this later
                 llmMessage = serverMessage.data
                 setMessages([...prevMessages, {
                     sender: "bot",
@@ -61,7 +59,7 @@ export async function voiceChat(mainWs: WebSocket): Promise<string | void> {
                 resolve(true)
             }
             mainWs.onerror = () => {
-                console.log("an error occured while sending text message")
+                console.error("an error occured while sending text message")
                 resolve(false)
             }
             mainWs.onclose = () => {
@@ -71,7 +69,7 @@ export async function voiceChat(mainWs: WebSocket): Promise<string | void> {
         })
         
     } catch (error) {
-        console.log("Error sending voice message to llm", error)
+        console.error("Error sending voice message to llm", error)
     }
     finally {
         setWaitingForMessage(false)

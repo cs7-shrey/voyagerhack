@@ -30,10 +30,7 @@ export function useLllmFilters() {
     const { setHotels, setFromVoice } = useHotelStore()
     const { setSearchValue } = useSearchStore();
     const processLlmFilters = (filters: BackendFilters, status: Status, hotelData: Hotel[]) => {
-        console.log(status.code, status.message)
         if (status.code !== 200) {
-            // set some errors
-            // alert(status.message)
             toast(status.message, {
                 icon: '🤠',
                 removeDelay: 4000

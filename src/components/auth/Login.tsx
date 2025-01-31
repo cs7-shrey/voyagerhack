@@ -4,13 +4,6 @@ import { Navigate } from 'react-router';
 
 const Login = () => {
     const { authUserEmail } = useAuthStore();
-    // const navigate = useNavigate();
-    // useEffect(() => {
-    //     if (authUserEmail) {
-    //         console.log('navigating to /')
-    //         navigate('/');
-    //     }
-    // }, [authUserEmail, navigate])
     if (authUserEmail) {
         return <Navigate to="/" />
     }

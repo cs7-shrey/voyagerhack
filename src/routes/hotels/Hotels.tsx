@@ -35,10 +35,8 @@ export default function Hotels() {
         stateInitUsingQueryParams(searchParams);
         if (fromVoice) {
             setFromVoice(false);
-            console.log('it was from voice. going back')
             return;
         }
-        console.log("it was not from voice. going to fetch")
         const {
             queryTerm,
             checkIn,
@@ -53,8 +51,6 @@ export default function Hotels() {
             // setPropertyType,
         } = useSearchStore.getState();
         setLoading(true)
-        const x = searchParams.get("x");
-        console.log(x);
         const q = searchParams.get("q");
         const type = searchParams.get("type");
         const getHotels = async () => {
@@ -87,7 +83,6 @@ export default function Hotels() {
                 if (response.status !== 200) {
                     new Error("Failed to fetch hotels");
                 }
-                console.log("ye hai hotels ka api response", response.data);
                 setHotels(response.data);
             } catch (error) {
                 console.error(error);
@@ -106,10 +101,6 @@ export default function Hotels() {
           document.body.style.overflow = 'unset';
         };
       }, [waitingForMessage]);
-    // test
-    useEffect(() => {
-        console.log('mounted')
-    }, [])
     return (
         <div className="relative"
              style={{

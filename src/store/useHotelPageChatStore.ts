@@ -22,7 +22,7 @@ interface HotelPageChatStore {
     disconnectTextSocket: () => void;
     disconnectAudioSocket: () => void;
 }
-const BASE_URL = import.meta.env.VITE_BASE_URL
+const BASE_URL = import.meta.env.VITE_SOCKET_BASE_URL
 export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
     messages: [],
     textSocket: null,
@@ -42,7 +42,7 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
         const { hotelData }  = useHotelDescStore.getState()
         const name = hotelData?.name
         const location = hotelData?.location
-        const ws = new WebSocket(`ws://${BASE_URL}/hotel/exp/${id}/ws/chat?hotel_name=${name}&hotel_location=${location}`);
+        const ws = new WebSocket(`${BASE_URL}/hotel/exp/${id}/ws/chat?hotel_name=${name}&hotel_location=${location}`);
         const res = await new Promise((resolve, reject) => {
             ws.onopen = () => {
                 const info = getHotelInfoFormatted();
@@ -56,6 +56,7 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
             }
         })
         if (!res) {
+            console.log('could not connect')
             ws.close();
             set({ textSocket: null});
             return
@@ -97,10 +98,8 @@ export const useHotelPageChatStore = create<HotelPageChatStore>((set, get) => ({
         get().textSocket?.close()
     },
     disconnectAudioSocket: () => {
-        console.log('disconnecting audio socket');
         set({ canSpeak: false})
         if (!get().audioSocket || get().audioSocket?.readyState == WebSocket.CLOSED || get().audioSocket?.readyState == WebSocket.CLOSING) return
         get().audioSocket?.close()
-        console.log('disconnected')
     }
 }));

@@ -87,14 +87,10 @@ const Voice = () => {
                 const audioSocket = await connectAudioSocket();
                 if (audioSocket && llmSocket) {
                     llmSocket.send(JSON.stringify({"previous_filters": generateCurrentFiltersAsString()}));
-                    audioSocket.onmessage = (message) => {
-                        console.log(message)
-                    }
                     llmSocket.onmessage = (message) => {
                         try {
                             const jsonResponse = JSON.parse(message.data);
                             if (jsonResponse.status) {
-                                // console.log(jsonResponse)
                                 const filters = jsonResponse.filters;
                                 filterProcessing(filters, jsonResponse.status, jsonResponse.data);
                             }

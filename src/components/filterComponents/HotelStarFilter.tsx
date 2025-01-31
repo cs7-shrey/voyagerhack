@@ -34,10 +34,7 @@ const HotelStarFilter = () => {
         }
 
     }, [tempHotelStar])
-    // log
-    useEffect(() => {
-        console.log(tempHotelStar);
-    }, [tempHotelStar]);
+    
     return (
         <div>
             <div className="mt-4 mb-2 font-bold">Hotel Class</div>

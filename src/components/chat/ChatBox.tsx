@@ -26,11 +26,11 @@ const ChatBox: React.FC<Props> = ({ onClose }) => {
                     </div>
                 </button>
             </div>
-            <div className='overflow-y-auto h-full scrollbar-webkit flex flex-col gap-2 pr-1'>
+            <div className='overflow-y-auto h-full scrollbar-webkit flex flex-col justify-end gap-2 pr-1'>
                 {messages.map((msg, index) => (
                     <Message key={index} text={msg.text} sender={msg.sender} />
                 ))}
-                <div ref={endRef} className='pl-2 mt-auto'>
+                <div ref={endRef} className='pl-2'>
                     {waitingForMessage && <img src={typing} className='h-10 w-14'/>}
                 </div>
             </div>
