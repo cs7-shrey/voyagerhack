@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { Language } from '@/lib/language'
-import { useSearchStore } from '@/store/useSearchStore';
 import { useSocketStore } from '@/store/useSocketStore';
 
 const LanguageButton = () => {

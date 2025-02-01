@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { LiveAudioVisualizer } from 'react-audio-visualize';
 
 const Visualizer = () => {
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>();
+  const [mediaRecorder] = useState<MediaRecorder>();
 
   // set media recorder somewhere in code
   

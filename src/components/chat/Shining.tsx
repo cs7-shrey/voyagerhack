@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const rotateArrayRight = (arr: number[]) : number[] => {
     // let last = arr.pop() ? arr.pop() : 1;
