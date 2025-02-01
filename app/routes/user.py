@@ -27,7 +27,7 @@ async def signup(user_info: schemas.UserCreate, response: Response, db: Session 
         value=access_token, 
         httponly=True,  # This makes the cookie inaccessible to JavaScript
         secure=os.getenv('ENVIRONMENT') and os.getenv('ENVIRONMENT') == "PRODUCTION",    # Use this flag in production to send cookies only over HTTPS
-        samesite="lax",  # Protects against CSRF attacks
+        samesite="none",  # Protects against CSRF attacks
         domain=os.getenv('BASE_FRONTEND_DOMAIN')  # TODO: change this in production
     )
     return {"message": "User created"}
@@ -45,7 +45,7 @@ async def login(user_info: schemas.UserLogin, response: Response, db: Session = 
         value=access_token, 
         httponly=True,  # This makes the cookie inaccessible to JavaScript
         secure= os.getenv('ENVIRONMENT') and os.getenv('ENVIRONMENT') == "PRODUCTION",    # Use this flag in production to send cookies only over HTTPS
-        samesite="lax",  # Protects against CSRF attacks
+        samesite="none",  # Protects against CSRF attacks
         domain=os.getenv('BASE_FRONTEND_DOMAIN')  # TODO: change this in production
     )
     return {"message": "login successful"}
