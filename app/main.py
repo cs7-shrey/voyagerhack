@@ -20,6 +20,7 @@ origins = [
     "http://localhost:5173",
     os.getenv("BASE_FRONTEND_URL")
 ]
+print(os.getenv("BASE_FRONTEND_URL"), os.getenv("BASE_FRONTEND_DOMAIN"))
 # TODO: Change this to the actual frontend URL
 app.add_middleware(
     CORSMiddleware,
