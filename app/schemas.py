@@ -95,6 +95,10 @@ class ChatMode(str, Enum):
     voice = "voice"
     text = "text"
 
+class Service(str, Enum):
+    CHAT = "chat"
+    SEARCH = "search"
+
 class Constants(BaseModel):
     name: str
     code: Optional[str] = ''
