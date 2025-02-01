@@ -20,6 +20,7 @@ import Logout from "./components/auth/Logout";
 // import Visualizer from "./routes/Visualizer";
 
 function App() {
+  console.log(import.meta.env.VITE_HTTP_BASE_URL)
   // const imgUrl = bg;
   // const anotherImg = 'https://content.skyscnr.com/m/5283dbe4ac4c9189/original/alexander-kaunas-xEaAoizNFV8-unsplash_CROP.jpg?resize=2880px:1148px&quality=80'
   const { waitingForMessage } = useSocketStore();
