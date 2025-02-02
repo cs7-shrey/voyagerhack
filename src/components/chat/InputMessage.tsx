@@ -27,7 +27,7 @@ const InputMessage = () => {
     }
   }, [connectTextSocket, disconnectTextSocket, setTextSocket])
   const onSendMessage = async () => {
-    if (userMessage.length == 0) return
+    if (userMessage.trim().length == 0) return
     // const ws = await connectTextSocket(BigInt("948109283410")) // change this later: TODO
     const { textSocket: ws} = useHotelPageChatStore.getState()
     if (!ws) {
