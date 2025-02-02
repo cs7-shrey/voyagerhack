@@ -40,13 +40,14 @@ async def login(user_info: schemas.UserLogin, response: Response, db: Session = 
     if not hashing.verify(user_info.password, user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
     access_token = create_access_token({"user_id": user.user_id})
+    is_prod = os.getenv('ENVIRONMENT') == "PRODUCTION"
     response.set_cookie(
         key="access_token", 
         value=access_token, 
         httponly=True,  # This makes the cookie inaccessible to JavaScript
-        secure= os.getenv('ENVIRONMENT') and os.getenv('ENVIRONMENT') == "PRODUCTION",    # Use this flag in production to send cookies only over HTTPS
-        samesite="none" if os.getenv("ENVIRONMENT") and os.getenv("ENVIRONMENT") == "PRODUCTION" else "lax",  # Protects against CSRF attacks
-        domain=None if os.getenv("ENVIRONMENT") and os.getenv("ENVIRONMENT") == "PRODUCTION" else os.getenv('BASE_FRONTEND_DOMAIN')  # TODO: change this in production
+        secure= is_prod,    # Use this flag in production to send cookies only over HTTPS
+        samesite="none" if is_prod else "lax",  # Protects against CSRF attacks
+        domain=None if is_prod else os.getenv('BASE_FRONTEND_DOMAIN')  # TODO: change this in production
     )
     return {"message": "login successful"}
 
