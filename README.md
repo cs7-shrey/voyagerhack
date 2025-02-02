@@ -1,8 +1,5 @@
 <html>
 <style>
-    h1 {
-        /* background-color: black; */
-    }
     span {
         background-color: #05203C;
         color: white;
