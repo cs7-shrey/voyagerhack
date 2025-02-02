@@ -65,6 +65,11 @@ Use the following tools to set up the project:
 ```bash
     npm run dev
 ```
+
+## Project structure
+
+This repository has the following structure:
+
 ```text
 ├── app                                         # The backend code
     │   ├── routes                              # Backend API routes
