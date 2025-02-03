@@ -72,20 +72,19 @@ This repository has the following structure:
 
 ```text
 ├── app                                         # The backend code
-    │   ├── routes                              # Backend API routes
-    │   ├── services                            # Core services used by the backend
-    │   │   ├── ai                              # LLM services used by the backend
-    │   │   ├── crud                            # DB crud service for backend
-    │   │   └── tools                           # Tool declarations and definitions for Agents
-    │   └── utils                               # Utilities
-    ├── public                                  # Static data for frontend
-    ├── src                                     # React frontend code
-    │   ├── assets                              # Various assets
-    │   ├── components                          # Frontend components
-    │   ├── context                             # Custom context layer
-    │   ├── lib                                 # Client logic for audio/websocket connections
-    │   ├── routes                              # Routes for client side routing
-    │   └── store                               # Zustand state store
-    └── .github                                 # Definitions of GitHub workflows
-
+│   ├── routes                                  # Backend API routes
+│   ├── services                                # Core services used by the backend
+│   │   ├── ai                                  # LLM services used by the backend
+│   │   ├── crud                                # DB crud service for backend
+│   │   └── tools                               # Tool declarations and definitions for Agents
+|   └── utils                                   # Utilities
+├── public                                      # Static data for frontend
+├── src                                         # React frontend code
+│   ├── assets                                  # Various assets
+│   ├── components                              # Frontend components
+│   ├── context                                 # Custom context layer
+│   ├── lib                                     # Client logic for audio/websocket connections
+│   ├── routes                                  # Routes for client side routing
+│   └── store                                   # Zustand state store
+└── .github                                     # Definitions of GitHub workflows
 ```
