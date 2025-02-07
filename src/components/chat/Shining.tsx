@@ -1,5 +1,24 @@
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { APIProvider, Map, MapCameraChangedEvent, Pin, AdvancedMarker } from "@vis.gl/react-google-maps"
+
+
+type Poi ={ key: string, location: google.maps.LatLngLiteral }
+const locations: Poi[] = [
+    {key: 'operaHouse', location: { lat: -33.8567844, lng: 151.213108  }},
+    {key: 'tarongaZoo', location: { lat: -33.8472767, lng: 151.2188164 }},
+    {key: 'manlyBeach', location: { lat: -33.8209738, lng: 151.2563253 }},
+    {key: 'hyderPark', location: { lat: -33.8690081, lng: 151.2052393 }},
+    {key: 'theRocks', location: { lat: -33.8587568, lng: 151.2058246 }},
+    {key: 'circularQuay', location: { lat: -33.858761, lng: 151.2055688 }},
+    {key: 'harbourBridge', location: { lat: -33.852228, lng: 151.2038374 }},
+    {key: 'kingsCross', location: { lat: -33.8737375, lng: 151.222569 }},
+    {key: 'botanicGardens', location: { lat: -33.864167, lng: 151.216387 }},
+    {key: 'museumOfSydney', location: { lat: -33.8636005, lng: 151.2092542 }},
+    {key: 'maritimeMuseum', location: { lat: -33.869395, lng: 151.198648 }},
+    {key: 'kingStreetWharf', location: { lat: -33.8665445, lng: 151.1989808 }},
+    {key: 'aquarium', location: { lat: -33.869627, lng: 151.202146 }},
+    {key: 'darlingHarbour', location: { lat: -33.87488, lng: 151.1987113 }},
+    {key: 'barangaroo', location: { lat: - 33.8605523, lng: 151.1972205 }},
+];
 
 const rotateArrayRight = (arr: number[]) : number[] => {
     // let last = arr.pop() ? arr.pop() : 1;
@@ -7,58 +26,65 @@ const rotateArrayRight = (arr: number[]) : number[] => {
     return [last, ...arr.slice(0, -1)];
 }   
 
-const Parser = ({text}: {text: string}) => {
-    const chars = [...text];
-    const start = 1;
-    const end = 0.5;
-    const [opacities, setOpacities] = useState([...chars.map((_, index) => {
-        return end - (end - start) * (index) / (text.length - 1)
-    })])
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setOpacities((prev) => rotateArrayRight(prev))
-        }, 100)
-        return () => clearInterval(interval);
-    }, [])
-    return chars.map((char, index) => {
-        return (
-            <span
-                key={index}
-                style={{
-                    color: `rgba(255,255,255,${opacities[index]})`
-                }}
-            >
-                {char}  
-            </span>
-        );
-    });
-}
+// const Parser = ({text}: {text: string}) => {
+//     const chars = [...text];
+//     const start = 1;
+//     const end = 0.5;
+//     const [opacities, setOpacities] = useState([...chars.map((_, index) => {
+//         return end - (end - start) * (index) / (text.length - 1)
+//     })])
+//     useEffect(() => {
+//         const interval = setInterval(() => {
+//             setOpacities((prev) => rotateArrayRight(prev))
+//         }, 100)
+//         return () => clearInterval(interval);
+//     }, [])
+//     return chars.map((char, index) => {
+//         return (
+//             <div>
+//                 <APIProvider apiKey={import.meta.env.VITE_MAPS_FRONTEND_API_KEY} onLoad={() => console.log('Maps API has loaded.')}>
+//                     <Map
+//                         defaultZoom={13}
+//                         defaultCenter={ { lat: -33.860664, lng: 151.208138 } }
+//                         onCameraChanged={ (ev: MapCameraChangedEvent) =>
+//                             console.log('camera changed:', ev.detail.center, 'zoom:', ev.detail.zoom)
+//                         }>
+//                     </Map>
+//                 </APIProvider> 
+//             </div>
+//         );
+//     });
+// }
 
-const Shining = () => {
-    const genToast = () => {
-        toast("Here is your toast")
-    }
-    const colors = [200, 300, 400, 500, 600, 700, 800]
-    const [grad, setGrad] = useState(colors.length - 1);
-    const [start, setStart] = useState(6)
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setGrad((prev) => (prev + 1) % colors.length);
-            setStart((prev) => (prev + 1) % colors.length);
-        }, 1000)
-        return () => {
-            clearInterval(interval)
-        }
-    }, [colors.length])
+const PoiMarkers = (props: {pois: Poi[]}) => {
     return (
-        <div className='w-full'>
-            <Parser text='Searching...' />
-            <button onClick={genToast} className="bg-blue-500 text-green-200 p-2 rounded-md">
-                click me 
-            </button>
-            <div className={`bg-gradient-to-b from-blue-${colors[start]} to-blue-${colors[grad]} h-[70vh]`}>
-                    alsdkfj;alskfja
-            </div>
+        <>
+            {props.pois.map( (poi: Poi) => (
+                <AdvancedMarker
+                    key={poi.key}
+                    position={poi.location}>
+                    <Pin background={'#D24D5C'} glyphColor={'#ffffff'} borderColor={'#D24D5C'} />
+                </AdvancedMarker>
+            ))}
+        </>
+    );
+};
+  
+const Shining = () => {
+    return (
+        <div className='w-full h-[70vh]'>
+            <APIProvider apiKey={import.meta.env.VITE_MAPS_FRONTEND_API_KEY} onLoad={() => console.log('Maps API has loaded.')}>
+                <Map
+                    defaultZoom={13}
+                    defaultCenter={ { lat: -33.860664, lng: 151.208138 } }
+                    mapId='DEMO_MAP_ID'
+                    onCameraChanged={ (ev: MapCameraChangedEvent) =>
+                        console.log('camera changed:', ev.detail.center, 'zoom:', ev.detail.zoom)
+                    }
+                >
+                    <PoiMarkers pois={locations} />
+                </Map>
+            </APIProvider>
         </div>
     )
 }

@@ -75,7 +75,7 @@ const HotelDescription = () => {
             {
                 chatBoxOpen &&
                 <div className="fixed bottom-2 right-2 inset-0 z-50 h-full w-full bg-transparent/30">
-                        <ChatBox onClose={onClick}/>
+                    <ChatBox onClose={onClick}/>
                 </div>
             }
         </div>
