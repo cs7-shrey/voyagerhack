@@ -1,6 +1,17 @@
 import { create } from 'zustand'
-import { type Hotel } from '@/components/HotelCard'
 
+export interface Hotel {
+    id: bigint;
+    name: string;
+    location: string;
+    base_fare?: number;
+    images?: string[];
+    hotel_star?: number;
+    user_rating?: number;
+    user_rating_count?: number;
+    latitude: number;
+    longitude: number;
+}
 interface HotelStore {
     hotels: Hotel[];
     fromVoice: boolean;
