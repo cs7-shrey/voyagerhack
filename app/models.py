@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, BigInteger, ARRAY, UniqueConstraint, JSON
 from typing import List, Optional
 from .database import Base
-
+from geoalchemy2 import Geography
 
 class PlatformUser(Base):
     __tablename__ = "platform_user"
@@ -25,6 +25,7 @@ class Hotel(Base):
     images = Column(ARRAY(String))
     uuids = Column(ARRAY(String))
     city_id = Column(Integer, ForeignKey("city.city_id"))
+    coordinate = Column(Geography(geometry_type='POINT', srid=4326))
     
 class HotelAmenity(Base):
     __tablename__ = "hotel_amenity"
@@ -69,6 +70,15 @@ class RoomAmenityMapping(Base):
     __tablename__ = "room_amenity_mapping"
     room_type_id = Column(Integer, ForeignKey("room_type.room_type_id"), primary_key=True)
     room_amen_id = Column(Integer, ForeignKey("room_amenity.room_amen_id"), primary_key=True)
+
+class UserReview(Base):
+    __tablename__ = "user_review"
+    review_id = Column(Integer, primary_key=True, autoincrement=True)
+    publish_date = Column(String)
+    review_text = Column(String, nullable=False)
+    rating = Column(Float, nullable=False)
+    hotel_id = Column(BigInteger, ForeignKey("hotel.id"))
+    traveller_name = Column(String)
 
 class City(Base):
     __tablename__ = "city"
