@@ -1,5 +1,5 @@
-import "./navbar.css"
-const AmenityNavbar=()=>{
+import "./navbar.css";
+const AmenityNavbar = () => {
     return (
         <nav className="amenity-nav relative z-50">
             <div className="nav-links">
@@ -10,6 +10,6 @@ const AmenityNavbar=()=>{
                 <div>Similar Hotels</div>
             </div>
         </nav>
-    )
-}
+    );
+};
 export default AmenityNavbar;
