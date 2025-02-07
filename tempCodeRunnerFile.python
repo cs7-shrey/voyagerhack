@@ -1,2 +1,0 @@
-sting = "hello world world"
-print(sting.split("hello"))
