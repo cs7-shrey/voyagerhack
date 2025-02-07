@@ -11,7 +11,7 @@ import os
 import copy
 
 load_dotenv()
-llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp", api_key=os.getenv('GOOGLE_API_KEY'))
+llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp", api_key=os.getenv('GOOGLE_API_KEY'),temperature=0.6)
 llm_with_tools = llm.bind_tools([GetHotelInfo, GetDistance, SearchAPI])
 
 

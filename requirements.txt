@@ -129,7 +129,6 @@ tzdata==2024.2
 uritemplate==4.1.1
 urllib3==2.2.3
 uvicorn==0.34.0
-uvloop==0.21.0
 watchfiles==1.0.3
 Wave==0.0.2
 wcwidth==0.2.13
