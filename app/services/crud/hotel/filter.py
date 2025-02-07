@@ -1,5 +1,6 @@
 from app.models import Hotel, City, HotelAmenityMapping, HotelAmenity, RoomType, RoomAmenityMapping, RoomAmenity, RatePlan
 from app.schemas import SearchFilters
+from geoalchemy2 import Geometry
 from sqlalchemy import select, func, and_
 from sqlalchemy.orm import Session
 from sqlalchemy import String
@@ -25,7 +26,9 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
             Hotel.user_rating,
             Hotel.user_rating_count,
             Hotel.location,
-            Hotel.images
+            Hotel.images,
+            func.st_x(func.cast(Hotel.coordinate, Geometry)).label('longitude'),
+            func.st_y(func.cast(Hotel.coordinate, Geometry)).label('latitude'),
         )
         .join(City, Hotel.city_id == City.city_id)
         .where(
@@ -49,35 +52,17 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
             q1.c.location,
             q1.c.user_rating,
             q1.c.user_rating_count,
-            q1.c.images
+            q1.c.images,
+            q1.c.coordinate
         )
         .join(HotelAmenityMapping, q1.c.id == func.cast(HotelAmenityMapping.hotel_id, String))
         .join(HotelAmenity, HotelAmenityMapping.amen_id == HotelAmenity.amen_id)
         .where(HotelAmenity.code.in_(filters.hotel_amenity_codes))
-        .group_by(q1.c.id, q1.c.hotel_name, q1.c.hotel_star, q1.c.location, q1.c.user_rating, q1.c.user_rating_count, q1.c.images)
+        .group_by(q1.c.id, q1.c.hotel_name, q1.c.hotel_star, q1.c.location, q1.c.user_rating, q1.c.user_rating_count, q1.c.images, q1.c.longitude, q1.c.latitude)
         .having(func.count(HotelAmenity.code) == len(filters.hotel_amenity_codes))
-        # .limit(10)
         .cte('q2')
     ) if filters.hotel_amenity_codes else q1
 
-    # Third CTE (q3)
-    # selecting only distinct hotels based on id from duplicates due to amenties
-    # q3 = (
-    #     select(
-    #         q2.c.id,
-    #         q2.c.hotel_name,
-    #         q2.c.hotel_star,
-    #         q2.c.location,
-    #         q2.c.user_rating,
-    #         q2.c.user_rating_count,
-    #         q2.c.images
-    #     )
-    #     .distinct(q2.c.id)
-    #     .cte('q3')
-    # ) if filters.hotel_amenity_codes else q2
-
-    # Fourth CTE (q4)
-    # filtering based on room amenities
     q4 = (
         select(
             q2,
@@ -87,7 +72,7 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
         .join(RoomAmenityMapping, RoomType.room_type_id == RoomAmenityMapping.room_type_id)
         .join(RoomAmenity, RoomAmenity.room_amen_id == RoomAmenityMapping.room_amen_id)
         .where(RoomAmenity.code.in_(filters.room_amenity_codes))
-        .group_by(q2.c.id, q2.c.hotel_name, q2.c.hotel_star, q2.c.location, q2.c.user_rating, q2.c.user_rating_count, q2.c.images, RoomType.room_type_id)
+        .group_by(q2.c.id, q2.c.hotel_name, q2.c.hotel_star, q2.c.location, q2.c.user_rating, q2.c.user_rating_count, q2.c.images, q2.c.longitude, q2.c.latitude, RoomType.room_type_id)
         .having(func.count(RoomAmenity.code) == len(filters.room_amenity_codes))
         .cte('q4')
     ) if filters.room_amenity_codes else (
@@ -96,7 +81,7 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
             RoomType.room_type_id
         )
         .join(RoomType, q2.c.id == func.cast(RoomType.hotel_id, String))
-        .group_by(q2.c.id, q2.c.hotel_name, q2.c.hotel_star, q2.c.location, q2.c.user_rating, q2.c.user_rating_count, q2.c.images, RoomType.room_type_id)
+        .group_by(q2.c.id, q2.c.hotel_name, q2.c.hotel_star, q2.c.location, q2.c.user_rating, q2.c.user_rating_count, q2.c.images, q2.c.longitude, q2.c.latitude, RoomType.room_type_id)
         .cte('q4')
     )
 
@@ -111,6 +96,8 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
             q4.c.user_rating.label('user_rating'),
             q4.c.user_rating_count.label('user_rating_count'),
             q4.c.images.label('images'),
+            q4.c.longitude.label('longitude'),
+            q4.c.latitude.label('latitude'),
             q4.c.room_type_id.label('room_type_id'),
             RatePlan.base_fare.label('base_fare'),
             RatePlan.total_discount.label('total_discount'),

@@ -31,6 +31,8 @@ class HotelSearchResponse(BaseModel):
     user_rating: float = 0
     user_rating_count: int
     images: list[str]
+    latitude: float 
+    longitude: float
 
 class HotelInfoResponse(BaseModel):
     id: int
