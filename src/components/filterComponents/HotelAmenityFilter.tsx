@@ -37,7 +37,7 @@ const HotelAmenityFilter = () => {
                 {amenityList.map((amenity) => (
                     <HotelAmenityCard
                         key={amenity.code}
-                        text={amenity.name}
+                        text={amenity.name ?? ''}
                         code={amenity.code}
                         isChecked={amenity.isChecked}
                     />

@@ -1,0 +1,12 @@
+runtime: python
+env: flex
+runtime_config:
+  operating_system: "ubuntu22"
+  python_version: "3.12"
+
+entrypoint: gunicorn -w 2 -k uvicorn.workers.UvicornWorker app.main:app
+instance_class: B8
+manual_scaling:
+  instances: 1
+includes:
+  - env.yaml

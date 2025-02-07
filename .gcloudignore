@@ -28,8 +28,14 @@ misc
 scrape
 venv
 __pycache__
-*.env
-env.yaml
-
+.env
 test.*
 received_audio.wav
+
+*.json
+*.js
+*.ts
+*.html
+public
+src
+.gitignore

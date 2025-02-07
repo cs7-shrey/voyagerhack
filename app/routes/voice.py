@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 import speechmatics
 from app.services.queues import queue_maps
 from app.services.timeout import websocket_timeout
+from app.schemas import Service
 
 load_dotenv()
 

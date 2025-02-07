@@ -1,0 +1,9 @@
+{
+    "rewrites":  [
+      {"source": "/(.*)", "destination": "/"},
+      {
+        "source" : "/api/:path*",
+        "destination": "https://haven-backend-g8epcpb3arfya6f7.canadacentral-01.azurewebsites.net/:path*"
+      }
+    ]
+}
