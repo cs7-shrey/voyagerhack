@@ -80,7 +80,7 @@ class AmenityFilters(BaseModel):
 
 class ProximityCoordinate(BaseModel):
     latitude: float
-    longitiude: float 
+    longitude: float 
     
 class SearchFilters(DateFilters, BudgetFilters, RatingFilters, AmenityFilters):
     place: Place

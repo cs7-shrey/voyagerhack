@@ -125,12 +125,12 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
             q6, 
         )
         .join(Hotel, q6.c.id == func.cast(Hotel.id, String))
-        .where(func.ST_DWithin(Hotel.coordinate, func.cast(func.ST_MakePoint(filters.proximity_coordinate.longitiude, filters.proximity_coordinate.latitude), Geography), 5000))
+        .where(func.ST_DWithin(Hotel.coordinate, func.cast(func.ST_MakePoint(filters.proximity_coordinate.longitude, filters.proximity_coordinate.latitude), Geography), 5000))
         .order_by(
             func.ST_Distance(
                 Hotel.coordinate, 
                     func.cast(
-                        func.ST_MakePoint(filters.proximity_coordinate.longitiude, filters.proximity_coordinate.latitude), 
+                        func.ST_MakePoint(filters.proximity_coordinate.longitude, filters.proximity_coordinate.latitude), 
                         Geography
                     )
             ).label('distance')  

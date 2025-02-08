@@ -3,6 +3,7 @@ import { APIProvider, Map, MapCameraChangedEvent, AdvancedMarker } from "@vis.gl
 import { useState, useEffect } from "react";
 import HotelMarker from "./HotelMarker";
 import { PiMapPinFill } from "react-icons/pi";
+import { useSearchStore } from "@/store/useSearchStore";
 
 interface Position {
     lat: number;
@@ -16,14 +17,22 @@ const GoogleMaps = () => {
         if (hotels.length === 0) {
             return;
         }
-
-        const meanCenter = hotels.reduce((acc, hotel) => {
-            acc.lat += hotel.latitude / hotels.length;
-            acc.lng += hotel.longitude / hotels.length;
-            return acc;
-        }, { lat: 0, lng: 0 });
-        setCenter(meanCenter);
-        setDefaultCenter(meanCenter)
+        const { proximityCoordinate } = useSearchStore.getState();
+        console.log(proximityCoordinate)
+        const mapCenter = 
+        proximityCoordinate ? 
+            {
+                'lat': proximityCoordinate.latitude,
+                'lng': proximityCoordinate.longitude,
+            }
+            :
+            hotels.reduce((acc, hotel) => {
+                acc.lat += hotel.latitude / hotels.length;
+                acc.lng += hotel.longitude / hotels.length;
+                return acc;
+            }, { lat: 0, lng: 0 });
+        setCenter(mapCenter);
+        setDefaultCenter(mapCenter)
     }, [hotels]);
 
     if (!center || !hotels || !defaultCenter) {

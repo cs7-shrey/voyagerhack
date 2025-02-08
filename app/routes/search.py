@@ -22,7 +22,7 @@ async def get_hotels(search_term: str, type: str, filters: SearchHotelsRequest, 
     place_id = None
     proximity_coordinate = None
     # coordinate existing by default
-    if filters.proximity_coordinate and (filters.proximity_coordinate.latitude or filters.proximity_coordinate.longitiude):
+    if filters.proximity_coordinate and (filters.proximity_coordinate.latitude or filters.proximity_coordinate.longitude):
         search_filters = SearchFilters(**filters.model_dump())
     # implicit location but no coordinate
     elif filters.near:
@@ -30,7 +30,7 @@ async def get_hotels(search_term: str, type: str, filters: SearchHotelsRequest, 
         place_id = await place_autocomplete(proximity_location)
         if place_id:
             coordinate = await geocode_place_id(place_id)
-            proximity_coordinate = ProximityCoordinate(latitude=coordinate['latitude'], longitiude=coordinate['longitude'])
+            proximity_coordinate = ProximityCoordinate(latitude=coordinate['latitude'], longitude=coordinate['longitude'])
             filters_dict = filters.model_dump()
             print(filters_dict)
             del filters_dict['proximity_coordinate']   

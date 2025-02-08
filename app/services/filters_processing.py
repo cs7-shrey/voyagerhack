@@ -83,7 +83,7 @@ async def process_llm_filters(llm_filters, VoiceSearchSchema: Type[SearchHotelsR
         if 'near' in query_dict:
             proximity_location = query_dict['near']
             coordinate = await geocode_to_most_relevant(proximity_location)
-            proximity_coordinate = ProximityCoordinate(latitude=coordinate['latitude'], longitiude=coordinate['longitude'])
+            proximity_coordinate = ProximityCoordinate(latitude=coordinate['latitude'], longitude=coordinate['longitude'])
             
         search_filters =  SearchFiltersSchema(**query_dict, proximity_coordinate=proximity_coordinate)
         final_response['filters'] = search_filters.model_dump()     # making sure that default filters exist
