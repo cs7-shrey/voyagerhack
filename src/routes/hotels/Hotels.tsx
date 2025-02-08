@@ -7,10 +7,7 @@ import { useSearchStore } from "@/store/useSearchStore";
 import { formatDate } from "@/lib/utils";
 import { SlidersHorizontal } from "lucide-react";
 import { stateInitUsingQueryParams } from "@/lib/utils";   
-// import { 
-    // Mic,     
-    //  MicOff 
-    // } from "lucide-react";
+import GoogleMaps  from "@/components/maps/GoogleMaps";
 import { HashLoader } from "react-spinners"
 import { useHotelStore } from "@/store/useHotelStore";
 import TopBar from "@/components/TopBar";
@@ -96,48 +93,54 @@ export default function Hotels() {
 
     useEffect(() => {
         if (waitingForMessage) {
-          document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
         }
         return () => {
-          document.body.style.overflow = 'unset';
+            document.body.style.overflow = 'unset';
         };
-      }, [waitingForMessage]);
+    }, [waitingForMessage]);
     return (
         <div className="relative"
         >
             <nav className="bg-accent px-4 sm:sticky sm:top-0 z-50">
                 <TopBar />
             </nav>
-            <div className="p-4 relative z-20">
-                <button
-                    onClick={filtersClick}
-                    className="relative z-30 flex gap-2 bg-accentForeground p-2 rounded-md text-primary"
-                >
-                    <SlidersHorizontal size={21} strokeWidth={0.75} color="white" />
-                    Filters
-                </button>
-                {filtersDropdown && (
-                    <>
-                        <div
-                            className="fixed inset-0 bg-black/20 z-30"
-                            onClick={filtersClick}
-                        />
-                        <div className="fixed lg:absolute bottom-0 lg:bottom-auto left-0 right-0 lg:left-4 lg:right-auto lg:top-full z-40 transform transition-transform duration-300 ease-in-out">
-                            <Filters filterIconClick={filtersClick}/>
-                        </div>
-                    </>
-                )}
-            </div>
-            <div className="relative sm:flex md:grid md:grid-cols-12 p-4 sm:p-8 bg-[#EFF3F8]"               /*bg-[#EFF3F8] */
+            <div className="relative lg:relative sm:flex md:grid md:grid-cols-12 px-4 sm:px-8 bg-[#EFF3F8] min-h-screen"               /*bg-[#EFF3F8] */
             >   
-                <div className="col-span-2  md:col-start-2 md:col-span-10 lg:col-start-3 lg:col-span-8 flex flex-col gap-4">
+                <div className="col-span-2 overflow-y-auto md:col-start-2 md:col-span-10 lg:col-start-1 lg:col-span-7 flex flex-col gap-4">
+                    <div className="p-4 relative z-20">
+                        <button
+                            onClick={filtersClick}
+                            className="relative z-30 flex gap-2 px-4 items-center bg-accentForeground p-2 rounded-md text-primary"
+                        >
+                            <SlidersHorizontal size={18} strokeWidth={2} color="white" />
+                            Filters
+                        </button>
+                        {filtersDropdown && (
+                            <>
+                                <div
+                                    className="fixed inset-0 bg-black/20 z-30"
+                                    onClick={filtersClick}
+                                />
+                                <div className="fixed lg:absolute bottom-0 lg:bottom-auto left-0 right-0 lg:left-4 lg:right-auto lg:top-full z-40 transform transition-transform duration-300 ease-in-out">
+                                    <Filters filterIconClick={filtersClick}/>
+                                </div>
+                            </>
+                        )}
+                    </div>
                     {hotels.map((hotel) => (
                         <HotelCard key={hotel.id} {...hotel} />
                     ))}
                 </div>
                 {loading && <div className="fixed inset-0 top-0 left-0 z-50 flex justify-center items-center bg-secondary/50">
-                <HashLoader />
-            </div>}
+                    <HashLoader />
+                </div>}
+                {/* Google Maps container */}
+                <div className="hidden lg:block z-10 lg:col-start-8 ml-4 lg:col-span-5">
+                    <div className="sticky top-24 z-20 h-[calc(100vh-6rem)]">
+                        <GoogleMaps />
+                    </div>
+                </div>
             </div>
             {waitingForMessage && <div className="fixed inset-0 top-0 left-0 z-50 flex justify-center items-center bg-secondary/50">
                 <HashLoader />

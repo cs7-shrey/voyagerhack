@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Star } from 'lucide-react';
 import { Link } from 'react-router';
 import placeholderImg from "/placeholderImg.jpg"
-import { type Hotel } from '@/store/useHotelStore';
+import { useHotelStore, type Hotel } from '@/store/useHotelStore';
 
 const HotelCard: React.FC<Hotel> = ({
     id,
@@ -12,11 +12,12 @@ const HotelCard: React.FC<Hotel> = ({
     images = [],
     hotel_star = 0,
     user_rating = 0,
-    user_rating_count = 0
+    user_rating_count = 0,
 }) => {
     // State to track the currently displayed main image
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-    // const { id } = useLoaderData()
+    const [isHovered, setIsHovered] = useState(false);
+    const { selectedHotelId, setSelectedHotelId } = useHotelStore();    
     // Calculate the number of remaining images for the "+X" overlay
     const remainingImages = images.length - 4;
 
@@ -45,10 +46,22 @@ const HotelCard: React.FC<Hotel> = ({
     };
 
     return (
-        <div className="flex rounded-lg overflow-hidden shadow-lg w-full bg-white">
+        <div id={String(id)} 
+            className={`flex rounded-lg w-full bg-white p-[0.2rem]
+            ${selectedHotelId === id ? 'ring-2 ring-inset -ring-offset ring-accentForeground shadow-md' : 'shadow-md'}
+            ${isHovered ? 'shadow-xl': ''} transition-shadow duration-300 ease-in-out 
+            `}
+            style={{
+            }}
+            onMouseEnter={() => {
+                setIsHovered(true);
+                setSelectedHotelId(id);
+            }}
+            onMouseLeave={() => setIsHovered(false)}
+        >
             {/* Left side - Main Image and Thumbnail Gallery */}
-            <Link to={`/hotel/${id}`} className='w-full h-full flex' target='_blank'>
-                <div className="w-32 md:size-52 lg:size-52 relative flex flex-col">
+            <Link to={`/hotel/${id}`} className='w-full h-full flex overflow-hidden rounded-l-lg' target='_blank'>
+                <div className="w-32 md:size-52 lg:size-52 relative flex flex-col rounded-l-lg">
                     {/* Main Image */}
                     <div className="h-48">
                         <img 
