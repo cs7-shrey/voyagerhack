@@ -2,6 +2,7 @@ import { useHotelStore } from "@/store/useHotelStore";
 import { APIProvider, Map, MapCameraChangedEvent, AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useState, useEffect } from "react";
 import HotelMarker from "./HotelMarker";
+import { PiMapPinFill } from "react-icons/pi";
 
 interface Position {
     lat: number;
@@ -10,6 +11,7 @@ interface Position {
 const GoogleMaps = () => {
     const { hotels, selectedHotelId } = useHotelStore();
     const [center, setCenter] = useState<Position | null>(null);
+    const [defaultCenter, setDefaultCenter] = useState<Position | null>(null);
     useEffect(() => {
         if (hotels.length === 0) {
             return;
@@ -21,9 +23,10 @@ const GoogleMaps = () => {
             return acc;
         }, { lat: 0, lng: 0 });
         setCenter(meanCenter);
+        setDefaultCenter(meanCenter)
     }, [hotels]);
 
-    if (!center || !hotels) {
+    if (!center || !hotels || !defaultCenter) {
         console.log('returning')
         return <div className="mx-auto">Loading map...</div>;
     }
@@ -33,14 +36,16 @@ const GoogleMaps = () => {
         <div className='w-full h-full relative z-40'>
             <APIProvider apiKey={import.meta.env.VITE_MAPS_FRONTEND_API_KEY}>
                 <Map
-                    defaultZoom={12}
-                    defaultCenter={center}
+                    defaultZoom={14}
+                    defaultCenter={defaultCenter}
+                    center={center}
                     mapId={'32c1d9a2aa431555'}
                     mapTypeControl={false}
                     clickableIcons={false}
                     disableDoubleClickZoom={true}
                     onCameraChanged={(ev: MapCameraChangedEvent) => {
                         console.log('camera changed:', ev.detail.center)
+                        setCenter(ev.detail.center)
                     }
                     }
                 >
@@ -55,6 +60,9 @@ const GoogleMaps = () => {
                             <HotelMarker price={hotel.base_fare ?? 0} hotelId={hotel.id}/>
                         </AdvancedMarker>
                     ))}
+                    <AdvancedMarker zIndex={50} position={defaultCenter} clickable={true}>
+                        <PiMapPinFill fill="#D24D5C" size={36} />
+                    </AdvancedMarker>
                 </Map>
             </APIProvider>
         </div>

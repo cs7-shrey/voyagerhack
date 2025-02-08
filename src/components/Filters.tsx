@@ -21,6 +21,7 @@ const Filters: React.FC<Props> = ({ filterIconClick }) => {
         checkIn,
         checkOut,
         propertyType,
+        proixmityCoordinate,
         setMinBudget,
         setMaxBudget,
         setUserRating,
@@ -64,7 +65,7 @@ const Filters: React.FC<Props> = ({ filterIconClick }) => {
             hotelAmenities: tempHotelAmenities,
             roomAmenities: tempRoomAmenities,
         })
-        navigate(`/hotels?q=${queryTerm.place}&type=${queryTerm.type}&filters=${filterString}`);
+        navigate(`/hotels?q=${queryTerm.place}&type=${queryTerm.type}&filters=${filterString}&proximityCoordinate${JSON.stringify(proixmityCoordinate)}`);
         // const [searchParams] = useSearchParams();
         const searchParams = new URLSearchParams(window.location.search);
         stateInitUsingQueryParams(searchParams);

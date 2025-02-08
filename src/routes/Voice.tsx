@@ -6,7 +6,7 @@ import AudioMotionAnalyzer from 'audiomotion-analyzer';
 import { AudioService } from "@/lib/audioService";
 import { useSocketStore } from "@/store/useSocketStore";
 import { Mic } from "lucide-react";
-import { useLllmFilters } from "@/lib/voiceSearch";
+import { useLLMFilters } from "@/lib/voiceSearch";
 import { generateCurrentFiltersAsString } from "@/lib/utils";
 import { useHotelStore } from "@/store/useHotelStore";
 
@@ -16,7 +16,7 @@ const Voice = () => {
     // const audioContextRef = useRef<AudioContext>();
     // const mediaStreamRef = useRef<MediaStream>();
     // const workletNodeRef = useRef<AudioWorkletNode>();
-    const filterProcessing = useLllmFilters()
+    const filterProcessing = useLLMFilters()
     const sourceNodeRef = useRef<MediaStreamAudioSourceNode>();
     const audioServiceRef = useRef<AudioService>();
     

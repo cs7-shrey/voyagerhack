@@ -3,7 +3,7 @@ import asyncio
 from app.oauth2 import socket_get_current_client
 from app.database import get_db
 from app.services.filters_processing import process_llm_filters
-from app.schemas import TokenData, SearchFilters
+from app.schemas import TokenData, SearchHotelsRequest, SearchFilters
 from dotenv import load_dotenv
 from fastapi import APIRouter, WebSocket, Depends
 import os
@@ -36,7 +36,7 @@ async def llm_response_websocket(ws: WebSocket, current_user: TokenData = Depend
     print('sending to gemini...', transcript)
     response = await llm.invoke(transcript, previous_filters, previous_ai_message)     
     filters_dict = llm.parse_llm_response(response.text)
-    response = process_llm_filters(filters_dict, SearchFilters, db)
+    response = await process_llm_filters(filters_dict, SearchHotelsRequest, SearchFilters, db)      # BUG : here the VoiceSearchSchema should expect place as a string but instead the SearchHotelsRequestSchema has place as a 'Place' type
     hotels = response['data']
     response['data'] = [dict(hotel) for hotel in hotels]
     await ws.send_json(response)

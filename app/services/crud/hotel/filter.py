@@ -1,6 +1,6 @@
 from app.models import Hotel, City, HotelAmenityMapping, HotelAmenity, RoomType, RoomAmenityMapping, RoomAmenity, RatePlan
 from app.schemas import SearchFilters
-from geoalchemy2 import Geometry
+from geoalchemy2 import Geometry, Geography
 from sqlalchemy import select, func, and_
 from sqlalchemy.orm import Session
 from sqlalchemy import String
@@ -110,16 +110,38 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
     )
     # final query
     # filtering based on budget
-    final_query = (
+    q6 = (
         select(q5)
         .where(
             and_(
                 q5.c.base_fare >= filters.min_budget,
                 q5.c.base_fare <= filters.max_budget
             )
+        ) 
+        .cte('q6')
+    )
+    final_query = (
+        select(
+            q6, 
+        )
+        .join(Hotel, q6.c.id == func.cast(Hotel.id, String))
+        .where(func.ST_DWithin(Hotel.coordinate, func.cast(func.ST_MakePoint(filters.proximity_coordinate.longitiude, filters.proximity_coordinate.latitude), Geography), 5000))
+        .order_by(
+            func.ST_Distance(
+                Hotel.coordinate, 
+                    func.cast(
+                        func.ST_MakePoint(filters.proximity_coordinate.longitiude, filters.proximity_coordinate.latitude), 
+                        Geography
+                    )
+            ).label('distance')  
         )
         .limit(10)
-    )
+    ) if filters.proximity_coordinate else (
+        select (
+            q6
+        )
+        .limit(10)
+    ) 
     results = []
     results = session.execute(final_query).mappings().all()
     return results

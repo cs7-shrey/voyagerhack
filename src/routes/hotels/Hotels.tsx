@@ -46,6 +46,7 @@ export default function Hotels() {
             propertyType,    
             hotelAmenities,
             roomAmenities,
+            proixmityCoordinate,
             // setPropertyType,
         } = useSearchStore.getState();
         setLoading(true)
@@ -66,6 +67,7 @@ export default function Hotels() {
                 property_type: propertyType,
                 hotel_amenity_codes: hotelAmenities.map((amenity) => amenity.code),
                 room_amenity_codes: roomAmenities.map((amenity) => amenity.code),
+                proximity_coordinate: proixmityCoordinate
             }
             try {
                 const response = await axiosInstance.post("/search/hotels", data, {
@@ -81,7 +83,7 @@ export default function Hotels() {
                 if (response.status !== 200) {
                     new Error("Failed to fetch hotels");
                 }
-                setHotels(response.data);
+                setHotels(response.data.hotels);
             } catch (error) {
                 console.error(error);
             } finally {
