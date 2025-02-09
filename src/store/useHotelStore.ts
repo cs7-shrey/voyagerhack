@@ -29,7 +29,7 @@ export const useHotelStore = create<HotelStore>((set) => ({
     infoMessage: '',
     selectedHotelId: null,
     setHotels: (hotels) => {
-        set({ hotels, selectedHotelId: hotels[0].id })
+        set({ hotels, selectedHotelId: hotels?.[0]?.id })
     },
     setFromVoice: (fromVoice) => set({ fromVoice }),
     setInfoMessage: ( infoMessage ) => set({ infoMessage }),
