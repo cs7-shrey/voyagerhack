@@ -18,13 +18,7 @@ const locations: Poi[] = [
     {key: 'aquarium', location: { lat: -33.869627, lng: 151.202146 }},
     {key: 'darlingHarbour', location: { lat: -33.87488, lng: 151.1987113 }},
     {key: 'barangaroo', location: { lat: - 33.8605523, lng: 151.1972205 }},
-];
-
-const rotateArrayRight = (arr: number[]) : number[] => {
-    // let last = arr.pop() ? arr.pop() : 1;
-    const last = arr[arr.length - 1]
-    return [last, ...arr.slice(0, -1)];
-}   
+]; 
 
 // const Parser = ({text}: {text: string}) => {
 //     const chars = [...text];
