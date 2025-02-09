@@ -55,7 +55,7 @@ async def audio_websocket(ws: WebSocket, language: str, service: str = Query(...
         # shift this to redis
         if not current_user.user_id in queue_maps[service]:
             return
-        await queue_maps[service][current_user.user_id].put(ws_speech.transcript)
+        await queue_maps[service][current_user.user_id].put(ws_speech.transcript + '.')
         print('data inserted in queue')
     except Exception as e:
         print('got an exception')
