@@ -10,7 +10,7 @@ async def place_autocomplete(input: str) -> str:
     if not input:
         return ''
     async with httpx.AsyncClient() as client:
-        response = await client.get(f'https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input}&key={os.getenv('MAPS_API_KEY')}')
+        response = await client.get(f"https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input}&key={os.getenv('MAPS_API_KEY')}")
         if response.status_code != 200:
             return ''
         try:

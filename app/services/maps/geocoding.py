@@ -14,7 +14,7 @@ async def geocode_place_id(place_id: str) -> Coordinate:
     if not place_id:
         return
     async with httpx.AsyncClient() as client:
-        response = await client.get(f'https://maps.googleapis.com/maps/api/geocode/json?place_id={place_id}&key={os.getenv('MAPS_API_KEY')}')
+        response = await client.get(f"https://maps.googleapis.com/maps/api/geocode/json?place_id={place_id}&key={os.getenv('MAPS_API_KEY')}")
         if response.status_code != 200:
             return
     try:

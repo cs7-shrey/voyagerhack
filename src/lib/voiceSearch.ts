@@ -58,14 +58,22 @@ export function useLLMFilters() {
         const filterString = JSON.stringify(searchFilters);
         setHotels(hotelData);
         setFromVoice(true);
-        const urlParams = new URLSearchParams({
+        const baseParams = {
             'q': queryTerm,
             'type': type,
             'checkIn': checkIn,
             'checkOut': checkOut,
             'filters': filterString,
-            'proximityCoordinate': JSON.stringify(proximityCoordinate), 
-        })
+        };
+        
+        const optionalParams = {
+            ...(proximityCoordinate && { 'proximityCoordinate': JSON.stringify(proximityCoordinate) })
+        };
+
+        const urlParams = new URLSearchParams({
+            ...baseParams,
+            ...optionalParams
+        });
         navigate(`/hotels?${urlParams.toString()}`);
     }
     return processLlmFilters

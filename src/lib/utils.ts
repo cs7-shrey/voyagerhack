@@ -84,7 +84,7 @@ export function stateInitUsingQueryParams(searchParams: URLSearchParams) {
     const checkInDate = searchParams.get("checkIn");
     const checkOutDate = searchParams.get("checkOut");
     const filters = JSON.parse(searchParams.get("filters") || "{}");
-    const proximityCoordinate = Object.keys(JSON.parse(searchParams.get("proximityCoordinate") || "{}")).length > 0 ? JSON.parse(searchParams.get("proximityCoordinate") || "{}") : null
+    const proximityCoordinate = Object.keys(JSON.parse(searchParams.get("proximityCoordinate") || "{}") || {}).length > 0 ? JSON.parse(searchParams.get("proximityCoordinate") || "{}") : null
     const checkIn = checkInDate ? new Date(checkInDate) : new Date();
     const checkOut = checkOutDate ? new Date(checkOutDate) : new Date(new Date().setDate(new Date().getDate() + 1));
     console.log(proximityCoordinate)
