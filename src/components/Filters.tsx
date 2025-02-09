@@ -21,6 +21,7 @@ const Filters: React.FC<Props> = ({ filterIconClick }) => {
         checkIn,
         checkOut,
         propertyType,
+        proximityCoordinate,
         setMinBudget,
         setMaxBudget,
         setUserRating,
@@ -64,7 +65,7 @@ const Filters: React.FC<Props> = ({ filterIconClick }) => {
             hotelAmenities: tempHotelAmenities,
             roomAmenities: tempRoomAmenities,
         })
-        navigate(`/hotels?q=${queryTerm.place}&type=${queryTerm.type}&filters=${filterString}`);
+        navigate(`/hotels?q=${queryTerm.place}&type=${queryTerm.type}&filters=${filterString}&proximityCoordinate${JSON.stringify(proximityCoordinate)}`);
         // const [searchParams] = useSearchParams();
         const searchParams = new URLSearchParams(window.location.search);
         stateInitUsingQueryParams(searchParams);
@@ -73,7 +74,7 @@ const Filters: React.FC<Props> = ({ filterIconClick }) => {
     generateCurrentFiltersAsString();
     return (
         <div 
-        className={`bg-primary w-full min-w-sm max-h-[70vh] rounded-lg shadow-md p-4 overflow-y-auto scrollbar-webkit scrollbar-thin`}>
+            className={`bg-primary w-full min-w-sm max-h-[70vh] rounded-lg shadow-md p-4 overflow-y-auto scrollbar-webkit scrollbar-thin`}>
             <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4 lg:hidden" />          {/* drag indicator */}
             <div className="font-bold">All filters</div>
             <div>

@@ -1,20 +1,37 @@
 import { create } from 'zustand'
-import { type Hotel } from '@/components/HotelCard'
 
+export interface Hotel {
+    id: bigint;
+    name: string;
+    location: string;
+    base_fare?: number;
+    images?: string[];
+    hotel_star?: number;
+    user_rating?: number;
+    user_rating_count?: number;
+    latitude: number;
+    longitude: number;
+}
 interface HotelStore {
     hotels: Hotel[];
     fromVoice: boolean;
     infoMessage: string;
+    selectedHotelId: bigint | null;
     setHotels: (hotels: Hotel[]) => void
     setFromVoice: (fromVoice: boolean) => void
     setInfoMessage: ( infoMessage: string) => void
+    setSelectedHotelId: (hotelId: bigint) => void
 }
 
 export const useHotelStore = create<HotelStore>((set) => ({
     hotels: [],
     fromVoice: false,
     infoMessage: '',
-    setHotels: (hotels) => set({ hotels }),
+    selectedHotelId: null,
+    setHotels: (hotels) => {
+        set({ hotels, selectedHotelId: hotels[0].id })
+    },
     setFromVoice: (fromVoice) => set({ fromVoice }),
-    setInfoMessage: ( infoMessage ) => set({ infoMessage })
+    setInfoMessage: ( infoMessage ) => set({ infoMessage }),
+    setSelectedHotelId: (hotelId) => set({ selectedHotelId: hotelId })
 }))

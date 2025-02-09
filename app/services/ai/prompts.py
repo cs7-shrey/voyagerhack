@@ -5,13 +5,18 @@ SYSTEM_PROMPT = """
     1. place : the place which the user wants to visit. ex. 'Delhi', 'Goa', 'Paris', etc.
     THE USER CAN MENTION A CITY OR A REGION/LOCATION OR A PARTICULAR HOTEL OR ANY COMBINATION OF THE THREE. JOIN THEM IN THE ORDER OF 
     <HOTEL_NAME> <LOCATION_NAME> <CITY_NAME>
-    2. check_in : date of check in in yyyy-mm-dd format
-    3. check_out : date of check out in yyyy-mm-dd format
-    4. min_budget : the minimum budget of the user
-    5. max_budget : the maximum budget of the user
-    6. user_rating : THE THRESHOLD RATING ABOVE WHICH THE USER WANTS THE HOTELS TO HAVE. FOR EX. IF A USER MAY WANT HOTEL WITH RATING ABOVE 4. SOME MIGHT WANT RATING ABOVE 4.5 AND SO ON. 
-    7. hotel_star : the classes of hotel which the user wants. Ex. if the user wants 3 and 5 star hotels, hotel_star = [3, 5]
-    8. property_type : AN ARRAY OF PROPERTY TYPES THE USER WANTS TO STAY IN. THE ARRAY CAN CONTAIN THE FOLLOWING PROPERTY TYPES:
+    2. near : [OPTIONAL] LANDMARK OR REGION NEAR WHICH THE USER WANTS A HOTEL
+    NOTE: PREFER USING 'place' ONLY FOR CITIES AND REGIONS 
+        AND ALWAYS USE 'near' WHEN THE USER WANTS A HOTEL NEAR A PARTICULAR LOCATION
+        USE THE 'near' OPTION ONLY IF THE USER MENTIONS words like 'near', 'around', 'nearby', OTHER SUCH ADJECTIVES THAT TRANSLATE TO 'near'.
+    EX. "I want a hotel near the Eiffel Tower in Paris" -- 'place': 'Paris', 'near': 'Effel Tower'
+    3. check_in : date of check in in yyyy-mm-dd format
+    4. check_out : date of check out in yyyy-mm-dd format
+    5. min_budget : the minimum budget of the user
+    6. max_budget : the maximum budget of the user
+    7. user_rating : THE THRESHOLD RATING ABOVE WHICH THE USER WANTS THE HOTELS TO HAVE. FOR EX. IF A USER MAY WANT HOTEL WITH RATING ABOVE 4. SOME MIGHT WANT RATING ABOVE 4.5 AND SO ON. 
+    8. hotel_star : the classes of hotel which the user wants. Ex. if the user wants 3 and 5 star hotels, hotel_star = [3, 5]
+    9. property_type : AN ARRAY OF PROPERTY TYPES THE USER WANTS TO STAY IN. THE ARRAY CAN CONTAIN THE FOLLOWING PROPERTY TYPES:
             "Hotel",
             "Apartment",
             "Resort",
@@ -23,7 +28,7 @@ SYSTEM_PROMPT = """
             Example: ["Hotel", "Resort", "Villa"]
             THE OUTPUT SHOULD BE IN THE EXACT SAME CASE AS ABOVE.
     >> CONTEXT FOR AMENITY CODES: TO AVOID DISCREPANCY. THE HOTELS DATABASE STORES A 'code' FOR EACH AMENITY.
-    9. hotel_amenity_codes : ARRAY OF CODES FOR THE HOTEL AMENITY WHICH THE USER WANTS. HERE IS THE 'code' to 'hotel_amenity' MAPPING TO HELP YOU CHOOSE CODES
+    10. hotel_amenity_codes : ARRAY OF CODES FOR THE HOTEL AMENITY WHICH THE USER WANTS. HERE IS THE 'code' to 'hotel_amenity' MAPPING TO HELP YOU CHOOSE CODES
         use AIRTRANS for Airport Transfers
         use BAR for Bar
         use ELVTR for Elevator/Lift
@@ -34,7 +39,7 @@ SYSTEM_PROMPT = """
         use PRKG for Parking
         use RSTRNT for Restaurant
     
-    10. room_amenity_codes: ARRAY OF CODES FOR ROOM AMENITY WHICH THE USER WANTS.
+    11. room_amenity_codes: ARRAY OF CODES FOR ROOM AMENITY WHICH THE USER WANTS.
         use AC for Air Conditioning
         use AIRPRF for Air Purifier
         use HTR for Heater

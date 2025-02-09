@@ -1,7 +1,9 @@
 from app.database import get_db
 from app.routes.search import suggestion_search_space
 from app.services.crud.hotel.filter import get_hotels_with_filters
+from app.services.maps.main import geocode_to_most_relevant
 from app.utils.search_suggestions import get_suggestions
+from app.schemas import SearchHotelsRequest, SearchFilters, ProximityCoordinate
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from typing import Type
@@ -12,7 +14,7 @@ def set_error(llm_filters):
     llm_filters['filters'] = {}
     llm_filters['data'] = []
     return llm_filters
-def preprocess_llm_filters(llm_filters, SearchFiltersSchema: Type[BaseModel]):
+def preprocess_llm_filters(llm_filters, VoiceSearchSchema: Type[BaseModel]):
     """
         Making sure that the filters have a valid schema
     """
@@ -33,7 +35,7 @@ def preprocess_llm_filters(llm_filters, SearchFiltersSchema: Type[BaseModel]):
             return set_error(llm_filters)
         print(filters)
         cleaned_filters: dict[str, any] = {}
-        schema_fields = SearchFiltersSchema.model_fields
+        schema_fields = VoiceSearchSchema.model_fields          
         
         for field_name, field_info in schema_fields.items():
             if field_name in filters:
@@ -44,8 +46,8 @@ def preprocess_llm_filters(llm_filters, SearchFiltersSchema: Type[BaseModel]):
         return llm_filters
                 
 
-def process_llm_filters(llm_filters, SearchFiltersSchema: Type[BaseModel], db: Session):
-    llm_filters = preprocess_llm_filters(llm_filters, SearchFiltersSchema)
+async def process_llm_filters(llm_filters, VoiceSearchSchema: Type[SearchHotelsRequest], SearchFiltersSchema: Type[SearchFilters], db: Session):
+    llm_filters = preprocess_llm_filters(llm_filters, VoiceSearchSchema)        
     # the llm filters now have a valid schema but their status codes can still be erroneous and the required fields can still be None 
     final_response = {
         'status': llm_filters['status'],
@@ -77,7 +79,13 @@ def process_llm_filters(llm_filters, SearchFiltersSchema: Type[BaseModel], db: S
             'name': suggestions[0]['label'],
             'type': suggestions[0]['type']
         }
-        search_filters =  SearchFiltersSchema(**query_dict)
+        proximity_coordinate = None
+        if 'near' in query_dict:
+            proximity_location = query_dict['near']
+            coordinate = await geocode_to_most_relevant(proximity_location)
+            proximity_coordinate = ProximityCoordinate(latitude=coordinate['latitude'], longitude=coordinate['longitude'])
+            
+        search_filters =  SearchFiltersSchema(**query_dict, proximity_coordinate=proximity_coordinate)
         final_response['filters'] = search_filters.model_dump()     # making sure that default filters exist
         # query the database
         try:

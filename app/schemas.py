@@ -22,15 +22,6 @@ class SearchSuggestion(BaseModel):
     type: str
     score: float
 
-class HotelSearchResponse(BaseModel):
-    id: str
-    name: str
-    location: str
-    base_fare: float = 0.0
-    hotel_star: int
-    user_rating: float = 0
-    user_rating_count: int
-    images: list[str]
 
 class HotelInfoResponse(BaseModel):
     id: int
@@ -70,26 +61,60 @@ class HotelRoomResponse(BaseModel):
 class Place(BaseModel):
     name: str
     type: str
-
-class SearchFilters(BaseModel):
-    place: Place
+    
+class DateFilters(BaseModel):
     check_in: Optional[str] = (datetime.date.today() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
     check_out: Optional[str] = (datetime.date.today() + datetime.timedelta(days=2)).strftime('%Y-%m-%d')
+    
+class BudgetFilters(BaseModel):
     min_budget: Optional[int] = 0
     max_budget: Optional[int] = 50000
+
+class RatingFilters(BaseModel):
     hotel_star: list[int] = [0,1,2,3,4,5]
-    user_rating: Optional[float] = 0  
-    property_type: Optional[list[str]] = []
+    user_rating: Optional[float] = 0      
+
+class AmenityFilters(BaseModel):
     hotel_amenity_codes: Optional[list[str]] = []
     room_amenity_codes: Optional[list[str]] = []
+
+class ProximityCoordinate(BaseModel):
+    latitude: float
+    longitude: float 
+    
+class SearchFilters(DateFilters, BudgetFilters, RatingFilters, AmenityFilters):
+    place: Place
+    proximity_coordinate: Optional[ProximityCoordinate] | None = None
+    property_type: Optional[list[str]] = []
+
+class SearchHotelsRequest(SearchFilters):
+    near: Optional[str] = ''
+
+class HotelDetails(BaseModel):
+    id: str
+    name: str
+    location: str
+    base_fare: float = 0.0
+    hotel_star: int
+    user_rating: float = 0
+    user_rating_count: int
+    images: list[str]
+    latitude: float 
+    longitude: float
+
+class HotelSearchResponse(BaseModel):
+    hotels: list[HotelDetails]
+    proximity_coordinate: Optional[ProximityCoordinate] = None
+    near: Optional[str] = ''
 
 class Status(BaseModel):
     code: int
     message: str
+
 class VoiceSearchResponse(BaseModel):
     status: Status
     filters: SearchFilters
-    data: list[HotelSearchResponse]
+    data: list[HotelDetails]
 
 class ChatMode(str, Enum):
     voice = "voice"

@@ -1,13 +1,14 @@
 import { useHotelStore } from "@/store/useHotelStore";
 import { useNavigate } from "react-router";
-import { type Hotel } from "@/components/HotelCard";
-import { useSearchStore } from "@/store/useSearchStore";
+import { type Hotel } from "@/store/useHotelStore";
+import { type ProximityCoordinate, useSearchStore } from "@/store/useSearchStore";
 import toast from "react-hot-toast";
 
 interface Place {
     name: string;
     type: string;
 } 
+
 interface BackendFilters {
     place: Place;
     check_in: string;
@@ -19,13 +20,14 @@ interface BackendFilters {
     property_type: string[];
     hotel_amenity_codes: string[];
     room_amenity_codes: string[];
+    proximity_coordinate: ProximityCoordinate | null;
 }
 interface Status {
     code: number    
     message: string 
 }
 
-export function useLllmFilters() {
+export function useLLMFilters() {
     const navigate = useNavigate()
     const { setHotels, setFromVoice, setInfoMessage } = useHotelStore()
     const { setSearchValue } = useSearchStore();
@@ -43,6 +45,7 @@ export function useLllmFilters() {
         const type = filters.place?.type;
         const checkIn = filters?.check_in;
         const checkOut = filters?.check_out;
+        const proximityCoordinate = filters?.proximity_coordinate;
         const searchFilters = {
             minBudget: filters?.min_budget,
             maxBudget: filters?.max_budget,
@@ -55,13 +58,22 @@ export function useLllmFilters() {
         const filterString = JSON.stringify(searchFilters);
         setHotels(hotelData);
         setFromVoice(true);
-        const urlParams = new URLSearchParams({
+        const baseParams = {
             'q': queryTerm,
             'type': type,
             'checkIn': checkIn,
             'checkOut': checkOut,
-            'filters': filterString
-        })
+            'filters': filterString,
+        };
+        
+        const optionalParams = {
+            ...(proximityCoordinate && { 'proximityCoordinate': JSON.stringify(proximityCoordinate) })
+        };
+
+        const urlParams = new URLSearchParams({
+            ...baseParams,
+            ...optionalParams
+        });
         navigate(`/hotels?${urlParams.toString()}`);
     }
     return processLlmFilters

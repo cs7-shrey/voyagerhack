@@ -37,7 +37,7 @@ class Speech(WebsocketClient):
         self.audio_queue = asyncio.Queue()
         self.audio_settings = AudioSettings()
         self.audio_settings.encoding = audio_encoding
-        self.transcription_config = TranscriptionConfig(language=language_code, max_delay=max_delay)
+        self.transcription_config = TranscriptionConfig(language=language_code, max_delay=max_delay, operating_point='enhanced')
         self.transcript = ""
     
     def setup (self, language_code: str, audio_encoding: str, max_delay: int):

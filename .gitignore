@@ -27,7 +27,8 @@ dist-ssr
 misc
 scrape
 venv
-__pycache__
+__pycache__ 
+.mypy_cache/
 *.env
 env.yaml
 

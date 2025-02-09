@@ -4,7 +4,10 @@ export interface queryTerm {
     place: string;
     type: string;
 }
-
+export interface ProximityCoordinate {
+    latitude: number;
+    longitude: number;
+}
 export interface Amenity {
     name?: string;
     code: string;
@@ -23,6 +26,8 @@ interface SearchStore {
     propertyType: string[];
     hotelAmenities: Amenity[];
     roomAmenities: Amenity[];
+    proximityCoordinate: ProximityCoordinate | null;
+    
     setQueryTerm: (queryTerm: queryTerm) => void;
     setSearchValue: (searchValue: string) => void;
     setCheckIn: (checkIn: Date) => void;
@@ -34,6 +39,7 @@ interface SearchStore {
     setPropertyType: (propertyType: string[]) => void;
     setHotelAmenities: (hotelAmenities: Amenity[]) => void;
     setRoomAmenities: (roomAmenities: Amenity[]) => void;
+    setProximityCoordinate: ( proximityCoordinate: ProximityCoordinate | null) => void
 }
 export const useSearchStore = create<SearchStore>()((set) => ({
     searchValue: "",
@@ -47,6 +53,7 @@ export const useSearchStore = create<SearchStore>()((set) => ({
     propertyType: [],
     hotelAmenities: [],
     roomAmenities: [],
+    proximityCoordinate: null,
     setSearchValue: (searchValue) => set({ searchValue }),
     setQueryTerm: (queryTerm) => set({ queryTerm }),
     setCheckIn: (checkIn) => set({ checkIn }),
@@ -58,4 +65,5 @@ export const useSearchStore = create<SearchStore>()((set) => ({
     setPropertyType: (propertyType) => set({ propertyType }),
     setHotelAmenities: (hotelAmenities) => set({ hotelAmenities }),
     setRoomAmenities: (roomAmenities) => set({ roomAmenities }),
+    setProximityCoordinate: (proximityCoordinate) => set({ proximityCoordinate })
 }))
