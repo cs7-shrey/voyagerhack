@@ -67,7 +67,7 @@ export default function Hotels() {
                 property_type: propertyType,
                 hotel_amenity_codes: hotelAmenities.map((amenity) => amenity.code),
                 room_amenity_codes: roomAmenities.map((amenity) => amenity.code),
-                proximity_coordinate: proximityCoordinate
+                proximity_coordinate: proximityCoordinate ?? null
             }
             try {
                 const response = await axiosInstance.post("/search/hotels", data, {

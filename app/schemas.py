@@ -84,7 +84,7 @@ class ProximityCoordinate(BaseModel):
     
 class SearchFilters(DateFilters, BudgetFilters, RatingFilters, AmenityFilters):
     place: Place
-    proximity_coordinate: Optional[ProximityCoordinate] = None
+    proximity_coordinate: Optional[ProximityCoordinate] | None = None
     property_type: Optional[list[str]] = []
 
 class SearchHotelsRequest(SearchFilters):

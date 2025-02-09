@@ -13,11 +13,11 @@ const GoogleMaps = () => {
     const { hotels, selectedHotelId } = useHotelStore();
     const [center, setCenter] = useState<Position | null>(null);
     const [defaultCenter, setDefaultCenter] = useState<Position | null>(null);
+    const { proximityCoordinate } = useSearchStore();
     useEffect(() => {
         if (hotels.length === 0) {
             return;
         }
-        const { proximityCoordinate } = useSearchStore.getState();
         console.log(proximityCoordinate)
         const mapCenter = 
         proximityCoordinate ? 
@@ -33,22 +33,22 @@ const GoogleMaps = () => {
             }, { lat: 0, lng: 0 });
         setCenter(mapCenter);
         setDefaultCenter(mapCenter)
-    }, [hotels]);
+    }, [hotels, proximityCoordinate]);
 
     if (!center || !hotels || !defaultCenter) {
         console.log('returning')
         return <div className="mx-auto">Loading map...</div>;
     }
-    console.log(center)
+    console.log('center', center)
 
     return (
         <div className='w-full h-full relative z-40'>
             <APIProvider apiKey={import.meta.env.VITE_MAPS_FRONTEND_API_KEY}>
                 <Map
-                    defaultZoom={14}
+                    defaultZoom={12}
                     defaultCenter={defaultCenter}
                     center={center}
-                    mapId={'32c1d9a2aa431555'}
+                    mapId={'ad42606e9487d04c'}
                     mapTypeControl={false}
                     clickableIcons={false}
                     disableDoubleClickZoom={true}
