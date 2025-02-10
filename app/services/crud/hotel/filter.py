@@ -53,7 +53,8 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
             q1.c.user_rating,
             q1.c.user_rating_count,
             q1.c.images,
-            q1.c.coordinate
+            q1.c.latitude,
+            q1.c.longitude
         )
         .join(HotelAmenityMapping, q1.c.id == func.cast(HotelAmenityMapping.hotel_id, String))
         .join(HotelAmenity, HotelAmenityMapping.amen_id == HotelAmenity.amen_id)
