@@ -19,7 +19,7 @@ interface HotelPageChatStore {
     setCanSpeak: (canSpeak: boolean) => void;
     setIsTextSocketConnecting: ( isTextSocketConnecting: boolean ) => void;
     setWaitingForMessage: (waitingForMessage: boolean) => void;
-    connectTextSocket: (id: bigint) => Promise<WebSocket | void>;
+    connectTextSocket: (id: string) => Promise<WebSocket | void>;
     connectAudioSocket: (lang: 'en' | 'hi') => Promise<WebSocket | void>;
     disconnectTextSocket: () => void;
     disconnectAudioSocket: () => void;

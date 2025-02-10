@@ -153,3 +153,19 @@ export function generateCurrentFiltersAsString() {
    `
     return filterString
 }
+
+export function formatRoomOffer (filter_code: string[]) {
+
+    if (filter_code.includes("FREE_BREAKFAST") && filter_code.includes("FREE_CANCELLATION")) {
+        return "Free Breakfast | Free Cancellation"
+    } 
+    else if (filter_code.includes("FREE_BREAKFAST")) {
+        return "Room Only | Free Breakfast"
+    }
+    else if (filter_code.includes("FREE_CANCELLATION")) {
+        return "Room Only | Free Cancellation"
+    }
+    else {
+        return "Room Only"
+    }
+}

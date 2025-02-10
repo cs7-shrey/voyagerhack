@@ -30,8 +30,8 @@ const HotelDescription = () => {
 
     useEffect(() => {
         const { getHotelData, getRoomData } = useHotelDescStore.getState();
-        getHotelData(BigInt(id));
-        getRoomData(BigInt(id));
+        getHotelData(id);
+        getRoomData(id);
     }, [id])
     return (
         <div className="relative">
