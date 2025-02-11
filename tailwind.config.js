@@ -19,7 +19,8 @@ export default {
         accentForeground: "#0062E3",
       },
       fontFamily: {
-        'chat-message': ["chatMessage", "sans-serif"]
+        'chat-message': ["chatMessage", "sans-serif"],
+        'manrope': ["Manrope", "sans-serif"]
       },
       keyframes: {
         pulse: {
