@@ -9,3 +9,11 @@
     font-style: normal; /* Or 'italic' if applicable */
     font-display: swap; /* Important for performance */
 }
+
+@font-face {
+    font-family: 'Manrope';
+    src: url('/fonts/Manrope-VariableFont_wght.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
