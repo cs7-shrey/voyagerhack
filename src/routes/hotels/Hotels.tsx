@@ -12,6 +12,7 @@ import { HashLoader } from "react-spinners"
 import { useHotelStore } from "@/store/useHotelStore";
 import TopBar from "@/components/TopBar";
 import { useSocketStore } from "@/store/useSocketStore";
+import NotFoundCard from "@/components/ui/NotFoundCard";
 
 export default function Hotels() {
     const [filtersDropdown, setFiltersDropdown] = useState(false);
@@ -86,6 +87,7 @@ export default function Hotels() {
                 setHotels(response.data.hotels);
             } catch (error) {
                 console.error(error);
+                setHotels([])
             } finally {
                 setLoading(false);
             }
@@ -101,6 +103,7 @@ export default function Hotels() {
             document.body.style.overflow = 'unset';
         };
     }, [waitingForMessage]);
+    console.log(!hotels && !loading && !waitingForMessage)
     return (
         <div className="relative"
         >
@@ -130,9 +133,15 @@ export default function Hotels() {
                             </>
                         )}
                     </div>
-                    {hotels.map((hotel) => (
-                        <HotelCard key={hotel.id} {...hotel} />
-                    ))}
+                    <div className='flex flex-col gap-4 relative'>
+                        {hotels.map((hotel) => (
+                            <HotelCard key={hotel.id} {...hotel} />
+                        ))}
+                        {hotels.length === 0 && !loading && !waitingForMessage && 
+                        <div className='absolute inset-0'>
+                            <NotFoundCard text="we couldn't find any hotels that match your criteria" />
+                        </div>}
+                    </div>
                 </div>
                 {loading && <div className="fixed inset-0 top-0 left-0 z-50 flex justify-center items-center bg-secondary/50">
                     <HashLoader />
