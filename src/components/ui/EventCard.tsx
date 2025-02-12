@@ -9,7 +9,7 @@ const EventCard: React.FC<Props> = ({ name, description, infoURL, imageURL }) =>
     return (
         <div className='w-full max-w-[400px] h-full rounded-lg'>
             <div className='flex flex-col h-full relative'>
-                <div className='h-60 w-96'>
+                <div className='h-60 w-80'>
                     <img 
                         src={imageURL ?? placeholderImg} 
                         alt="event image"
