@@ -5,10 +5,10 @@ const PlaceCardsContainer = () => {
     const isHovered = false
     const { places } = useExplorePageStore() 
     return (
-        <div className={`flex gap-4 overflow-x-auto scrollbar-thin ${isHovered ? 'pause' : 'animate-[scroll_20s_linear_infinite]'} `}
+        <div className={`flex gap-4 overflow-x-auto scrollbar-thin bg-[rgb(247,247,247)]  ${isHovered ? 'pause' : 'animate-[scroll_20s_linear_infinite]'} `}
         >
             {places.map((location, index) => (
-                <div key={index}  className='shadow-lg rounded-md p-4'>
+                <div key={index}  className=' rounded-md p-4 bg-white'>
                     <PlaceCard 
                         name={location.name}
                         address={location.address}

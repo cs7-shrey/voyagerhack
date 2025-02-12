@@ -33,7 +33,7 @@ const EventCardsContainer = () => {
     return (
         <div className='flex gap-4 overflow-x-auto scrollbar-thin'>
             {events.map((event, index) => (
-                <div key={index} className='shadow-lg rounded-md my-2'>
+                <div key={index} className='rounded-md my-2 h-[450px] [box-shadow:0px_0px_50px_rgb(220,220,220)] bg-white min-h-min'>
                     <EventCard 
                         name={event.name}
                         description={event.description}

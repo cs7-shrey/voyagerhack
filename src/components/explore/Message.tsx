@@ -13,7 +13,7 @@ const Message: React.FC<Props> = ({content, sender, isThinking}) => {
     return (
         <div className='flex flex-col'>
             <div className={`text-[0.9rem] text-gray-500 ${'text-left'}`}>
-                {sender === Sender.USER ? 'you' : 'sage'}   
+                {sender === Sender.USER ? 'you' : <span className="text-accentForeground">sage</span>}   
             </div> 
             <div className={`${'self-start'} ${isThinking ? '': '' } rounded-lg max-w-[80%]`}>
                 {isThinking ? 
