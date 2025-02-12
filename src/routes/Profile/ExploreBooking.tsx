@@ -17,6 +17,7 @@ import Message from '@/components/explore/Message';
 import { INSTRUCTION, useUITools } from '@/lib/exploreChat';
 import { Sender } from '@/lib/exploreChat';
 import { useExplorePageStore } from '@/store/useExplorePageStore';
+import EventCardsContainer from '@/components/explore/EventCardsContainer';
 
 
 
@@ -72,6 +73,7 @@ const PageLayout = () => {
         console.log(booking?.hotel?.location)
         setChatInstructions(`
             ${INSTRUCTION}
+
             SYSTEM GENERATED DETAILS:
             HOTEL NAME: ${booking?.hotel?.name}
             HOTEL LOCATION: ${booking?.hotel?.location}    
@@ -110,7 +112,7 @@ const PageLayout = () => {
                         </h2>
                     }
                     <div className='flex flex-col gap-4'>
-                        <div className='px-4'>
+                        <div className='px-4 flex flex-col gap-2'>
                             {visibleMessages.map((msg, index) => {
                                 if (!msg.isTextMessage()) {
                                     return null;
@@ -139,6 +141,7 @@ const PageLayout = () => {
                         </div>
                         <div>
                             <PlaceCardsContainer />    
+                            <EventCardsContainer />
                         </div>
                     </div>
                 </div>

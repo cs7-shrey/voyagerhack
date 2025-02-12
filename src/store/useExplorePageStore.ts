@@ -27,7 +27,7 @@ interface ExplorePageStore {
     setPlaces: (places: Place[]) => void;
     addPlace: (place: Place) => void;
     setEvents: (events: Event[]) => void;
-    addEvents: (event: Event) => void;
+    addEvent: (event: Event) => void;
     setChatMessages: (messages: ChatMessage[]) => void;
     addChatMessage: (message: ChatMessage) => void;
 }
@@ -37,9 +37,9 @@ export const useExplorePageStore = create<ExplorePageStore>((set) => ({
     events: [],
     chatMessages: [],
     setPlaces: (places) => set({ places }),
-    addPlace: (place) => set((state) => ({ places: [...state.places, place] })),
+    addPlace: (place) => set((state) => ({ places: [place, ...state.places] })),
     setEvents: (events) => set({ events }),
-    addEvents: (event) => set((state) => ({ events: [...state.events, event] })),
+    addEvent: (event) => set((state) => ({ events: [event, ...state.events] })),
     setChatMessages: (messages) => set({ chatMessages: messages }),
     addChatMessage: (message) => set((state) => ({ chatMessages: [...state.chatMessages, message] }))
 }));
