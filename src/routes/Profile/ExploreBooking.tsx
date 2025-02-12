@@ -89,25 +89,25 @@ const PageLayout = () => {
     }   
     console.log(visibleMessages)        
     return (
-        <div className="relative h-screen bg-[rgb(247,247,247)] flex flex-col gap-1">
+        <div className="relative h-screen bg-gray-50 flex flex-col gap-2">
             {/* Hotel Header */}
-            <div className='w-full flex bg-white border-b-1'>
+            <div className='w-full flex bg-white'>
                 <div className="shadow-sm p-2 w-1/4 max-h-fit justify-self-start">
                     <HotelDetails imageURL={booking.hotel.images[0]} name={booking.hotel.name} hotelStars={booking.hotel.hotel_star} address={booking.hotel.location} userRating={booking.hotel.user_rating} />
                 </div>
                 <div className='mx-auto'>
                     <BookingDate checkIn={new Date(booking.check_in)} checkOut={new Date(booking.check_out)}/>
                 </div>
-                <div className='ml-auto border-b-[0.5px] border-l-[0.5px] border-gray-300'>
+                <div className='ml-auto'>
                     <RoomDetails roomType={booking.room_type.room_type_name} roomDescription='Room with Free cancellation' maxAdults={booking.room_type.max_adults} />
                 </div>
             </div>
 
             {/* Let's Explore Section */}
-            <div className='w-full overflow-y-auto border-b-1'>
-                <div className='flex flex-col max-w-5xl mx-auto py-4 px-4 bg-white h-[800px]'>
+            <div className='w-full overflow-y-auto'>
+                <div className='flex flex-col max-w-5xl mx-auto py-4 px-4 '>
                     {visibleMessages.length === 0 && 
-                        <h2 className="text-[4.5rem] text-center mb-6 font-manrope font-[600] ">
+                        <h2 className="text-[4.5rem] text-center text-gray-900 mb-6 font-manrope font-[600]">
                             let's explore
                         </h2>
                     }
@@ -149,7 +149,7 @@ const PageLayout = () => {
 
             {/* Chat Input */}
             <div className='w-full mt-auto'>
-                <div className="bg-white mx-auto flex w-1/2 p-4 items-center gap-2 rounded-sm shadow-xl shadow-accent ">
+                <div className="bg-white mx-auto flex w-1/2 p-4 items-center gap-2 rounded-sm shadow-md ">
                     <input 
                         type="text" 
                         value={inputValue}
