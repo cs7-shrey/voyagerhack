@@ -14,6 +14,7 @@ SYSTEM_PROMPT = """
     to get nearby places around the hotel, use NearbyPlaces function which uses the google maps places API. 
     ex. chineses restaurants near this hotel -> NearbyPlaces(query="chineses restaurants near <hotel_name>, <location>")
     use the search_api for any queries that do not fall under the above categories. Things like: how is weather around the hotel, or any ambigous queries like fun things to do around the hotel, etc. 
+    use the search_api in case in case the NearbyPlaces function does not return any results. 
     
     FOR QUERIES THAT MAY REQUIRE MULTIPLE FUNCTION CALLS IN SOME SEQUENCE. YOU CAN CALL ONE FUNCTION, WAIT FOR ITS RESPONSE AND THE CALL ANOTHER FUNCTION
     FOR EXAMPLE: query: how far is the nearest airport from hotel?

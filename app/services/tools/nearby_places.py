@@ -29,7 +29,7 @@ async def get_nearby_places(query: str):
             return "Error, could not get nearby places"
         try:
             places = response.json()['places']
-            places_formatted = list(map(lambda x: {'name': x['displayName']['text'], 'address': x['shortFormattedAddress'], 'google_maps_url': x['googleMapsUri'], 'type': x['primaryTypeDisplayName']}, places))
+            places_formatted = list(map(lambda x: {'name': x['displayName']['text'], 'address': x['shortFormattedAddress'], 'google_maps_url': x['googleMapsUri'], 'type': x.get('primaryTypeDisplayName')}, places))
             print(places_formatted[0])
             return places_formatted[:5] if len(places_formatted) > 5 else places_formatted
         except Exception as e:

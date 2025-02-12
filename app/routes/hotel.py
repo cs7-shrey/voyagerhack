@@ -36,7 +36,7 @@ async def book_hotel_route(booking_details: BookHotelSchema, db: Session = Depen
     booking = book_hotel(db, current_user.user_id, booking_details)
     if not booking:
         raise HTTPException(status_code=400, detail="Booking failed")
-    return {"message": "Booking successful"}
+    return {"message": "Booking successful", "booking_id": booking.booking_id}
 
 @router.websocket("/exp/{id}/ws/chat")  
 async def hotel_chat_ws(

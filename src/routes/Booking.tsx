@@ -3,13 +3,14 @@ import Logo from "@/components/ui/Logo";
 import { axiosInstance } from "@/lib/axiosConfig";
 import { useHotelDescStore } from "@/store/useHotelDescStore";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router"
+import { useNavigate, useSearchParams } from "react-router"
 import placeholderImg from "/placeholderImg.jpg"
 import BookingDate from "@/components/booking/BookingDate";
 import PriceSummary from "@/components/booking/PriceSummary";
 import BookintRoomDetails from "@/components/booking/BookingRoomDetails";
 import { formatRoomOffer } from "@/lib/utils";
 import BookingButton from "@/components/booking/BookingButton";
+import success from '@/assets/success.svg'
 
 interface RatePlanDetails {
     base_fare: number;
@@ -53,6 +54,10 @@ const Booking = () => {
     const { hotelData } = useHotelDescStore();
     const [roomData, setRoomData] = useState<RoomData | null>(null);
     const [ratePlan, setRatePlan] = useState<RatePlanDetails>();
+
+    const [booked, setBooked] = useState(false);
+    const [isBooking, setIsBooking] = useState(false);
+    const navigate = useNavigate();
     useEffect(() => {
         if (hotelId) {
             getHotelData(hotelId)
@@ -77,6 +82,7 @@ const Booking = () => {
     }
     const bookHotel = async () => {
         try {
+            setIsBooking(true);
             const response = await axiosInstance.post('/hotel/book', {
                 hotel_id: hotelId,
                 room_type_id: roomTypeId,
@@ -85,14 +91,20 @@ const Booking = () => {
                 check_out: checkOutString
             })
             console.log(response.data)
+            setBooked(true);
+            setTimeout(() => {
+                navigate('/profile/bookings')
+            }, 2000)
             // do some navigation
         } catch (error) {
             console.error(error);
             // do some navigation
+        } finally {
+            setIsBooking(false);
         }
     }
     return (
-        <div className='relative flex flex-col z-10 bg-primary/80'>
+        <div className='relative h-screen flex flex-col z-10 bg-primary/80'>
             <div className='m-4 z-30 bg-accent'>
                 <Logo />
             </div>
@@ -127,7 +139,7 @@ const Booking = () => {
                             />
                         </div>
                         <div className='mt-2'>
-                            <BookingButton onClick={bookHotel}/>
+                            <BookingButton onClick={bookHotel} disabled={isBooking} />
                         </div>
                     </div>
                 </div>
@@ -135,9 +147,16 @@ const Booking = () => {
                     <PriceSummary baseFare={ratePlan?.base_fare ?? 0} taxes={ratePlan?.taxes ?? 0} discount={ratePlan?.total_discount ?? 0}/>
                 </div>
             </div>
-            {/* <button>
-                Book hotel
-            </button> */}
+            {booked && <div className='absolute inset-0 bg-secondary/80 z-50 flex justify-center items-center'>  
+                <div className="flex flex-col items-center gap-2">
+                    <div className="size-24">
+                        <img src={success} alt="success image" />
+                    </div>
+                    <div>
+                        <h1 className="text-3xl font-bold text-white">Booking Successful!</h1>
+                    </div>
+                </div>
+            </div>}
         </div>
     )
 }

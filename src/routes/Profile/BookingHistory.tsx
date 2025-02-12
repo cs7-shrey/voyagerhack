@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { MapPin, Users, Star } from 'lucide-react';
 import { axiosInstance } from '@/lib/axiosConfig';
 import { useBookingHistoryStore } from '@/store/useBookingHistoryStore';
-
+import { useNavigate } from 'react-router';
 
 const BookingHistory = () => {
     const { bookings, setBookings } = useBookingHistoryStore();
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchBookings = async () => {
@@ -62,12 +63,19 @@ const BookingHistory = () => {
                         <div key={booking.booking_id} className="bg-white rounded-lg shadow-sm p-6">
                             <div className="flex flex-col md:flex-row gap-6">
                                 {/* Hotel Image */}
-                                <div className="w-full md:w-1/4">
+                                <div className="w-full md:w-1/4 flex flex-col">
                                     <img
                                         src={booking.hotel.images[0]}
                                         alt={booking.hotel.name}
                                         className="w-full h-48 object-cover rounded-lg"
                                     />
+                                    <div className='bg-black text-white text-center py-2 rounded-lg mt-2'>
+                                        <button
+                                            onClick={() => navigate(`/profile/booking/explore/${booking.booking_id}`)}
+                                        >
+                                            explore
+                                        </button>
+                                    </div>
                                 </div>
 
                                 {/* Booking Details */}

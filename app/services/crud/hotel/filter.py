@@ -136,12 +136,12 @@ def get_hotels_with_filters(filters: SearchFilters, session: Session):
                     )
             ).label('distance')  
         )
-        .limit(10)
+        .limit(20)
     ) if filters.proximity_coordinate else (
         select (
             q6
         )
-        .limit(10)
+        .limit(20)
     ) 
     results = []
     results = session.execute(final_query).mappings().all()

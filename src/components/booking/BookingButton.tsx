@@ -1,9 +1,11 @@
 import { Wallet } from 'lucide-react';
+import { ClipLoader } from 'react-spinners';
 
 interface Props {
     onClick: () => void;
+    disabled?: boolean;
 }
-const BookingButton: React.FC<Props> = ({ onClick }) => {
+const BookingButton: React.FC<Props> = ({ onClick, disabled }) => {
     const isOpen = true;
     return (
         <div className="w-full max-w-md space-y-4">
@@ -25,12 +27,22 @@ const BookingButton: React.FC<Props> = ({ onClick }) => {
                 </div>
             )}
             {/* Main booking button */}
-            <button
-                onClick={onClick}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
-            >
-        Book Room
-            </button>
+            <div className='relative'>
+                <button
+                    onClick={onClick}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                >
+                        Book Room
+                </button>
+                {
+                    disabled && (
+                        <div className="absolute inset-0 z-50 bg-secondary/80 h-full flex items-center justify-center w-full border "
+                        >
+                            <ClipLoader color='white' size={20}/>
+                        </div>
+                    )
+                }
+            </div>
         </div>
     );
 };
