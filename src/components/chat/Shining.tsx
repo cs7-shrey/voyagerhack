@@ -153,7 +153,7 @@ function CustomChatInterface() {
 
 export default function App() {
     return (
-        <CopilotKit runtimeUrl="http://localhost:4000/copilotkit">
+        <CopilotKit runtimeUrl={import.meta.env.VITE_COPILOT_RUNTIME_URL}>
             <CustomChatInterface />
         </CopilotKit>
     );
