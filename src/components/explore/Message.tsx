@@ -12,16 +12,21 @@ interface Props {
 const Message: React.FC<Props> = ({content, sender, isThinking}) => {
     return (
         <div className='flex flex-col'>
-            <div className={`text-sm text-gray-500 ${'text-left'}`}>
+            <div className={`text-[0.9rem] text-gray-500 ${'text-left'}`}>
                 {sender === Sender.USER ? 'you' : 'sage'}   
             </div> 
-            <div className={`${'self-start'} ${isThinking ? '': 'py-2' } rounded-lg max-w-[80%]`}>
+            <div className={`${'self-start'} ${isThinking ? '': '' } rounded-lg max-w-[80%]`}>
                 {isThinking ? 
                     <div>
                         <p><BeatLoader size={8}/></p>
                     </div>    
                     :
-                    <div>
+                    <div 
+                        className='font-manrope text-[#000000cf]'
+                        style={{
+                            letterSpacing: '0.5px',
+                        }}
+                    >
                         <ReactMarkdown children={content.toLowerCase()} remarkPlugins={[remarkGfm]} />
                     </div>
                 }

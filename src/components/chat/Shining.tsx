@@ -1,86 +1,157 @@
-import { APIProvider, Map, MapCameraChangedEvent, Pin, AdvancedMarker } from "@vis.gl/react-google-maps"
+import { CopilotKit } from "@copilotkit/react-core";
+import { useCopilotChat } from "@copilotkit/react-core";
+import { useCopilotAction } from "@copilotkit/react-core"; 
+import { Role, TextMessage } from "@copilotkit/runtime-client-gql";
+import { useCopilotContext } from "@copilotkit/react-core";
+import { useEffect, useState } from "react";
+import "@copilotkit/react-ui/styles.css";
 
-
-type Poi ={ key: string, location: google.maps.LatLngLiteral }
-const locations: Poi[] = [
-    {key: 'operaHouse', location: { lat: -33.8567844, lng: 151.213108  }},
-    {key: 'tarongaZoo', location: { lat: -33.8472767, lng: 151.2188164 }},
-    {key: 'manlyBeach', location: { lat: -33.8209738, lng: 151.2563253 }},
-    {key: 'hyderPark', location: { lat: -33.8690081, lng: 151.2052393 }},
-    {key: 'theRocks', location: { lat: -33.8587568, lng: 151.2058246 }},
-    {key: 'circularQuay', location: { lat: -33.858761, lng: 151.2055688 }},
-    {key: 'harbourBridge', location: { lat: -33.852228, lng: 151.2038374 }},
-    {key: 'kingsCross', location: { lat: -33.8737375, lng: 151.222569 }},
-    {key: 'botanicGardens', location: { lat: -33.864167, lng: 151.216387 }},
-    {key: 'museumOfSydney', location: { lat: -33.8636005, lng: 151.2092542 }},
-    {key: 'maritimeMuseum', location: { lat: -33.869395, lng: 151.198648 }},
-    {key: 'kingStreetWharf', location: { lat: -33.8665445, lng: 151.1989808 }},
-    {key: 'aquarium', location: { lat: -33.869627, lng: 151.202146 }},
-    {key: 'darlingHarbour', location: { lat: -33.87488, lng: 151.1987113 }},
-    {key: 'barangaroo', location: { lat: - 33.8605523, lng: 151.1972205 }},
-]; 
-
-// const Parser = ({text}: {text: string}) => {
-//     const chars = [...text];
-//     const start = 1;
-//     const end = 0.5;
-//     const [opacities, setOpacities] = useState([...chars.map((_, index) => {
-//         return end - (end - start) * (index) / (text.length - 1)
-//     })])
-//     useEffect(() => {
-//         const interval = setInterval(() => {
-//             setOpacities((prev) => rotateArrayRight(prev))
-//         }, 100)
-//         return () => clearInterval(interval);
-//     }, [])
-//     return chars.map((char, index) => {
-//         return (
-//             <div>
-//                 <APIProvider apiKey={import.meta.env.VITE_MAPS_FRONTEND_API_KEY} onLoad={() => console.log('Maps API has loaded.')}>
-//                     <Map
-//                         defaultZoom={13}
-//                         defaultCenter={ { lat: -33.860664, lng: 151.208138 } }
-//                         onCameraChanged={ (ev: MapCameraChangedEvent) =>
-//                             console.log('camera changed:', ev.detail.center, 'zoom:', ev.detail.zoom)
-//                         }>
-//                     </Map>
-//                 </APIProvider> 
-//             </div>
-//         );
-//     });
-// }
-
-const PoiMarkers = (props: {pois: Poi[]}) => {
+import { CopilotPopup } from "@copilotkit/react-ui";
+ 
+export function YourApp() {
     return (
         <>
-            {props.pois.map( (poi: Poi) => (
-                <AdvancedMarker
-                    key={poi.key}
-                    position={poi.location}>
-                    <Pin background={'#D24D5C'} glyphColor={'#ffffff'} borderColor={'#D24D5C'} />
-                </AdvancedMarker>
-            ))}
+            <CopilotPopup
+                instructions={"You are assisting the user as best as you can. Answer in the best way possible given the data you have."}
+                labels={{
+                    title: "Popup Assistant",
+                    initial: "Need any help?",
+                }}
+            />
         </>
     );
-};
-  
-const Shining = () => {
+}
+interface location {
+    locationName: string;
+    locationAddress: string;
+    googleMapsLink: string;
+}
+function CustomChatInterface() {
+    const {
+        visibleMessages,
+        appendMessage,
+        stopGeneration,
+        isLoading,
+    } = useCopilotChat();
+    const [locations, setLocations] = useState<location[]>([]);
+
+    // Define Copilot action
+    useCopilotAction({
+        name: "addLocationFound",
+        description: "Add a new location to the list",
+        parameters: [
+            {
+                name: "locationName",
+                type: "string",
+                description: "The name of the location to add",
+                required: true,
+            },
+            {
+                name: "locationAddress",
+                type: "string",
+                description: "The address of the location to add",
+                required: true,
+            },
+            {
+                name: "googleMapsLink",
+                type: "string",
+                description: "The Google Maps link of the location to add",
+                required: true,
+            }
+        ],
+        handler: async ({ locationName, locationAddress, googleMapsLink }) => {
+            setLocations([...locations, { locationName, locationAddress, googleMapsLink }]);
+        },
+    });
+    const { setChatInstructions } = useCopilotContext();
+ 
+    useEffect(() => {
+        setChatInstructions("WHATEVER DATA YOU RECEIVE, DISPLAY IT IN THE UI LIST USING addLocationFound ACTION");
+    }, [setChatInstructions]);
+
+    const [inputValue, setInputValue] = useState("");
+    useEffect(() => {
+        console.log(visibleMessages);
+    }, [visibleMessages]);
+
+    const sendMessage = async (content: string) => {
+        if (content.trim()) {
+            await appendMessage(new TextMessage({ content, role: Role.User }));
+            setInputValue("");
+        }
+        // visibleMessages[0].
+    };
+ 
     return (
-        <div className='w-full h-[70vh]'>
-            <APIProvider apiKey={import.meta.env.VITE_MAPS_FRONTEND_API_KEY} onLoad={() => console.log('Maps API has loaded.')}>
-                <Map
-                    defaultZoom={13}
-                    defaultCenter={ { lat: -33.860664, lng: 151.208138 } }
-                    mapId='DEMO_MAP_ID'
-                    onCameraChanged={ (ev: MapCameraChangedEvent) =>
-                        console.log('camera changed:', ev.detail.center, 'zoom:', ev.detail.zoom)
-                    }
-                >
-                    <PoiMarkers pois={locations} />
-                </Map>
-            </APIProvider>
+        <div className="flex">
+            <div className="w-1/2 h-screen bg-gray-100">
+                <ul className="flex flex-col p-4">
+                    {locations.map((location, index) => (
+                        <div key={index} className="p-4 bg-white rounded-lg mb-4">
+                            name: {location.locationName}
+                            address: {location.locationAddress}
+                            <a href={location.googleMapsLink} target="_blank">Google Maps</a>
+                        </div>
+                    ))}
+                </ul>
+            </div>
+            <div className="flex flex-col w-1/2 h-screen max-w-3xl mx-auto p-4">
+                <div className="flex-1 overflow-y-auto mb-4 space-y-4">
+                    {visibleMessages.map((message, index) => (
+                        <div
+                            key={index}
+                            className={`p-4 rounded-lg ${
+                                message.role === Role.Assistant
+                                    ? "bg-blue-100 ml-auto max-w-[80%]"
+                                    : "bg-gray-100 mr-auto max-w-[80%]"
+                            }`}
+                        >
+                            <p>{(message as TextMessage).content}</p>
+                        </div>
+                    ))}
+                    {isLoading && (
+                        <div className="bg-gray-100 p-4 rounded-lg mr-auto max-w-[80%]">
+                            <p>Thinking...</p>
+                        </div>
+                    )}
+                </div>
+                <div className="flex gap-2">
+                    <input
+                        type="text"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onKeyPress={(e) => {
+                            if (e.key === "Enter") {
+                                sendMessage(inputValue);
+                            }
+                        }}
+                        className="flex-1 p-2 border rounded-lg"
+                        placeholder="Type your message..."
+                    />
+                    <button
+                        onClick={() => sendMessage(inputValue)}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                    >
+                        Send
+                    </button>
+                    {isLoading && (
+                        <button
+                            onClick={stopGeneration}
+                            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                        >
+                            Stop
+                        </button>
+                    )}
+                </div>
+            </div>
         </div>
-    )
+    );
 }
 
-export default Shining
+export default function App() {
+    return (
+        <CopilotKit runtimeUrl="http://localhost:4000/copilotkit">
+            <CustomChatInterface />
+        </CopilotKit>
+    );
+}
