@@ -97,18 +97,21 @@ function CustomChatInterface() {
             </div>
             <div className="flex flex-col w-1/2 h-screen max-w-3xl mx-auto p-4">
                 <div className="flex-1 overflow-y-auto mb-4 space-y-4">
-                    {visibleMessages.map((message, index) => (
-                        <div
+                    {visibleMessages.map((message, index) => {
+                        if (!message.isTextMessage()) {
+                            return null;
+                        }
+                        return  <div
                             key={index}
                             className={`p-4 rounded-lg ${
-                                message.role === Role.Assistant
+                                (message as TextMessage).role === Role.Assistant
                                     ? "bg-blue-100 ml-auto max-w-[80%]"
                                     : "bg-gray-100 mr-auto max-w-[80%]"
                             }`}
                         >
                             <p>{(message as TextMessage).content}</p>
                         </div>
-                    ))}
+                    })}
                     {isLoading && (
                         <div className="bg-gray-100 p-4 rounded-lg mr-auto max-w-[80%]">
                             <p>Thinking...</p>
