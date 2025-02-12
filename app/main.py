@@ -1,7 +1,8 @@
 from . import models
 from . import models
 from .database import engine, get_db
-from app.routes import search, constants, voice_search, user, hotel, voice, room
+from app.routes import search, constants, voice_search, user, hotel, voice, room, cpkit
+from copilotkit.integrations.fastapi import add_fastapi_endpoint
 from app.oauth2 import get_current_client
 from dotenv import load_dotenv
 from fastapi import FastAPI, Depends
@@ -21,6 +22,7 @@ origins = [
     os.getenv("BASE_FRONTEND_URL")
 ]
 print(os.getenv("BASE_FRONTEND_URL"), os.getenv("BASE_FRONTEND_DOMAIN"))
+
 # TODO: Change this to the actual frontend URL
 app.add_middleware(
     CORSMiddleware,
@@ -37,6 +39,7 @@ app.include_router(user.router)
 app.include_router(hotel.router)
 app.include_router(voice.router)
 app.include_router(room.router)
+add_fastapi_endpoint(app, cpkit.sdk, '/copilotkit_remote')
 
 
 @app.get("/")

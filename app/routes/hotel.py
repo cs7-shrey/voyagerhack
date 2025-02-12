@@ -41,7 +41,7 @@ async def book_hotel_route(booking_details: BookHotelSchema, db: Session = Depen
 @router.websocket("/exp/{id}/ws/chat")  
 async def hotel_chat_ws(
     ws: WebSocket, 
-    id: int, 
+    id: int | str, 
     hotel_name: str = Query(...), 
     hotel_location: str = Query(...), 
     current_user: int = Depends(socket_get_current_client)
