@@ -20,7 +20,9 @@ export default {
       },
       fontFamily: {
         'chat-message': ["chatMessage", "sans-serif"],
-        'manrope': ["Manrope", "sans-serif"]
+        'manrope': ["Manrope", "sans-serif"],
+        'poppins': ["Poppins", "sans-serif"],
+        'roboto': ["Roboto", "sans-serif"],
       },
       keyframes: {
         pulse: {

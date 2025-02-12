@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
 
 @font-face {
     font-family: 'chatMesage'; /* Choose a name for your font family */
@@ -12,7 +12,15 @@
 
 @font-face {
     font-family: 'Manrope';
-    src: url('/fonts/Manrope-VariableFont_wght.woff2') format('woff2');
+    src: url('/fonts/manrope-VariableFont_wght.ttf') format('ttf');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto-VariableFont_wdth,wght.ttf') format('ttf');
     font-weight: 100 900;
     font-style: normal;
     font-display: swap;
