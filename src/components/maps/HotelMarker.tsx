@@ -3,7 +3,7 @@ import React from 'react'
 
 interface Props {
     price: number
-    hotelId: bigint
+    hotelId: string
 }
 
 const HotelMarker: React.FC<Props> = ({ price, hotelId }) => {
