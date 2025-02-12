@@ -17,6 +17,9 @@ import { useAuthStore } from "./store/useAuthStore";
 import { Protected } from "./routes/Protected";
 import AuthChecker from "./context/AuthChecker";
 import Logout from "./components/auth/Logout";
+import Booking from "./routes/Booking";
+import BookingHistory from "./routes/Profile/BookingHistory";
+import ExploreBooking from "./routes/Profile/ExploreBooking";
 // import Visualizer from "./routes/Visualizer";
 
 function App() {
@@ -109,14 +112,17 @@ export default function AppRouter() {
                         <Route path="/voice" element={<Voice />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/hotel/:id" element={<HotelDescription />} />
-                        <Route path="/dummy" element={
-                            <div className="w-full flex border-2 h-screen justify-end bg-black items-center">
-                                <div className="h-screen w-full text-black">
-                                    <Shining />
-                                </div>
-                            </div>
-                        } />
+                        <Route path="/hotel/booking" element={<Booking />} />
+                        <Route path="/profile/bookings" element={<BookingHistory />} />
+                        <Route path="/profile/booking/explore/:id" element={<ExploreBooking />} />
                     </Route>
+                    <Route path="/dummy" element={
+                        <div className="w-full flex border-2 h-screen justify-end bg-black items-center">
+                            <div className="h-screen w-full bg-white">
+                                <Shining />
+                            </div>
+                        </div>
+                    } />
                 </Route>
             </Route>
         </Routes>

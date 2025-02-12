@@ -8,9 +8,9 @@ interface Props {
     mode?: "voice" | "text"
 }
 const Message: React.FC<Props> = ({sender, text}) => {
-  return (
-    <div 
-    className={`
+    return (
+        <div 
+            className={`
         max-w-[70%] px-2 py-3 
         ${sender === "user" ? "ml-auto" : "mr-auto"} 
         ${sender === "user" ? "bg-[#F6F6F6]" : "bg-white"}
@@ -20,11 +20,10 @@ const Message: React.FC<Props> = ({sender, text}) => {
         font-chat-message
         font-medium        
         `}
-
-    >
-        <ReactMarkdown children={text} remarkPlugins={[remarkGfm]} />
-    </div>
-  )
+        >
+            <ReactMarkdown children={text} remarkPlugins={[remarkGfm]} />
+        </div>
+    )
 }
 
 export default Message

@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session, aliased
+from sqlalchemy import String
 from sqlalchemy import select, and_, func
 from app.models import Hotel, HotelAmenityMapping, HotelAmenity, RoomType, RoomAmenity, RoomAmenityMapping, RatePlan
 
@@ -8,8 +9,8 @@ def get_hotel_info_by_id(id: int, db: Session):
     ha = aliased(HotelAmenity)
     query = (
         select(
-            Hotel.id,
-            Hotel.gi_id,
+            func.cast(Hotel.id, String),
+            func.cast(Hotel.gi_id, String),
             Hotel.name,
             Hotel.location,
             Hotel.hotel_star,
@@ -19,7 +20,7 @@ def get_hotel_info_by_id(id: int, db: Session):
             Hotel.images,
             func.array_agg(ha.name).label('amenities'),
     )
-    .where(Hotel.id == id)
+    .where(Hotel.id == str(id))
     .join(ham, Hotel.id == ham.hotel_id)
     .join(ha, ham.amen_id == ha.amen_id)
     .group_by(Hotel.id, Hotel.gi_id, Hotel.name, Hotel.location, Hotel.hotel_star, Hotel.user_rating, Hotel.user_rating_count, Hotel.property_type, Hotel.images)

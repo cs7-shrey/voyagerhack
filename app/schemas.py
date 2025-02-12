@@ -2,6 +2,7 @@ import datetime
 from enum import Enum
 from pydantic import BaseModel
 from typing import Optional
+from datetime import date
 
 # the decoded token data that is used to the current user
 class TokenData(BaseModel):
@@ -24,7 +25,7 @@ class SearchSuggestion(BaseModel):
 
 
 class HotelInfoResponse(BaseModel):
-    id: int
+    id: str
     gi_id: int
     name: str
     location: str
@@ -47,6 +48,7 @@ class RatePlan(BaseModel):
     total_discount: float
     taxes: float
     filter_code: list[str]
+
 class HotelRoomResponse(BaseModel):
     room_type_id: int
     room_type_name: str
@@ -127,3 +129,18 @@ class Service(str, Enum):
 class Constants(BaseModel):
     name: str
     code: Optional[str] = ''
+    
+class BookHotelSchema(BaseModel):
+    check_in: date
+    check_out: date
+    hotel_id: str
+    room_type_id: int
+    rate_plan_id: int
+    
+class BookingDetails(BaseModel):
+    booking_id: int
+    check_in: date
+    check_out: date
+    hotel: dict
+    room_type: dict
+    rate_plan: dict

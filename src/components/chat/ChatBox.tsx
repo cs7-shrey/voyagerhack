@@ -18,12 +18,12 @@ const ChatBox: React.FC<Props> = ({ onClose }) => {
     }, [messages])
     const widgetColor = textSocket?.readyState === WebSocket.OPEN ? 'rgb(108,161,72)' 
         : isTextSocketConnecting ? 'rgb(20,20,20)' 
-        : (!textSocket || textSocket?.readyState === WebSocket.CLOSED) ? 'rgb(218,74,34)' : 'rgb(0,200,0)'
+            : (!textSocket || textSocket?.readyState === WebSocket.CLOSED) ? 'rgb(218,74,34)' : 'rgb(0,200,0)'
     const widgetText = textSocket?.readyState === WebSocket.OPEN ? 'connected' 
         : isTextSocketConnecting ? 'connecting' 
-        : (!textSocket || textSocket?.readyState === WebSocket.CLOSED) ? 'disconnected' : 'error'
+            : (!textSocket || textSocket?.readyState === WebSocket.CLOSED) ? 'disconnected' : 'error'
     const onClick = () => {
-        connectTextSocket(BigInt("12345658"))
+        connectTextSocket("12345658")
     }
     return (
         <div className="sm:w-[80%] md:w-[30rem] sm:ml-auto m-4 border-4 flex flex-col gap-2 relative rounded-2xl bg-white h-[95vh] px-4 pb-4">

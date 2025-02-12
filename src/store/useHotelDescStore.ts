@@ -1,8 +1,8 @@
 import { create } from 'zustand'
 import { axiosInstance } from '@/lib/axiosConfig';
 interface HotelData {
-    id: bigint;
-    gi_id: bigint;
+    id: string;
+    gi_id: string;
     name: string;
     location: string;
     hotelStar: number;
@@ -14,7 +14,7 @@ interface HotelData {
 }
 
 export interface RatePlan {
-    plan_id: bigint;
+    plan_id: string;
     pay_mode: string;
     base_fare: number;
     total_discount: number;
@@ -43,8 +43,8 @@ interface HotelDescStore {
     roomData: RoomType[]| null;
     setHotelData: (data: HotelData | null) => void;
     setRoomData: (data: RoomType[] | null) => void;
-    getHotelData: (id: bigint) => Promise<void>;
-    getRoomData: (id: bigint) => Promise<void>;
+    getHotelData: (id: string) => Promise<void>;
+    getRoomData: (id: string) => Promise<void>;
 }
 
 export const useHotelDescStore = create<HotelDescStore>()((set) => ({
@@ -57,7 +57,7 @@ export const useHotelDescStore = create<HotelDescStore>()((set) => ({
         try {
             const response = await axiosInstance.get(`/hotel/${id}`)
             set({ hotelData: {
-                id: response.data.id,
+                id: String(response.data.id),
                 gi_id: response.data.gi_id,
                 name: response.data.name,
                 location: response.data.location,

@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 
 export interface Hotel {
-    id: bigint;
+    id: string;
     name: string;
     location: string;
     base_fare?: number;
@@ -16,11 +16,11 @@ interface HotelStore {
     hotels: Hotel[];
     fromVoice: boolean;
     infoMessage: string;
-    selectedHotelId: bigint | null;
+    selectedHotelId: string | null;
     setHotels: (hotels: Hotel[]) => void
     setFromVoice: (fromVoice: boolean) => void
     setInfoMessage: ( infoMessage: string) => void
-    setSelectedHotelId: (hotelId: bigint) => void
+    setSelectedHotelId: (hotelId: string) => void
 }
 
 export const useHotelStore = create<HotelStore>((set) => ({

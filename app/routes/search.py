@@ -6,7 +6,7 @@ from app.schemas import ProximityCoordinate, SearchFilters, SearchHotelsRequest,
 from app.services.crud.hotel.filter import get_hotels_with_filters
 from app.services.maps.autocomplete import place_autocomplete
 from app.services.maps.geocoding import geocode_place_id
-from fastapi import FastAPI, APIRouter, Depends
+from fastapi import FastAPI, APIRouter, Depends, HTTPException
 import time
 
 router = APIRouter(prefix="/search", tags=["search"])
@@ -39,6 +39,8 @@ async def get_hotels(search_term: str, type: str, filters: SearchHotelsRequest, 
         search_filters = SearchFilters(**filters.model_dump())
     print(search_filters)
     hotels = get_hotels_with_filters(search_filters, db)
+    if not hotels:
+        raise HTTPException(status_code=404, detail="No hotels found")
     return {
         'hotels': hotels,
         'proximity_coordinate': proximity_coordinate,

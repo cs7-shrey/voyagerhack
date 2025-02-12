@@ -1,6 +1,6 @@
-from sqlalchemy import create_engine, MetaData, Table, inspect, ForeignKey
+from sqlalchemy import create_engine, MetaData, Table, inspect, ForeignKey, func
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, BigInteger, ARRAY, UniqueConstraint, JSON
+from sqlalchemy import Column, Integer, String, Float, Boolean, Date, TIMESTAMP, BigInteger, ARRAY, UniqueConstraint, JSON
 from typing import List, Optional
 from .database import Base
 from geoalchemy2 import Geography
@@ -89,3 +89,14 @@ class Country(Base):
     __tablename__ = "country"
     country_id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
+    
+class Booking(Base):
+    __tablename__ = "booking"
+    booking_id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey("platform_user.user_id"))
+    check_in = Column(Date, nullable=False)
+    check_out = Column(Date, nullable=False)
+    hotel_id = Column(BigInteger, ForeignKey("hotel.id"))   
+    room_type_id = Column(Integer, ForeignKey("room_type.room_type_id"))
+    plan_id = Column(Integer, ForeignKey("rate_plan.plan_id"))
+    booked_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
