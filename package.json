@@ -21,7 +21,7 @@
     "@nextui-org/system": "^2.4.6",
     "@nextui-org/theme": "^2.4.5",
     "@nextui-org/tooltip": "^2.2.7",
-    "@radix-ui/react-slot": "^1.1.1",
+    "@radix-ui/react-slot": "^1.1.2",
     "@vis.gl/react-google-maps": "^1.5.1",
     "audiomotion-analyzer": "^4.5.0",
     "class-variance-authority": "^0.7.1",
