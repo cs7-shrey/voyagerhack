@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@copilotkit/react-core": "^1.5.14",
-    "@copilotkit/react-ui": "^1.5.14",
+    "@copilotkit/react-ui": "^1.5.20",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
